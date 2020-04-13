@@ -1,4 +1,4 @@
-package com.recycl.dashboard.controllers;
+package com.recycl.dashboard.front.controllers;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;

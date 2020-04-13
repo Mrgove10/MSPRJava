@@ -1,6 +1,6 @@
-package com.recycl.dashboard.controllers;
+package com.recycl.dashboard.front.controllers;
 
-import com.recycl.dashboard.helpers.AlertHelper;
+import com.recycl.dashboard.front.helpers.AlertHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;

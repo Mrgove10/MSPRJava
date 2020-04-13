@@ -1,4 +1,4 @@
-package com.recycl.dashboard.helpers;
+package com.recycl.dashboard.front.helpers;
 
 import javafx.scene.control.Alert;
 import javafx.stage.Window;
