@@ -1,6 +1,6 @@
 package com.recycl.dashboard.back.Beans;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class DemandeEnlevement {
     private int Id;
