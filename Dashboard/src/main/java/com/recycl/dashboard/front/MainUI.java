@@ -63,8 +63,10 @@ public class MainUI extends Application {
         try {
             Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("login.fxml"));
             Scene scene = new Scene(root, 640, 480);
+
+
            /* Scene scene = new Scene(root, 640, 480);
-            stage.setTitle("RECYCL Dashboard");
+
             stage.setScene(scene);
             stage.show();
             timer.start();*/
