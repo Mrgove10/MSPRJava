@@ -1,7 +1,8 @@
 package com.recycl.dashboard.back.DAO;
 
 import com.recycl.dashboard.back.Beans.User;
-import com.recycl.dashboard.PasswordUtils;
+//import com.recycl.dashboard.utils.PasswordUtils;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +21,8 @@ public class UserDAO {
         String securePassword;
 
         try {
-            securePassword = PasswordUtils.generateSecurePassword(user.getPassword());
+            securePassword = BCrypt.hashpw(user.getPassword(),BCrypt.gensalt(12));
+          //  securePassword = PasswordUtils.generateSecurePassword(user.getPassword());
         }catch (Exception e){
             return false;
         }
@@ -115,8 +117,8 @@ public class UserDAO {
                 user.setUsername(rs.getString("USERNAME"));
                 user.setPassword(rs.getString("PASSWORD"));
             }
-
-            passwordMatch = PasswordUtils.verifyUserPassword(password, user.getPassword());
+            passwordMatch  = BCrypt.checkpw(password, user.getPassword());
+           // passwordMatch = PasswordUtils.verifyUserPassword(password, user.getPassword());
 
             rs.close();
 
