@@ -1,10 +1,15 @@
-package com.recycl.dashboard;
+package com.recycl.dashboard.front;
 
+import com.recycl.dashboard.front.controllers.ScreenController;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import javafx.animation.AnimationTimer;
 import eu.hansolo.tilesfx.skins.BarChartItem;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public class MainUI {
     private static final double TILE_SIZE=150;
@@ -12,7 +17,6 @@ public class MainUI {
     private Tile barChartTile;
     private long lastTimerCall;
     private AnimationTimer timer;
-
 
     @Override
     public void init() {

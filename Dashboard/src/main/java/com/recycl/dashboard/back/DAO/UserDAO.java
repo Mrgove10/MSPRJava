@@ -1,6 +1,6 @@
-package com.recycl.dashboard.DAO;
+package com.recycl.dashboard.back.DAO;
 
-import com.recycl.dashboard.Beans.User;
+import com.recycl.dashboard.back.Beans.User;
 import com.recycl.dashboard.PasswordUtils;
 
 import java.sql.Connection;

@@ -1,19 +1,15 @@
 package com.recycl.dashboard;
 
-import com.recycl.dashboard.Configuration.DAOConnection;
-import com.recycl.dashboard.DAO.UserDAO;
+import com.recycl.dashboard.back.MainBDD;
+import com.recycl.dashboard.front.MainUI;
 
 public class Main {
-
-
     public static void main(String[] args) {
-
-        System.out.println("Hello");
-        UserDAO userDAO = new UserDAO(DAOConnection.ConnectDb());
-        System.out.println("End");
+        MainBDD bdd =new MainBDD();
+        bdd.startBDD();
+        MainUI ui = new MainUI();
+        ui.init();
     }
-
-
 }
 
 

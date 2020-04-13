@@ -1,4 +1,4 @@
-package com.recycl.dashboard.Beans;
+package com.recycl.dashboard.back.Beans;
 
 public class Role {
     private int id = 0;
