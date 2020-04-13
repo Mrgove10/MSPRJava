@@ -10,6 +10,7 @@ public class Main {
 
         System.out.println("Hello");
         UserDAO userDAO = new UserDAO(DAOConnection.ConnectDb());
+        System.out.println("End");
     }
 
 
