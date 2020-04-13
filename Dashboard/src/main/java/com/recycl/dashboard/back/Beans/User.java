@@ -1,10 +1,10 @@
 package com.recycl.dashboard.back.Beans;
 
 public class User {
-    private int id = 0;
-    private String username = "";
-    private String password = "";
-    private Role role = null;
+    private int id;
+    private String username;
+    private String password;
+    private Role role;
 
     public User(int id, String username, String password, Role role) {
         this.id = id;
