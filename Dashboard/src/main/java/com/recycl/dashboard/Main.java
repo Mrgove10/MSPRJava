@@ -2,13 +2,9 @@ package com.recycl.dashboard;
 
 import com.recycl.dashboard.back.MainBDD;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -20,11 +16,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("RECYCL Dashboard");
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("login.fxml"));
-        Scene scene = new Scene(root, 640, 480);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        try {
+            primaryStage.setTitle("RECYCL Dashboard");
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("login.fxml"));
+            Scene scene = new Scene(root, 640, 480);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
