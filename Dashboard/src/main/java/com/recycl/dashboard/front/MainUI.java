@@ -6,6 +6,7 @@ import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.Random;
 
 public class MainUI extends Application {
+
     private static final double TILE_SIZE = 150;
     private static final Random RND = new Random();
     private Tile barChartTile;
@@ -23,7 +25,7 @@ public class MainUI extends Application {
 
     @Override
     public void init() {
-
+        System.out.println("Starting UI");
         BarChartItem barChartItem1 = new BarChartItem("mark", 47, Tile.BLUE);
         BarChartItem barChartItem2 = new BarChartItem("Adrien", 47, Tile.RED);
         BarChartItem barChartItem3 = new BarChartItem("edouard", 47, Tile.GREEN);
