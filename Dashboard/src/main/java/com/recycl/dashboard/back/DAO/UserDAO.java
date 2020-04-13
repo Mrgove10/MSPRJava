@@ -33,11 +33,12 @@ public class UserDAO {
 //            ps.setString(2, securePassword);
 //            ps.setInt(3, user.getRole().getId());
 
-            String query = "INSERT INTO User(Username, Password) " +
-                    "VALUES (?,?)";
+            String query = "INSERT INTO UTILISATEUR(ID, USERNAME, PASSWORD) " +
+                    "VALUES (?,?,?)";
             PreparedStatement ps = this.connect.prepareStatement(query);
-            ps.setString(1, user.getUsername());
-            ps.setString(2, securePassword);
+            ps.setInt(1, user.getId());
+            ps.setString(2, user.getUsername());
+            ps.setString(3, securePassword);
 
             ps.executeUpdate();
 
@@ -64,16 +65,16 @@ public class UserDAO {
 
         try {
             String query = "SELECT * " +
-                           "FROM User";
+                           "FROM UTILISATEUR";
             PreparedStatement ps = this.connect.prepareStatement(query);
 
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
                 User user = new User();
-                user.setId(rs.getInt("Id"));
-                user.setUsername(rs.getString("Username"));
-                user.setPassword(rs.getString("Password"));
+                user.setId(rs.getInt("ID"));
+                user.setUsername(rs.getString("USERNAME"));
+                user.setPassword(rs.getString("PASSWORD"));
 
                 listUsers.add(user);
             }
@@ -102,17 +103,17 @@ public class UserDAO {
         User user = new User();
         try {
             String query = "SELECT * " +
-                           "FROM User " +
-                           "WHERE Username = ?";
+                           "FROM UTILISATEUR " +
+                           "WHERE USERNAME = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setString(1, username);
 
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                user.setId(rs.getInt("Id"));
-                user.setUsername(rs.getString("Username"));
-                user.setPassword(rs.getString("Password"));
+                user.setId(rs.getInt("ID"));
+                user.setUsername(rs.getString("USERNAME"));
+                user.setPassword(rs.getString("PASSWORD"));
             }
 
             passwordMatch = PasswordUtils.verifyUserPassword(password, user.getPassword());
