@@ -1,6 +1,6 @@
 Config.Java
 
-out
+out/
 
 # Compiled class file
 *.class
