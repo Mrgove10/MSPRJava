@@ -5,15 +5,18 @@ import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import javafx.animation.AnimationTimer;
-import eu.hansolo.tilesfx.skins.BarChartItem;
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class MainUI {
-    private static final double TILE_SIZE=150;
-    private static final Random RND=new Random();
+import java.io.IOException;
+import java.util.Random;
+
+public class MainUI extends Application {
+    private static final double TILE_SIZE = 150;
+    private static final Random RND = new Random();
     private Tile barChartTile;
     private long lastTimerCall;
     private AnimationTimer timer;
