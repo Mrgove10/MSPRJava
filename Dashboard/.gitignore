@@ -1,5 +1,7 @@
 Config.Java
 
+out
+
 # Compiled class file
 *.class
 
