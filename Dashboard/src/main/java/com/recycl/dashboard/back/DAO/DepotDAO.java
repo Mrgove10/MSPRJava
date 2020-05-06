@@ -47,13 +47,8 @@ public class DepotDAO {
         } catch (SQLException e) {
             return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return depot;
-                }
-            } catch (SQLException ignore) {
-                return null;
+            if (this.connect != null) {
+                return depot;
             }
         }
 

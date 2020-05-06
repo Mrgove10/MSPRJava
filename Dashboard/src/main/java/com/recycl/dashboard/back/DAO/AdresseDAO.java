@@ -39,13 +39,8 @@ public class AdresseDAO {
         } catch (SQLException e) {
             return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return adresse;
-                }
-            } catch (SQLException ignore) {
-                return null;
+            if (this.connect != null) {
+                return adresse;
             }
         }
 

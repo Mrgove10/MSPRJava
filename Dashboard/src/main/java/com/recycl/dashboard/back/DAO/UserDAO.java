@@ -48,14 +48,8 @@ public class UserDAO {
 
             return false;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return true;
-                }
-            } catch (SQLException ignore) {
-
-                return false;
+            if (this.connect != null) {
+                return true;
             }
         }
 
@@ -91,13 +85,8 @@ public class UserDAO {
         } catch (SQLException e) {
             return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return listUsers;
-                }
-            } catch (SQLException ignore) {
-                return null;
+            if (this.connect != null) {
+                return listUsers;
             }
         }
 
@@ -129,13 +118,8 @@ public class UserDAO {
         } catch (SQLException e) {
             return false;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return passwordMatch;
-                }
-            } catch (SQLException ignore) {
-                return false;
+            if (this.connect != null) {
+                return passwordMatch;
             }
         }
 

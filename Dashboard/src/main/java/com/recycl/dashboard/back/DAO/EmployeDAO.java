@@ -7,6 +7,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 public class EmployeDAO {
     protected Connection connect = null;
@@ -45,17 +48,45 @@ public class EmployeDAO {
             rs.close();
 
         } catch (SQLException e) {
-            if (this.connect == null){
-                return null;
-            }
+            return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return employe;
+            if (this.connect != null) {
+                return employe;
+            }
+        }
+
+        return null;
+    }
+
+    public Dictionary GetEmployesWhereNbTourneesSmallerThan(int number){
+        Dictionary listEmployes = new Hashtable();
+        try {
+            String query = "SELECT MSPR_TOURNEE.ID_EMPLOYE, COUNT(*) NB_TOURNEES " +
+                            "FROM MSPR_TOURNEE " +
+                            "left join MSPR_EMPLOYE on MSPR_EMPLOYE.ID = MSPR_TOURNEE.ID_EMPLOYE " +
+                            "GROUP BY MSPR_TOURNEE.ID_EMPLOYE " +
+                            "ORDER BY NB_TOURNEES DESC";
+            PreparedStatement ps = this.connect.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                int idEmploye = rs.getInt("ID_EMPLOYE");
+                int nbTournees = rs.getInt("NB_TOURNEES");
+                if (nbTournees < number){
+                    Employe employe = GetById(idEmploye);
+
+                    listEmployes.put(employe, nbTournees);
                 }
-            } catch (SQLException ignore) {
-                return null;
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            if (this.connect != null) {
+                return listEmployes;
             }
         }
 

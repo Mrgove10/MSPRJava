@@ -46,13 +46,8 @@ public class DetailDemandeDechetDAO {
         } catch (SQLException e) {
             return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return detailDemandeDechet;
-                }
-            } catch (SQLException ignore) {
-                return null;
+            if (this.connect != null) {
+                return detailDemandeDechet;
             }
         }
 

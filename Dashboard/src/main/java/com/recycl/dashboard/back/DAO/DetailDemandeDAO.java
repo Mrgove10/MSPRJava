@@ -20,7 +20,7 @@ public class DetailDemandeDAO {
 
         try {
             String query = "SELECT * " +
-                    "FROM Detail_Demande " +
+                    "FROM MSPR_DETAIL_DEMANDE " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -41,13 +41,8 @@ public class DetailDemandeDAO {
         } catch (SQLException e) {
             return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return detailDemande;
-                }
-            } catch (SQLException ignore) {
-                return null;
+            if (this.connect != null) {
+                return detailDemande;
             }
         }
 

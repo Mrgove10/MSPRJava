@@ -41,13 +41,8 @@ public class SiteDAO {
         } catch (SQLException e) {
             return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return site;
-                }
-            } catch (SQLException ignore) {
-                return null;
+            if (this.connect != null) {
+                return site;
             }
         }
 

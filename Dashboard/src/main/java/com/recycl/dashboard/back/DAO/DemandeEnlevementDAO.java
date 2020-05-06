@@ -1,9 +1,6 @@
 package com.recycl.dashboard.back.DAO;
 
 import com.recycl.dashboard.back.Beans.DemandeEnlevement;
-import com.recycl.dashboard.back.Beans.DetailDemande;
-import com.recycl.dashboard.back.Beans.Tournee;
-import com.recycl.dashboard.back.Beans.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,22 +16,21 @@ public class DemandeEnlevementDAO {
         this.connect = conn;
     }
 
-    public ArrayList<DemandeEnlevement> GetDemandesByDateDemande(Date date){
+    public ArrayList<DemandeEnlevement> GetDemandesByDateDemande(String date){
         ArrayList<DemandeEnlevement> listDemandes = new ArrayList<>();
 
         try {
             String query = "SELECT * " +
-                           "FROM Demande_Enlevement " +
-                           "WHERE DATE_DEMANDE = ?";
+                           "FROM MSPR_DEMANDE_ENLEVEMENT " +
+                           "WHERE DATE_DEMANDE > DATE '"+date+"'";
             PreparedStatement ps = this.connect.prepareStatement(query);
-            ps.setDate(1, date);
 
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
                 DemandeEnlevement demandeEnlevement = new DemandeEnlevement();
                 demandeEnlevement.setId(rs.getInt("ID"));
-                demandeEnlevement.setNumero(rs.getInt("NO"));
+                demandeEnlevement.setNumero(rs.getInt("NO_DEMANDE"));
                 demandeEnlevement.setDateDemande(rs.getDate("DATE_DEMANDE"));
                 demandeEnlevement.setDateEnlevement(rs.getDate("DATE_ENLEVEMENT"));
 
@@ -101,13 +97,8 @@ public class DemandeEnlevementDAO {
         } catch (SQLException e) {
             return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return demandeEnlevement;
-                }
-            } catch (SQLException ignore) {
-                return null;
+            if (this.connect != null) {
+                return demandeEnlevement;
             }
         }
 
