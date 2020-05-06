@@ -22,7 +22,7 @@ public class DepotDAO {
 
         try {
             String query = "SELECT * " +
-                    "FROM Depot " +
+                    "FROM MSPR_DEPOT " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -33,7 +33,7 @@ public class DepotDAO {
                 depot.setId(rs.getInt("ID"));
                 depot.setQuantite(rs.getInt("QUANTITE"));
                 idTournee = rs.getInt("ID_TOURNEE");
-                idCentre = rs.getInt("ID_CENTRE");
+                idCentre = rs.getInt("ID_CENTRE_TRAITEMENT");
             }
 
             TourneeDAO tourneeDAO = new TourneeDAO(connect);

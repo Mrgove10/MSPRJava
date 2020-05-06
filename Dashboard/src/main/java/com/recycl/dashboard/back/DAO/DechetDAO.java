@@ -30,17 +30,14 @@ public class DechetDAO {
 
             while(rs.next()){
                 dechet.setId(rs.getInt("ID"));
-                dechet.setType(rs.getString("TYPE"));
-                dechet.setUnite(rs.getString("UNITE"));
+                dechet.setType(rs.getString("TYPE_DECHET"));
+                dechet.setUnite(rs.getString("UNITE_DECHET"));
                 dechet.setLimiteForfait(rs.getFloat("LIMITE_FORFAIT"));
                 dechet.setTarifForfait(rs.getFloat("TARIF_FORFAIT"));
                 dechet.setTarifLot(rs.getFloat("TARIF_LOT"));
                 dechet.setNbLot(rs.getInt("NB_LOT"));
-                idDanger = rs.getInt("ID_DANGER");
+                dechet.setDanger(rs.getInt("NIV_DANGER"));
             }
-
-            DangerDAO dangerDAO = new DangerDAO(connect);
-            dechet.setDanger(dangerDAO.GetById(idDanger));
 
             rs.close();
 

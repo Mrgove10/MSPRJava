@@ -22,7 +22,7 @@ public class DetailDemandeDechetDAO {
 
         try {
             String query = "SELECT * " +
-                    "FROM Detail_Demande_Dechet " +
+                    "FROM MSPR_DETAIL_DEMANDE_DECHET " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
