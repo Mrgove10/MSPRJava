@@ -16,9 +16,12 @@ public class TourneeDAO {
 
     public Tournee GetById(int id){
         Tournee tournee = new Tournee();
+        int idEmploye = -1;
+        int idCamion = -1;
+
         try {
             String query = "SELECT * " +
-                    "FROM Tournee " +
+                    "FROM MSPR_TOURNEE " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -27,16 +30,16 @@ public class TourneeDAO {
 
             while(rs.next()){
                 tournee.setId(rs.getInt("ID"));
-                tournee.setDate(rs.getDate("DATE"));
-
-                int camion = rs.getInt("ID_CAMION");
-                CamionDAO camionDAO = new CamionDAO(connect);
-                tournee.setCamion(camionDAO.GetById(camion));
-
-                int employe = rs.getInt("ID_EMPLOYE");
-                EmployeDAO employeDAO = new EmployeDAO(connect);
-                tournee.setEmploye(employeDAO.GetById(employe));
+                tournee.setDate(rs.getDate("DATE_TOURNEE"));
+                idEmploye = rs.getInt("ID_EMPLOYE");
+                idCamion = rs.getInt("ID_CAMION");
             }
+
+            EmployeDAO employeDAO = new EmployeDAO(connect);
+            tournee.setEmploye(employeDAO.GetById(idEmploye));
+
+            CamionDAO camionDAO = new CamionDAO(connect);
+            tournee.setCamion(camionDAO.GetById(idCamion));
 
             rs.close();
 

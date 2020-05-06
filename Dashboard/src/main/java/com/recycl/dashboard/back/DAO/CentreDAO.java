@@ -1,25 +1,27 @@
 package com.recycl.dashboard.back.DAO;
 
-import com.recycl.dashboard.back.Beans.Adresse;
-import com.recycl.dashboard.back.Beans.Tournee;
+import com.recycl.dashboard.back.Beans.Centre;
+import com.recycl.dashboard.back.Beans.Depot;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AdresseDAO {
+public class CentreDAO {
     protected Connection connect = null;
 
-    public AdresseDAO(Connection conn) {
+    public CentreDAO(Connection conn) {
         this.connect = conn;
     }
 
-    public Adresse GetById(int id){
-        Adresse adresse = new Adresse();
+    public Centre GetById(int id){
+        Centre centre = new Centre();
+        int idAddress = -1;
+
         try {
             String query = "SELECT * " +
-                    "FROM MSPR_ADRESSE " +
+                    "FROM MSPR_CENTRE_TRAITEMENT " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -27,12 +29,13 @@ public class AdresseDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                adresse.setId(rs.getInt("ID"));
-                adresse.setNumRue(rs.getInt("NO_RUE"));
-                adresse.setRue(rs.getString("RUE"));
-                adresse.setCodePostal(rs.getInt("CP"));
-                adresse.setVille(rs.getString("VILLE"));
+                centre.setId(rs.getInt("ID"));
+                centre.setNom(rs.getString("NOM"));
+                idAddress = rs.getInt("ID_ADRESSE");
             }
+
+            AdresseDAO adresseDAO = new AdresseDAO(connect);
+            centre.setAdresse(adresseDAO.GetById(idAddress));
 
             rs.close();
 
@@ -42,7 +45,7 @@ public class AdresseDAO {
             try {
                 if (this.connect != null) {
                     this.connect.close();
-                    return adresse;
+                    return centre;
                 }
             } catch (SQLException ignore) {
                 return null;
@@ -51,4 +54,5 @@ public class AdresseDAO {
 
         return null;
     }
+
 }

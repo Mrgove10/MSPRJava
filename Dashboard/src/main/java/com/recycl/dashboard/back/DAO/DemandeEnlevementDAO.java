@@ -1,6 +1,8 @@
 package com.recycl.dashboard.back.DAO;
 
 import com.recycl.dashboard.back.Beans.DemandeEnlevement;
+import com.recycl.dashboard.back.Beans.DetailDemande;
+import com.recycl.dashboard.back.Beans.Tournee;
 import com.recycl.dashboard.back.Beans.User;
 
 import java.sql.Connection;
@@ -56,6 +58,53 @@ public class DemandeEnlevementDAO {
                 if (this.connect != null) {
                     this.connect.close();
                     return listDemandes;
+                }
+            } catch (SQLException ignore) {
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    public DemandeEnlevement GetById(int id){
+        DemandeEnlevement demandeEnlevement = new DemandeEnlevement();
+        int idEntreprise = -1;
+        int idTournee = -1;
+
+        try {
+            String query = "SELECT * " +
+                    "FROM Demande_Enlevement " +
+                    "WHERE ID = ?";
+            PreparedStatement ps = this.connect.prepareStatement(query);
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                demandeEnlevement.setId(rs.getInt("ID"));
+                demandeEnlevement.setNumero(rs.getInt("NO"));
+                demandeEnlevement.setDateDemande(rs.getDate("DATE_DEMANDE"));
+                demandeEnlevement.setDateEnlevement(rs.getDate("DATE_ENLEVEMENT"));
+                idEntreprise = rs.getInt("ID_ENTREPRISE");
+                idTournee = rs.getInt("ID_TOURNEE");
+            }
+
+            EntrepriseDAO entrepriseDAO = new EntrepriseDAO(connect);
+            demandeEnlevement.setEntreprise(entrepriseDAO.GetById(idEntreprise));
+
+            TourneeDAO tourneeDAO = new TourneeDAO(connect);
+            demandeEnlevement.setTournee(tourneeDAO.GetById(idTournee));
+
+            rs.close();
+
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            try {
+                if (this.connect != null) {
+                    this.connect.close();
+                    return demandeEnlevement;
                 }
             } catch (SQLException ignore) {
                 return null;

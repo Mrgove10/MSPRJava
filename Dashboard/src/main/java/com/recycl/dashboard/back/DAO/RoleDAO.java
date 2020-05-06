@@ -1,5 +1,6 @@
 package com.recycl.dashboard.back.DAO;
 
+import com.recycl.dashboard.back.Beans.Role;
 import com.recycl.dashboard.back.Beans.Site;
 
 import java.sql.Connection;
@@ -7,20 +8,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SiteDAO {
+public class RoleDAO {
     protected Connection connect = null;
 
-    public SiteDAO(Connection conn) {
+    public RoleDAO(Connection conn) {
         this.connect = conn;
     }
 
-    public Site GetById(int id){
-        Site site = new Site();
-        int idAddress = -1;
+    public Role GetById(int id){
+        Role role = new Role();
 
         try {
             String query = "SELECT * " +
-                    "FROM MSPR_SITE " +
+                    "FROM MSPR_ROLE " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -28,29 +28,21 @@ public class SiteDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                site.setId(rs.getInt("ID"));
-                site.setNom(rs.getString("NOM"));
-                idAddress = rs.getInt("ID_ADRESSE");
+                role.setId(rs.getInt("ID"));
+                role.setType(rs.getString("TYPE"));
             }
-
-            AdresseDAO adresseDAO = new AdresseDAO(connect);
-            site.setAdresse(adresseDAO.GetById(idAddress));
 
             rs.close();
 
         } catch (SQLException e) {
             return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return site;
-                }
-            } catch (SQLException ignore) {
-                return null;
+            if (this.connect != null) {
+                return role;
             }
         }
 
         return null;
     }
+
 }

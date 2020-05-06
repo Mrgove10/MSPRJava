@@ -1,25 +1,28 @@
 package com.recycl.dashboard.back.DAO;
 
-import com.recycl.dashboard.back.Beans.Adresse;
-import com.recycl.dashboard.back.Beans.Tournee;
+import com.recycl.dashboard.back.Beans.Dechet;
+import com.recycl.dashboard.back.Beans.DechetDepot;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AdresseDAO {
+public class DechetDepotDAO {
     protected Connection connect = null;
 
-    public AdresseDAO(Connection conn) {
+    public DechetDepotDAO(Connection conn) {
         this.connect = conn;
     }
 
-    public Adresse GetById(int id){
-        Adresse adresse = new Adresse();
+    public DechetDepot GetById(int id){
+        DechetDepot dechetDepot = new DechetDepot();
+        int idDechet = -1;
+        int idDepot = -1;
+
         try {
             String query = "SELECT * " +
-                    "FROM MSPR_ADRESSE " +
+                    "FROM Dechet_Depot " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -27,12 +30,16 @@ public class AdresseDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                adresse.setId(rs.getInt("ID"));
-                adresse.setNumRue(rs.getInt("NO_RUE"));
-                adresse.setRue(rs.getString("RUE"));
-                adresse.setCodePostal(rs.getInt("CP"));
-                adresse.setVille(rs.getString("VILLE"));
+                dechetDepot.setId(rs.getInt("ID"));
+                idDechet = rs.getInt("ID_DECHET");
+                idDepot = rs.getInt("ID_DEPOT");
             }
+
+            DechetDAO dechetDAO = new DechetDAO(connect);
+            dechetDepot.setDechet(dechetDAO.GetById(idDechet));
+
+            DepotDAO depotDAO = new DepotDAO(connect);
+            dechetDepot.setDepot(depotDAO.GetById(idDepot));
 
             rs.close();
 
@@ -42,7 +49,7 @@ public class AdresseDAO {
             try {
                 if (this.connect != null) {
                     this.connect.close();
-                    return adresse;
+                    return dechetDepot;
                 }
             } catch (SQLException ignore) {
                 return null;
@@ -51,4 +58,5 @@ public class AdresseDAO {
 
         return null;
     }
+
 }

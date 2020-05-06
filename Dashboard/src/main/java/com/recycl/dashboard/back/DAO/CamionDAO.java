@@ -16,10 +16,11 @@ public class CamionDAO {
 
     public Camion GetById(int id){
         Camion camion = new Camion();
+        int idSite = -1;
 
         try {
             String query = "SELECT * " +
-                    "FROM Camion " +
+                    "FROM MSPR_CAMION " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -32,11 +33,11 @@ public class CamionDAO {
                 camion.setDateAchat(rs.getDate("DATE_ACHAT"));
                 camion.setModele(rs.getString("MODELE"));
                 camion.setMarque(rs.getString("MARQUE"));
-
-                int site = rs.getInt("ID_SITE");
-                SiteDAO siteDAO = new SiteDAO(connect);
-                camion.setSite(siteDAO.GetById(site));
+                idSite = rs.getInt("ID_SITE");
             }
+
+            SiteDAO siteDAO = new SiteDAO(connect);
+            camion.setSite(siteDAO.GetById(idSite));
 
             rs.close();
 
