@@ -1,25 +1,26 @@
 package com.recycl.dashboard.back.DAO;
 
-import com.recycl.dashboard.back.Beans.Site;
+import com.recycl.dashboard.back.Beans.Dechet;
+import com.recycl.dashboard.back.Beans.DechetDepot;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SiteDAO {
+public class DechetDepotDAO {
     protected Connection connect = null;
 
-    public SiteDAO(Connection conn) {
+    public DechetDepotDAO(Connection conn) {
         this.connect = conn;
     }
 
-    public Site GetById(int id){
-        Site site = new Site();
+    public DechetDepot GetById(int id){
+        DechetDepot dechetDepot = new DechetDepot();
 
         try {
             String query = "SELECT * " +
-                    "FROM Site " +
+                    "FROM Dechet_Depot " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -27,12 +28,15 @@ public class SiteDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                site.setId(rs.getInt("ID"));
-                site.setNom(rs.getString("NOM"));
+                dechetDepot.setId(rs.getInt("ID"));
 
-                int adresse = rs.getInt("ID_ADRESSE");
-                AdresseDAO adresseDAO = new AdresseDAO(connect);
-                site.setAdresse(adresseDAO.GetById(adresse));
+                int dechet = rs.getInt("ID_DECHET");
+                DechetDAO dechetDAO = new DechetDAO(connect);
+                dechetDepot.setDechet(dechetDAO.GetById(dechet));
+
+                int depot = rs.getInt("ID_DEPOT");
+                DepotDAO depotDAO = new DepotDAO(connect);
+                dechetDepot.setDepot(depotDAO.GetById(depot));
             }
 
             rs.close();
@@ -43,7 +47,7 @@ public class SiteDAO {
             try {
                 if (this.connect != null) {
                     this.connect.close();
-                    return site;
+                    return dechetDepot;
                 }
             } catch (SQLException ignore) {
                 return null;
@@ -52,4 +56,5 @@ public class SiteDAO {
 
         return null;
     }
+
 }

@@ -20,7 +20,7 @@ public class EmployeDAO {
 
         try {
             String query = "SELECT * " +
-                    "FROM Camion " +
+                    "FROM Employe " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);

@@ -78,6 +78,10 @@ public class UserDAO {
                 user.setUsername(rs.getString("USERNAME"));
                 user.setPassword(rs.getString("PASSWORD"));
 
+                int role = rs.getInt("ID_ROLE");
+                RoleDAO roleDAO = new RoleDAO(connect);
+                user.setRole(roleDAO.GetById(role));
+
                 listUsers.add(user);
             }
 

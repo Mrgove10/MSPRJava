@@ -1,5 +1,6 @@
 package com.recycl.dashboard.back.DAO;
 
+import com.recycl.dashboard.back.Beans.Role;
 import com.recycl.dashboard.back.Beans.Site;
 
 import java.sql.Connection;
@@ -7,19 +8,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SiteDAO {
+public class RoleDAO {
     protected Connection connect = null;
 
-    public SiteDAO(Connection conn) {
+    public RoleDAO(Connection conn) {
         this.connect = conn;
     }
 
-    public Site GetById(int id){
-        Site site = new Site();
+    public Role GetById(int id){
+        Role role = new Role();
 
         try {
             String query = "SELECT * " +
-                    "FROM Site " +
+                    "FROM Role " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -27,12 +28,8 @@ public class SiteDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                site.setId(rs.getInt("ID"));
-                site.setNom(rs.getString("NOM"));
-
-                int adresse = rs.getInt("ID_ADRESSE");
-                AdresseDAO adresseDAO = new AdresseDAO(connect);
-                site.setAdresse(adresseDAO.GetById(adresse));
+                role.setId(rs.getInt("ID"));
+                role.setType(rs.getString("TYPE"));
             }
 
             rs.close();
@@ -43,7 +40,7 @@ public class SiteDAO {
             try {
                 if (this.connect != null) {
                     this.connect.close();
-                    return site;
+                    return role;
                 }
             } catch (SQLException ignore) {
                 return null;
@@ -52,4 +49,5 @@ public class SiteDAO {
 
         return null;
     }
+
 }

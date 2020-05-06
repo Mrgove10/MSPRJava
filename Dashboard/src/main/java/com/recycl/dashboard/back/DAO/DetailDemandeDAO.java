@@ -1,25 +1,25 @@
 package com.recycl.dashboard.back.DAO;
 
-import com.recycl.dashboard.back.Beans.Site;
+import com.recycl.dashboard.back.Beans.DetailDemande;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SiteDAO {
+public class DetailDemandeDAO {
     protected Connection connect = null;
 
-    public SiteDAO(Connection conn) {
+    public DetailDemandeDAO(Connection conn) {
         this.connect = conn;
     }
 
-    public Site GetById(int id){
-        Site site = new Site();
+    public DetailDemande GetById(int id){
+        DetailDemande detailDemande = new DetailDemande();
 
         try {
             String query = "SELECT * " +
-                    "FROM Site " +
+                    "FROM Detail_Demande " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -27,12 +27,12 @@ public class SiteDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                site.setId(rs.getInt("ID"));
-                site.setNom(rs.getString("NOM"));
+                detailDemande.setId(rs.getInt("ID"));
+                detailDemande.setQuantite(rs.getInt("QUANTITE"));
 
-                int adresse = rs.getInt("ID_ADRESSE");
-                AdresseDAO adresseDAO = new AdresseDAO(connect);
-                site.setAdresse(adresseDAO.GetById(adresse));
+                int demandeEnlevement = rs.getInt("ID_DEMANDE_ENLEVEMENT");
+                DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(connect);
+                detailDemande.setDemandeEnlevement(demandeEnlevementDAO.GetById(demandeEnlevement));
             }
 
             rs.close();
@@ -43,7 +43,7 @@ public class SiteDAO {
             try {
                 if (this.connect != null) {
                     this.connect.close();
-                    return site;
+                    return detailDemande;
                 }
             } catch (SQLException ignore) {
                 return null;
