@@ -3,16 +3,10 @@ package com.recycl.dashboard.back;
 import com.recycl.dashboard.Configuration.DAOConnection;
 import com.recycl.dashboard.back.Beans.*;
 import com.recycl.dashboard.back.DAO.*;
-import oracle.net.jdbc.TNSAddress.Address;
 
-import java.sql.Date;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Enumeration;
 
 public class MainBDD {
     public void startBDD() throws SQLException, ParseException {
