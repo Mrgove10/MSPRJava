@@ -5,7 +5,7 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ master, frontend ,application ]
+    branches: [ master, frontend, application ]
   pull_request:
     branches: [ master ]
 
