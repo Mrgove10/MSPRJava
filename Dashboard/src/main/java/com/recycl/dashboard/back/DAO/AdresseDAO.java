@@ -19,7 +19,7 @@ public class AdresseDAO {
         Adresse adresse = new Adresse();
         try {
             String query = "SELECT * " +
-                    "FROM Adresse " +
+                    "FROM MSPR_ADRESSE " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);

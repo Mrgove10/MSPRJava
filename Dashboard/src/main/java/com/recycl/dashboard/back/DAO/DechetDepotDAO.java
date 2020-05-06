@@ -17,6 +17,8 @@ public class DechetDepotDAO {
 
     public DechetDepot GetById(int id){
         DechetDepot dechetDepot = new DechetDepot();
+        int idDechet = -1;
+        int idDepot = -1;
 
         try {
             String query = "SELECT * " +
@@ -29,15 +31,15 @@ public class DechetDepotDAO {
 
             while(rs.next()){
                 dechetDepot.setId(rs.getInt("ID"));
-
-                int dechet = rs.getInt("ID_DECHET");
-                DechetDAO dechetDAO = new DechetDAO(connect);
-                dechetDepot.setDechet(dechetDAO.GetById(dechet));
-
-                int depot = rs.getInt("ID_DEPOT");
-                DepotDAO depotDAO = new DepotDAO(connect);
-                dechetDepot.setDepot(depotDAO.GetById(depot));
+                idDechet = rs.getInt("ID_DECHET");
+                idDepot = rs.getInt("ID_DEPOT");
             }
+
+            DechetDAO dechetDAO = new DechetDAO(connect);
+            dechetDepot.setDechet(dechetDAO.GetById(idDechet));
+
+            DepotDAO depotDAO = new DepotDAO(connect);
+            dechetDepot.setDepot(depotDAO.GetById(idDepot));
 
             rs.close();
 

@@ -15,12 +15,13 @@ public class EmployeDAO {
         this.connect = conn;
     }
 
-    public Employe GetById(int id){
+    public Employe GetById(int id) throws SQLException {
         Employe employe = new Employe();
+        int idSite = -1;
 
         try {
             String query = "SELECT * " +
-                    "FROM Employe " +
+                    "FROM MSPR_EMPLOYE " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -35,16 +36,18 @@ public class EmployeDAO {
                 employe.setDateEmbauche(rs.getDate("DATE_EMBAUCHE"));
                 employe.setSalaire(rs.getFloat("SALAIRE"));
                 employe.setFonction(rs.getString("FONCTION"));
-
-                int site = rs.getInt("ID_SITE");
-                SiteDAO siteDAO = new SiteDAO(connect);
-                employe.setSite(siteDAO.GetById(site));
+                idSite = rs.getInt("ID_SITE");
             }
+
+            SiteDAO siteDAO = new SiteDAO(connect);
+            employe.setSite(siteDAO.GetById(idSite));
 
             rs.close();
 
         } catch (SQLException e) {
-            return null;
+            if (this.connect == null){
+                return null;
+            }
         } finally {
             try {
                 if (this.connect != null) {

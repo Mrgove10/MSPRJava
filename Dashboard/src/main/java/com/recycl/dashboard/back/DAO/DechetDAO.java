@@ -17,6 +17,7 @@ public class DechetDAO {
 
     public Dechet GetById(int id){
         Dechet dechet = new Dechet();
+        int idDanger = -1;
 
         try {
             String query = "SELECT * " +
@@ -35,12 +36,11 @@ public class DechetDAO {
                 dechet.setTarifForfait(rs.getFloat("TARIF_FORFAIT"));
                 dechet.setTarifLot(rs.getFloat("TARIF_LOT"));
                 dechet.setNbLot(rs.getInt("NB_LOT"));
-
-                int danger = rs.getInt("ID_DANGER");
-                DangerDAO dangerDAO = new DangerDAO(connect);
-                dechet.setDanger(dangerDAO.GetById(danger));
-
+                idDanger = rs.getInt("ID_DANGER");
             }
+
+            DangerDAO dangerDAO = new DangerDAO(connect);
+            dechet.setDanger(dangerDAO.GetById(idDanger));
 
             rs.close();
 

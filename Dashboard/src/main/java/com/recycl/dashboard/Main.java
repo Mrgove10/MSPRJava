@@ -9,13 +9,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class Main extends Application {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         MainBDD bdd = new MainBDD();
         bdd.startBDD();
-        launch(args);
+        //launch(args);
     }
 
     @Override

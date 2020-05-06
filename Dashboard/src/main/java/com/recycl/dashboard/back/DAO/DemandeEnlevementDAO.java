@@ -69,6 +69,8 @@ public class DemandeEnlevementDAO {
 
     public DemandeEnlevement GetById(int id){
         DemandeEnlevement demandeEnlevement = new DemandeEnlevement();
+        int idEntreprise = -1;
+        int idTournee = -1;
 
         try {
             String query = "SELECT * " +
@@ -84,15 +86,15 @@ public class DemandeEnlevementDAO {
                 demandeEnlevement.setNumero(rs.getInt("NO"));
                 demandeEnlevement.setDateDemande(rs.getDate("DATE_DEMANDE"));
                 demandeEnlevement.setDateEnlevement(rs.getDate("DATE_ENLEVEMENT"));
-
-                int entreprise = rs.getInt("ID_ENTREPRISE");
-                EntrepriseDAO entrepriseDAO = new EntrepriseDAO(connect);
-                demandeEnlevement.setEntreprise(entrepriseDAO.GetById(entreprise));
-
-                int tournee = rs.getInt("ID_TOURNEE");
-                TourneeDAO tourneeDAO = new TourneeDAO(connect);
-                demandeEnlevement.setTournee(tourneeDAO.GetById(tournee));
+                idEntreprise = rs.getInt("ID_ENTREPRISE");
+                idTournee = rs.getInt("ID_TOURNEE");
             }
+
+            EntrepriseDAO entrepriseDAO = new EntrepriseDAO(connect);
+            demandeEnlevement.setEntreprise(entrepriseDAO.GetById(idEntreprise));
+
+            TourneeDAO tourneeDAO = new TourneeDAO(connect);
+            demandeEnlevement.setTournee(tourneeDAO.GetById(idTournee));
 
             rs.close();
 

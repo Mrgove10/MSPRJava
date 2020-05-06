@@ -17,6 +17,8 @@ public class DetailDemandeDechetDAO {
 
     public DetailDemandeDechet GetById(int id){
         DetailDemandeDechet detailDemandeDechet = new DetailDemandeDechet();
+        int idDetailDemande = -1;
+        int idDechet = -1;
 
         try {
             String query = "SELECT * " +
@@ -29,15 +31,15 @@ public class DetailDemandeDechetDAO {
 
             while(rs.next()){
                 detailDemandeDechet.setId(rs.getInt("ID"));
-
-                int detailDemande = rs.getInt("ID_DETAIL_DEMANDE");
-                DetailDemandeDAO detailDemandeDAO = new DetailDemandeDAO(connect);
-                detailDemandeDechet.setDetailDemande(detailDemandeDAO.GetById(detailDemande));
-
-                int dechet = rs.getInt("ID_DECHET");
-                DechetDAO dechetDAO = new DechetDAO(connect);
-                detailDemandeDechet.setDechet(dechetDAO.GetById(dechet));
+                idDetailDemande = rs.getInt("ID_DETAIL_DEMANDE");
+                idDechet = rs.getInt("ID_DECHET");
             }
+
+            DetailDemandeDAO detailDemandeDAO = new DetailDemandeDAO(connect);
+            detailDemandeDechet.setDetailDemande(detailDemandeDAO.GetById(idDetailDemande));
+
+            DechetDAO dechetDAO = new DechetDAO(connect);
+            detailDemandeDechet.setDechet(dechetDAO.GetById(idDechet));
 
             rs.close();
 

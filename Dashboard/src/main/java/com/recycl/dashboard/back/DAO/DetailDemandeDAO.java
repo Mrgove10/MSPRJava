@@ -16,6 +16,7 @@ public class DetailDemandeDAO {
 
     public DetailDemande GetById(int id){
         DetailDemande detailDemande = new DetailDemande();
+        int idDemandeEnlevement = -1;
 
         try {
             String query = "SELECT * " +
@@ -29,11 +30,11 @@ public class DetailDemandeDAO {
             while(rs.next()){
                 detailDemande.setId(rs.getInt("ID"));
                 detailDemande.setQuantite(rs.getInt("QUANTITE"));
-
-                int demandeEnlevement = rs.getInt("ID_DEMANDE_ENLEVEMENT");
-                DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(connect);
-                detailDemande.setDemandeEnlevement(demandeEnlevementDAO.GetById(demandeEnlevement));
+                idDemandeEnlevement = rs.getInt("ID_DEMANDE_ENLEVEMENT");
             }
+
+            DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(connect);
+            detailDemande.setDemandeEnlevement(demandeEnlevementDAO.GetById(idDemandeEnlevement));
 
             rs.close();
 

@@ -35,7 +35,7 @@ public class UserDAO {
 //            ps.setString(2, securePassword);
 //            ps.setInt(3, user.getRole().getId());
 
-            String query = "INSERT INTO UTILISATEUR(ID, USERNAME, PASSWORD) " +
+            String query = "INSERT INTO MSPR_USER(ID, USERNAME, PASSWORD) " +
                     "VALUES (?,?,?)";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, user.getId());
@@ -67,7 +67,7 @@ public class UserDAO {
 
         try {
             String query = "SELECT * " +
-                           "FROM UTILISATEUR";
+                           "FROM MSPR_USER";
             PreparedStatement ps = this.connect.prepareStatement(query);
 
             ResultSet rs = ps.executeQuery();
@@ -78,7 +78,7 @@ public class UserDAO {
                 user.setUsername(rs.getString("USERNAME"));
                 user.setPassword(rs.getString("PASSWORD"));
 
-                int role = rs.getInt("ID_ROLE");
+                int role = rs.getInt("FK_ID_ROLE");
                 RoleDAO roleDAO = new RoleDAO(connect);
                 user.setRole(roleDAO.GetById(role));
 
@@ -109,7 +109,7 @@ public class UserDAO {
         User user = new User();
         try {
             String query = "SELECT * " +
-                           "FROM UTILISATEUR " +
+                           "FROM MSPR_USER " +
                            "WHERE USERNAME = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setString(1, username);

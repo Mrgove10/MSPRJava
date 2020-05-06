@@ -17,10 +17,11 @@ public class CentreDAO {
 
     public Centre GetById(int id){
         Centre centre = new Centre();
+        int idAddress = -1;
 
         try {
             String query = "SELECT * " +
-                    "FROM Centre " +
+                    "FROM MSPR_CENTRE_TRAITEMENT " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -30,11 +31,11 @@ public class CentreDAO {
             while(rs.next()){
                 centre.setId(rs.getInt("ID"));
                 centre.setNom(rs.getString("NOM"));
-
-                int address = rs.getInt("ID_ADDRESS");
-                AdresseDAO adresseDAO = new AdresseDAO(connect);
-                centre.setAdresse(adresseDAO.GetById(address));
+                idAddress = rs.getInt("ID_ADRESSE");
             }
+
+            AdresseDAO adresseDAO = new AdresseDAO(connect);
+            centre.setAdresse(adresseDAO.GetById(idAddress));
 
             rs.close();
 

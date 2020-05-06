@@ -17,6 +17,8 @@ public class DepotDAO {
 
     public Depot GetById(int id){
         Depot depot = new Depot();
+        int idTournee = -1;
+        int idCentre = -1;
 
         try {
             String query = "SELECT * " +
@@ -30,16 +32,15 @@ public class DepotDAO {
             while(rs.next()){
                 depot.setId(rs.getInt("ID"));
                 depot.setQuantite(rs.getInt("QUANTITE"));
-
-                int tournee = rs.getInt("ID_TOURNEE");
-                TourneeDAO tourneeDAO = new TourneeDAO(connect);
-                depot.setTournee(tourneeDAO.GetById(tournee));
-
-                int centre = rs.getInt("ID_CENTRE");
-                CentreDAO centreDAO = new CentreDAO(connect);
-                depot.setCentre(centreDAO.GetById(centre));
-
+                idTournee = rs.getInt("ID_TOURNEE");
+                idCentre = rs.getInt("ID_CENTRE");
             }
+
+            TourneeDAO tourneeDAO = new TourneeDAO(connect);
+            depot.setTournee(tourneeDAO.GetById(idTournee));
+
+            CentreDAO centreDAO = new CentreDAO(connect);
+            depot.setCentre(centreDAO.GetById(idCentre));
 
             rs.close();
 

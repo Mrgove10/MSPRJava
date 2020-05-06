@@ -20,7 +20,7 @@ public class RoleDAO {
 
         try {
             String query = "SELECT * " +
-                    "FROM Role " +
+                    "FROM MSPR_ROLE " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -37,13 +37,8 @@ public class RoleDAO {
         } catch (SQLException e) {
             return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return role;
-                }
-            } catch (SQLException ignore) {
-                return null;
+            if (this.connect != null) {
+                return role;
             }
         }
 

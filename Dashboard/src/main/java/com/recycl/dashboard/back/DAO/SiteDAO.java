@@ -16,10 +16,11 @@ public class SiteDAO {
 
     public Site GetById(int id){
         Site site = new Site();
+        int idAddress = -1;
 
         try {
             String query = "SELECT * " +
-                    "FROM Site " +
+                    "FROM MSPR_SITE " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -29,11 +30,11 @@ public class SiteDAO {
             while(rs.next()){
                 site.setId(rs.getInt("ID"));
                 site.setNom(rs.getString("NOM"));
-
-                int adresse = rs.getInt("ID_ADRESSE");
-                AdresseDAO adresseDAO = new AdresseDAO(connect);
-                site.setAdresse(adresseDAO.GetById(adresse));
+                idAddress = rs.getInt("ID_ADRESSE");
             }
+
+            AdresseDAO adresseDAO = new AdresseDAO(connect);
+            site.setAdresse(adresseDAO.GetById(idAddress));
 
             rs.close();
 

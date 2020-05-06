@@ -17,9 +17,11 @@ public class EntrepriseDAO {
 
     public Entreprise GetById(int id){
         Entreprise entreprise = new Entreprise();
+        int idAddress = -1;
+
         try {
             String query = "SELECT * " +
-                    "FROM Entreprise " +
+                    "FROM MSPR_ENTREPRISE " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -29,15 +31,14 @@ public class EntrepriseDAO {
             while(rs.next()){
                 entreprise.setId(rs.getInt("ID"));
                 entreprise.setSiret(rs.getInt("SIRET"));
-                entreprise.setRaisonSociale(rs.getString("RAISON_SOCIALE"));
+                entreprise.setRaisonSociale(rs.getString("RAISON_SOCIAL"));
                 entreprise.setTel(rs.getString("TEL"));
                 entreprise.setNomContact(rs.getString("NOM_CONTACT"));
-
-                int adresse = rs.getInt("ID_ADRESSE");
-                AdresseDAO adresseDAO = new AdresseDAO(connect);
-                entreprise.setAdresse(adresseDAO.GetById(adresse));
+                idAddress = rs.getInt("ID_ADRESSE");
             }
 
+            AdresseDAO adresseDAO = new AdresseDAO(connect);
+            entreprise.setAdresse(adresseDAO.GetById(idAddress));
 
             rs.close();
 
