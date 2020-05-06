@@ -2,6 +2,7 @@ package com.recycl.dashboard.front.controllers;
 
 import com.recycl.dashboard.front.helpers.AlertHelper;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,8 +14,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class LoginController {
     @FXML
@@ -31,7 +34,7 @@ public class LoginController {
 
     @FXML
     protected void handleSubmitButtonAction(ActionEvent event) throws IOException {
-        Window owner = submitButton.getScene().getWindow();
+        Window owner = TestPane.getScene().getWindow();
         if (loginField.getText().isEmpty()) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                     "Please enter your name");
@@ -44,12 +47,20 @@ public class LoginController {
         }
 
         //if not empty and authenticator is good
-        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, owner, "Registration Successful!",
-                "Welcome " + loginField.getText());
-        Stage primaryStage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
-        Scene scene = new Scene(root, 640, 480);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        if (/*todo : account verifiation methode*/ true) {
+            AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, owner, "Registration Successful!",
+                    "Welcome " + loginField.getText());
+
+            Stage loginstage = (Stage) TestPane.getScene().getWindow();//closes login screen
+            // do what you have to do
+            loginstage.close();
+
+            Stage primaryStage = new Stage();
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("main.fxml")));
+            Scene scene = new Scene(root, TestPane.getScene().getWindow().getWidth(), TestPane.getScene().getWindow().getHeight());
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("Main Page");
+            primaryStage.show();
+        }
     }
 }
