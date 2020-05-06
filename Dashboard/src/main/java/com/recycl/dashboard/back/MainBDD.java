@@ -29,6 +29,7 @@ public class MainBDD {
         // Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent
         System.out.println("---------- REQUEST 1 ----------");
         System.out.println("// Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent");
+        System.out.println("-- Paramètres : String sous format (yyyy-MM-dd) => 2019-06-05");
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2019-06-05");
         for (DemandeEnlevement demande:demandes) {
@@ -44,9 +45,10 @@ public class MainBDD {
         // Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées
         System.out.println("---------- REQUEST 4 ----------");
         System.out.println("// Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées");
+        System.out.println("-- Paramètres : Nombre de tournées (int)");
         EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
-        Dictionary listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(4);
-        for (Enumeration k = listEmployes.keys(); k.hasMoreElements();)
+        var listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(4);
+        for (var k = listEmployes.keys(); k.hasMoreElements();)
         {
             var employe = (Employe)k.nextElement();
             var nbTournee = listEmployes.get(employe);
