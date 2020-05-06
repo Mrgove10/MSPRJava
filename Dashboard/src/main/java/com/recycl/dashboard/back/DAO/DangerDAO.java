@@ -1,25 +1,26 @@
 package com.recycl.dashboard.back.DAO;
 
-import com.recycl.dashboard.back.Beans.Adresse;
-import com.recycl.dashboard.back.Beans.Tournee;
+import com.recycl.dashboard.back.Beans.Danger;
+import com.recycl.dashboard.back.Beans.Dechet;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AdresseDAO {
+public class DangerDAO {
     protected Connection connect = null;
 
-    public AdresseDAO(Connection conn) {
+    public DangerDAO(Connection conn) {
         this.connect = conn;
     }
 
-    public Adresse GetById(int id){
-        Adresse adresse = new Adresse();
+    public Danger GetById(int id){
+        Danger danger = new Danger();
+
         try {
             String query = "SELECT * " +
-                    "FROM MSPR_ADRESSE " +
+                    "FROM Danger " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -27,11 +28,8 @@ public class AdresseDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                adresse.setId(rs.getInt("ID"));
-                adresse.setNumRue(rs.getInt("NO_RUE"));
-                adresse.setRue(rs.getString("RUE"));
-                adresse.setCodePostal(rs.getInt("CP"));
-                adresse.setVille(rs.getString("VILLE"));
+                danger.setId(rs.getInt("ID"));
+                danger.setNiveau(rs.getString("LEVEL"));
             }
 
             rs.close();
@@ -42,7 +40,7 @@ public class AdresseDAO {
             try {
                 if (this.connect != null) {
                     this.connect.close();
-                    return adresse;
+                    return danger;
                 }
             } catch (SQLException ignore) {
                 return null;
@@ -51,4 +49,5 @@ public class AdresseDAO {
 
         return null;
     }
+
 }

@@ -1,25 +1,28 @@
 package com.recycl.dashboard.back.DAO;
 
-import com.recycl.dashboard.back.Beans.Adresse;
-import com.recycl.dashboard.back.Beans.Tournee;
+import com.recycl.dashboard.back.Beans.Dechet;
+import com.recycl.dashboard.back.Beans.Depot;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AdresseDAO {
+public class DepotDAO {
     protected Connection connect = null;
 
-    public AdresseDAO(Connection conn) {
+    public DepotDAO(Connection conn) {
         this.connect = conn;
     }
 
-    public Adresse GetById(int id){
-        Adresse adresse = new Adresse();
+    public Depot GetById(int id){
+        Depot depot = new Depot();
+        int idTournee = -1;
+        int idCentre = -1;
+
         try {
             String query = "SELECT * " +
-                    "FROM MSPR_ADRESSE " +
+                    "FROM Depot " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -27,12 +30,17 @@ public class AdresseDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                adresse.setId(rs.getInt("ID"));
-                adresse.setNumRue(rs.getInt("NO_RUE"));
-                adresse.setRue(rs.getString("RUE"));
-                adresse.setCodePostal(rs.getInt("CP"));
-                adresse.setVille(rs.getString("VILLE"));
+                depot.setId(rs.getInt("ID"));
+                depot.setQuantite(rs.getInt("QUANTITE"));
+                idTournee = rs.getInt("ID_TOURNEE");
+                idCentre = rs.getInt("ID_CENTRE");
             }
+
+            TourneeDAO tourneeDAO = new TourneeDAO(connect);
+            depot.setTournee(tourneeDAO.GetById(idTournee));
+
+            CentreDAO centreDAO = new CentreDAO(connect);
+            depot.setCentre(centreDAO.GetById(idCentre));
 
             rs.close();
 
@@ -42,7 +50,7 @@ public class AdresseDAO {
             try {
                 if (this.connect != null) {
                     this.connect.close();
-                    return adresse;
+                    return depot;
                 }
             } catch (SQLException ignore) {
                 return null;
@@ -51,4 +59,5 @@ public class AdresseDAO {
 
         return null;
     }
+
 }
