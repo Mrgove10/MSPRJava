@@ -16,7 +16,7 @@ public class Main extends Application {
     public static void main(String[] args) throws SQLException {
         MainBDD bdd = new MainBDD();
         bdd.startBDD();
-        //launch(args);
+        launch(args); //Comment this to deactivate the UI
     }
 
     @Override
@@ -24,7 +24,7 @@ public class Main extends Application {
         try {
             primaryStage.setTitle("RECYCL Dashboard");
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("login.fxml")));
-            Scene scene = new Scene(root, 640, 480);
+            Scene scene = new Scene(root, 320, 240);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (Exception e) {

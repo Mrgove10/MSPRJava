@@ -23,7 +23,7 @@ public class MainUI extends Application {
     public void start(Stage stage) throws IOException {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("login.fxml")));
-            Scene scene = new Scene(root, 1600, 900);
+            Scene scene = new Scene(root);
             ScreenController screenController = new ScreenController(scene);
             screenController.activate("login");
 
