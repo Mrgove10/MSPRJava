@@ -7,9 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EmployeDAO {
     protected Connection connect = null;
@@ -58,10 +57,10 @@ public class EmployeDAO {
         return null;
     }
 
-    public Dictionary GetEmployesWhereNbTourneesSmallerThan(int number){
-        Dictionary listEmployes = new Hashtable();
+    public Map<Employe, Integer> GetEmployesWhereNbTourneesSmallerThan(int number){
+        Map<Employe, Integer> listEmployes = new Hashtable();
         try {
-            String query = "SELECT MSPR_TOURNEE.ID_EMPLOYE, COUNT(*) NB_TOURNEES " +
+            String query = "SELECT MSPR_TOURNEE.ID_EMPLOYE, COUNT(*) AS NB_TOURNEES " +
                             "FROM MSPR_TOURNEE " +
                             "left join MSPR_EMPLOYE on MSPR_EMPLOYE.ID = MSPR_TOURNEE.ID_EMPLOYE " +
                             "GROUP BY MSPR_TOURNEE.ID_EMPLOYE " +
@@ -79,6 +78,11 @@ public class EmployeDAO {
                     listEmployes.put(employe, nbTournees);
                 }
             }
+
+            Map<Employe, Integer> sorted = listEmployes.entrySet()
+                                                        .stream()
+                                                        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                                                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
 
             rs.close();
 

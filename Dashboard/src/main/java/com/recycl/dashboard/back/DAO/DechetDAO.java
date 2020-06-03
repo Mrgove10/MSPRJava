@@ -7,6 +7,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DechetDAO {
     protected Connection connect = null;
@@ -46,6 +50,38 @@ public class DechetDAO {
         } finally {
             if (this.connect != null) {
                 return dechet;
+            }
+        }
+
+        return null;
+    }
+
+    public Map<String, Integer> GetDechetsByDemande(int idDemande){
+        Map<String, Integer> listTypeDechets = new HashMap<>();
+        DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(connect);
+        var listId = String.join(",", (CharSequence) detailDemandeDechetDAO.GetDechetsId(idDemande));
+
+        try {
+            String query = "SELECT TYPE_DECHET, COUNT(*) AS COUNT_TYPE " +
+                            "FROM MSPR_DECHET " +
+                            "WHERE ID IN (?) " +
+                            "GROUP BY TYPE_DECHET HAVING COUNT(*) > 0";
+            PreparedStatement ps = this.connect.prepareStatement(query);
+            ps.setString(1, listId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                listTypeDechets.put(rs.getString("TYPE_DECHET"), rs.getInt("COUNT_TYPE"));
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            if (this.connect != null) {
+                return listTypeDechets;
             }
         }
 

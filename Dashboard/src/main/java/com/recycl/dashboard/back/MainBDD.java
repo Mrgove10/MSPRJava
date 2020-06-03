@@ -7,6 +7,7 @@ import com.recycl.dashboard.back.DAO.*;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MainBDD {
     public void startBDD() throws SQLException, ParseException {
@@ -34,7 +35,18 @@ public class MainBDD {
         System.out.println("-------------------- REQUEST 2 --------------------");
         System.out.println("// Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet");
         System.out.println("-- Paramètres : Numéro de la demande (int)");
+        demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+        var demande = demandeEnlevementDAO.GetById(0);
 
+        DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
+        var listDechets = dechetDAO.GetDechetsByDemande(demande.getId());
+
+        System.out.println("Raison sociale entreprise : "+demande.getEntreprise().getRaisonSociale());
+        System.out.println("Tournée du "+demande.getTournee().getDate() + ", par " +demande.getTournee().getEmploye() + ", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
+
+        for (Map.Entry<String, Integer> entry : listDechets.entrySet()) {
+            System.out.println("Type : "+entry.getKey()+", Value : "+entry.getValue());
+        }
 
         // Afficher la quantité totale récupérée par type de déchet pour un mois/année donné
         System.out.println("-------------------- REQUEST 3 --------------------");
@@ -47,10 +59,10 @@ public class MainBDD {
         System.out.println("-- Paramètres : Nombre de tournées (int)");
         EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
         var listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(4);
-        for (var k = listEmployes.keys(); k.hasMoreElements();)
+        for (Map.Entry<Employe, Integer> entry : listEmployes.entrySet())
         {
-            var employe = (Employe)k.nextElement();
-            var nbTournee = listEmployes.get(employe);
+            var employe = (Employe)entry.getKey();
+            var nbTournee = entry.getValue();
             System.out.println("Employe : "+employe.getNom()+" "+employe.getPrenom()+" = "+nbTournee+" tournée(s)");
         }
 
@@ -65,12 +77,15 @@ public class MainBDD {
 
         // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)
         System.out.println("-------------------- REQUEST 7 --------------------");
+        System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)");
 
-        // Retourver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau nationale
+        // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national
         System.out.println("-------------------- REQUEST 8 --------------------");
+        System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national");
 
         // Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée
         System.out.println("-------------------- REQUEST 9 --------------------");
+        System.out.println("// Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée");
             // -- Inscription dans une tournée déjà créée pour la date demandée
             // -- A condition qu'il reste une place dans la tournée (sinon inscrire dans une tournée le lendemain ou surlendemain)
             // -- Si aucune possibilité sur les 3 dates -7 inscrire la demande dans un journal de demandes à traiter

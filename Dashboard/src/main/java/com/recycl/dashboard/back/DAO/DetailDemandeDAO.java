@@ -48,4 +48,33 @@ public class DetailDemandeDAO {
 
         return null;
     }
+
+    public Integer GetIdByDemande(int idDemande){
+        int idDetailDemande = -1;
+
+        try {
+            String query = "SELECT * " +
+                    "FROM MSPR_DETAIL_DEMANDE " +
+                    "WHERE ID_DEMANDE_ENLEVEMENT = ?";
+            PreparedStatement ps = this.connect.prepareStatement(query);
+            ps.setInt(1, idDemande);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                idDetailDemande = rs.getInt("ID");
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            if (this.connect != null) {
+                return idDetailDemande;
+            }
+        }
+
+        return null;
+    }
 }
