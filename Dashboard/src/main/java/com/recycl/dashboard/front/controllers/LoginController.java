@@ -64,7 +64,7 @@ public class LoginController {
         loginstage.close();
 
         Stage primaryStage = new Stage();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("main.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("test.fxml")));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Main Page");

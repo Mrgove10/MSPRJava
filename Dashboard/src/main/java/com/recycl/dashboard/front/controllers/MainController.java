@@ -1,8 +1,6 @@
 package com.recycl.dashboard.front.controllers;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.TileBuilder;
-import eu.hansolo.tilesfx.skins.BarChartItem;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,10 +10,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Objects;
-import java.util.Random;
-import java.util.ResourceBundle;
+
 
 public class MainController {
     @FXML
