@@ -27,6 +27,7 @@ public class MainBDD {
         System.out.println("-------------------- REQUEST 1 --------------------");
         System.out.println("// Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent");
         System.out.println("-- Paramètres : String sous format (yyyy-MM-dd) => 2019-06-05");
+
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2019-06-05");
         for (DemandeEnlevement demande:demandes) {
@@ -37,6 +38,7 @@ public class MainBDD {
         System.out.println("-------------------- REQUEST 2 --------------------");
         System.out.println("// Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet");
         System.out.println("-- Paramètres : Numéro de la demande (int)");
+
         demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         var demande = demandeEnlevementDAO.GetByNumero(0);
 
@@ -59,6 +61,7 @@ public class MainBDD {
         System.out.println("-------------------- REQUEST 4 --------------------");
         System.out.println("// Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées");
         System.out.println("-- Paramètres : Nombre de tournées (int)");
+
         EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
         var listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(4);
         for (Map.Entry<Employe, Integer> entry : listEmployes.entrySet())
@@ -81,7 +84,7 @@ public class MainBDD {
         System.out.println("-------------------- REQUEST 7 --------------------");
         System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)");
         System.out.println("-- Paramètres : Type de déchet (string), période avant (String), période après (String), Site (string)");
-        // récupérer tous les déchets entre les 2 dates
+
         demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         var listDemandes = demandeEnlevementDAO.GetByDateEnlevement("2019-06-05", "2020-06-03");
 
