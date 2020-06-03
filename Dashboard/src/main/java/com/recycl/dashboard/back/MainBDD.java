@@ -7,6 +7,8 @@ import com.recycl.dashboard.back.DAO.*;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainBDD {
@@ -39,7 +41,7 @@ public class MainBDD {
         var demande = demandeEnlevementDAO.GetByNumero(0);
 
         DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
-        var listDechets = dechetDAO.GetDechetsByDemande(demande.getId());
+        var listDechets = dechetDAO.GetTypesDechetsByDemande(demande.getId());
 
         System.out.println("Raison sociale entreprise : "+demande.getEntreprise().getRaisonSociale());
         System.out.println("Tournée du "+demande.getTournee().getDate() + ", par " +demande.getTournee().getEmploye() + ", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
@@ -80,12 +82,23 @@ public class MainBDD {
         System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)");
         System.out.println("-- Paramètres : Type de déchet (string), période avant (String), période après (String), Site (string)");
         // récupérer tous les déchets entre les 2 dates
+        demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+        var listDemandes = demandeEnlevementDAO.GetByDateEnlevement("2019-06-05", "2020-06-03");
 
-        // garder seulement les déchets du type voulu
+        dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
 
-        // compter le nombre de déchets
+        var listDechetsCat = new ArrayList<Dechet>();
+        for (DemandeEnlevement entry : listDemandes) {
+            if (entry.getTournee().getCamion().getSite().getNom().equals("Paris")){
+                for (Dechet dechet:dechetDAO.GetDechetsByDemande(entry.getId())) {
+                    if (dechet.getType().equals("Plastique")){
+                        listDechetsCat.add(dechet);
+                    }
+                }
+            }
+        }
 
-        // filtrer sur le site
+        System.out.println("Pour la période de \"2019-06-05\" à \"2020-06-03\", du site \"Paris\", il y a \""+listDechetsCat.size()+"\" déchets de type \"Plastique\"");
 
 
         // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national

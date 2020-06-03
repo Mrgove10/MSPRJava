@@ -1,11 +1,13 @@
 package com.recycl.dashboard.back.DAO;
 
+import com.recycl.dashboard.back.Beans.DemandeEnlevement;
 import com.recycl.dashboard.back.Beans.DetailDemande;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class DetailDemandeDAO {
     protected Connection connect = null;
