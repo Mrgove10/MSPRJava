@@ -36,7 +36,7 @@ public class MainBDD {
         System.out.println("// Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet");
         System.out.println("-- Paramètres : Numéro de la demande (int)");
         demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-        var demande = demandeEnlevementDAO.GetById(0);
+        var demande = demandeEnlevementDAO.GetByNumero(0);
 
         DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
         var listDechets = dechetDAO.GetDechetsByDemande(demande.getId());
@@ -78,6 +78,15 @@ public class MainBDD {
         // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)
         System.out.println("-------------------- REQUEST 7 --------------------");
         System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)");
+        System.out.println("-- Paramètres : Type de déchet (string), période avant (String), période après (String), Site (string)");
+        // récupérer tous les déchets entre les 2 dates
+
+        // garder seulement les déchets du type voulu
+
+        // compter le nombre de déchets
+
+        // filtrer sur le site
+
 
         // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national
         System.out.println("-------------------- REQUEST 8 --------------------");
