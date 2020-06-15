@@ -19,11 +19,11 @@
       <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
    </padding>
    <children>
-      <PasswordField fx:id="passwordField" text="azer" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Button fx:id="submitButton" mnemonicParsing="false" onAction="#handleSubmitButtonAction" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <TextField fx:id="loginField" text="azer" GridPane.columnIndex="1" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Username" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password" GridPane.rowIndex="1" />
+      <PasswordField fx:id="passwordField" text="azer" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <TextField fx:id="loginField" text="azer" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Username" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
       <Pane fx:id="TestPane" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
+      <Button fx:id="submitButton" mnemonicParsing="false" onAction="#handleSubmitButtonAction" text="Login" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
    </children>
 </GridPane>

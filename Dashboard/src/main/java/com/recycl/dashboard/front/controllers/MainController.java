@@ -10,23 +10,16 @@ import com.recycl.dashboard.back.DAO.EmployeDAO;
 import com.recycl.dashboard.front.helpers.AlertHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.controlsfx.control.MasterDetailPane;
 
-import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 
 public class MainController {
 
@@ -34,22 +27,38 @@ public class MainController {
     public TextField input_int;
 
     @FXML
-    public Pane userPanel;
-
-    @FXML
     public Button validateButton;
 
 
     private Window owner;
+    private ScreenController screenController;
 
-    private void initialize() {
-        MasterDetailPane pane = new MasterDetailPane();
-        owner = pane.getScene().getWindow();
+
+    @FXML
+    private Pane secondtest;
+    @FXML
+    private Pane buttonPane;
+    @FXML
+    private Pane testPane;
+
+    public void initialize() {
+        System.out.println("coucouille");
+        //    Scene scene = buttonPane.getScene();
+        //   owner = buttonPane.getScene().getWindow();
+        //   screenController = new ScreenController(scene);
+        // screenController.addScreen("testPane", testPane);
+        //screenController.addScreen("buttonPane", buttonPane);
+        secondtest.setVisible(false);
+        testPane.setVisible(false);
+        buttonPane.setVisible(true);
     }
 
     @FXML
     protected void handleButtonR1(ActionEvent actionEvent) throws SQLException, NullPointerException {
         try {
+            buttonPane.setVisible(false);
+            testPane.setVisible(true);
+
             // Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent
             System.out.println("-------------------- REQUEST 1 --------------------");
             System.out.println("// Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent");
@@ -80,7 +89,6 @@ public class MainController {
             DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
 
 
-
             DemandeEnlevement demande = demandeEnlevementDAO.GetByNumero(0);
 
             DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
@@ -107,26 +115,21 @@ public class MainController {
 
     @FXML
     protected void handleButtonR4(ActionEvent actionEvent) throws SQLException, NullPointerException {
-        // Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées
-        System.out.println("-------------------- REQUEST 4 --------------------");
-        System.out.println("// Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées");
-        System.out.println("-- Paramètres : Nombre de tournées (int)");
-
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("R2_user_input.fxml")));
-            Scene scene = new Scene(root, 500, 200);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.show();
-
-        } catch(Exception e) {
+            secondtest.setVisible(true);
+            testPane.setVisible(false);
+            buttonPane.setVisible(false);
+            // Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées
+            System.out.println("-------------------- REQUEST 4 --------------------");
+            System.out.println("// Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées");
+            System.out.println("-- Paramètres : Nombre de tournées (int)");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @FXML
     private void get_R4(ActionEvent actionEvent) throws SQLException, NullPointerException, IOException {
-        hide_input();
         EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
 
         Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(Integer.parseInt(input_int.getText()));
@@ -198,8 +201,4 @@ public class MainController {
     }
 
 
-    private void hide_input() {
-        Stage inputStage = (Stage) userPanel.getScene().getWindow();
-        inputStage.hide();
-    }
 }
