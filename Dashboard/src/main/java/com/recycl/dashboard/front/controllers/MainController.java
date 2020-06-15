@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public class MainController {
     private Window owner;
 
-    @FXML
     private void initialize() {
         MasterDetailPane pane = new MasterDetailPane();
         owner = pane.getScene().getWindow();
