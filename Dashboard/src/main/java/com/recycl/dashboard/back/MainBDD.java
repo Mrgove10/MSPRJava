@@ -168,30 +168,55 @@ public class MainBDD {
         ArrayList<DemandeEnlevement> listDemandes = demandeEnlevementDAO.GetByDateEnlevement("2017-06-05", "2019-06-03");
 
         DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
+        DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(DAOConnection.ConnectDb());
 
-        ArrayList<Dechet> listDechetsCat = new ArrayList<Dechet>();
+        ArrayList<DemandeEnlevement> demandesSite = new ArrayList<>();
         for (DemandeEnlevement entry : listDemandes) {
             if (entry.getTournee().getId() != 0){
-                if (entry.getTournee().getCamion().getSite().getNom().equals("Site Paris")) {
-                    for (Dechet dechet : dechetDAO.GetDechetsByDemande(entry.getId())) {
-                        if (dechet.getType().equals("Plastique")) {
-                            listDechetsCat.add(dechet);
-                        }
-                    }
+                if (entry.getTournee().getCamion().getSite().getNom().equals("Site Paris")){
+                    demandesSite.add(entry);
                 }
             }
 
         }
 
-        System.out.println("Pour la période de \"2017-06-05\" à \"2019-06-03\", du site \"Paris\", il y a \"" + listDechetsCat.size() + "\" déchet(s) de type \"Plastique\"");
+        Map<Integer, Integer> map = detailDemandeDechetDAO.GetDechetsAndQuantity(demandesSite);
+
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            Dechet dechet = dechetDAO.GetById(entry.getKey());
+            if (dechet.getType().equals("Papier")){
+                System.out.println("Pour la période de \"2017-06-05\" à \"2019-06-03\", du site \"Paris\", il y a \"" + entry.getValue() + "\" déchet(s) de type \"Plastique\"");
+            }
+        }
 
     }
 
-    private void Request8() {
+    private void Request8() throws SQLException {
         // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national
         System.out.println("-------------------- REQUEST 8 --------------------");
         System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national");
+        DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+        ArrayList<DemandeEnlevement> listDemandes = demandeEnlevementDAO.GetByDateEnlevement("2017-06-05", "2019-06-03");
 
+        DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
+        DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(DAOConnection.ConnectDb());
+
+        ArrayList<DemandeEnlevement> demandesSites = new ArrayList<>();
+        for (DemandeEnlevement entry : listDemandes) {
+            if (entry.getTournee().getId() != 0){
+                demandesSites.add(entry);
+            }
+
+        }
+
+        Map<Integer, Integer> map = detailDemandeDechetDAO.GetDechetsAndQuantity(demandesSites);
+
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            Dechet dechet = dechetDAO.GetById(entry.getKey());
+            if (dechet.getType().equals("Papier")){
+                System.out.println("Pour la période de \"2017-06-05\" à \"2019-06-03\", il y a \"" + entry.getValue() + "\" déchet(s) de type \"Plastique\"");
+            }
+        }
     }
 
     private void Request9() {
