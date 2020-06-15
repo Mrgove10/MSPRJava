@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DetailDemandeDechetDAO {
     protected Connection connect = null;
@@ -22,7 +24,7 @@ public class DetailDemandeDechetDAO {
 
         try {
             String query = "SELECT * " +
-                    "FROM Detail_Demande_Dechet " +
+                    "FROM MSPR_DETAIL_DEMANDE_DECHET " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -46,13 +48,40 @@ public class DetailDemandeDechetDAO {
         } catch (SQLException e) {
             return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return detailDemandeDechet;
-                }
-            } catch (SQLException ignore) {
-                return null;
+            if (this.connect != null) {
+                return detailDemandeDechet;
+            }
+        }
+
+        return null;
+    }
+
+    public ArrayList<Integer> GetDechetsId(int idDemande){
+        ArrayList<Integer> listDechets = new ArrayList<>();
+        DetailDemandeDAO detailDemandeDAO = new DetailDemandeDAO(connect);
+        int idDetailDemande = detailDemandeDAO.GetIdByDemande(idDemande);
+
+        try {
+            String query = "SELECT * " +
+                    "FROM MSPR_DETAIL_DEMANDE_DECHET " +
+                    "WHERE ID_DETAIL_DEMANDE = ?";
+            PreparedStatement ps = this.connect.prepareStatement(query);
+            ps.setInt(1, idDetailDemande);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                listDechets.add(rs.getInt("ID_DECHET"));
+            }
+
+
+            rs.close();
+
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            if (this.connect != null) {
+                return listDechets;
             }
         }
 

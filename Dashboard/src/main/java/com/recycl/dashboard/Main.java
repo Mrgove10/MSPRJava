@@ -10,10 +10,11 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Objects;
 
 public class Main extends Application {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, ParseException {
         MainBDD bdd = new MainBDD();
         bdd.startBDD();
         //launch(args);

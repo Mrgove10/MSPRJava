@@ -8,9 +8,9 @@ public class Dechet {
     private float TarifForfait;
     private float TarifLot;
     private int NbLot;
-    private Danger Danger;
+    private int Danger;
 
-    public Dechet(int id, String type, String unite, float limiteForfait, float tarifForfait, float tarifLot, int nbLot, Danger danger) {
+    public Dechet(int id, String type, String unite, float limiteForfait, float tarifForfait, float tarifLot, int nbLot, int danger) {
         Id = id;
         Type = type;
         Unite = unite;
@@ -80,11 +80,11 @@ public class Dechet {
         NbLot = nbLot;
     }
 
-    public Danger getDanger() {
+    public int getDanger() {
         return Danger;
     }
 
-    public void setDanger(Danger danger) {
+    public void setDanger(int danger) {
         Danger = danger;
     }
 }

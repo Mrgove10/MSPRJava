@@ -7,6 +7,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DechetDAO {
     protected Connection connect = null;
@@ -21,7 +25,7 @@ public class DechetDAO {
 
         try {
             String query = "SELECT * " +
-                    "FROM Dechet " +
+                    "FROM MSPR_DECHET " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -30,30 +34,96 @@ public class DechetDAO {
 
             while(rs.next()){
                 dechet.setId(rs.getInt("ID"));
-                dechet.setType(rs.getString("TYPE"));
-                dechet.setUnite(rs.getString("UNITE"));
+                dechet.setType(rs.getString("TYPE_DECHET"));
+                dechet.setUnite(rs.getString("UNITE_DECHET"));
                 dechet.setLimiteForfait(rs.getFloat("LIMITE_FORFAIT"));
                 dechet.setTarifForfait(rs.getFloat("TARIF_FORFAIT"));
                 dechet.setTarifLot(rs.getFloat("TARIF_LOT"));
                 dechet.setNbLot(rs.getInt("NB_LOT"));
-                idDanger = rs.getInt("ID_DANGER");
+                dechet.setDanger(rs.getInt("NIV_DANGER"));
             }
-
-            DangerDAO dangerDAO = new DangerDAO(connect);
-            dechet.setDanger(dangerDAO.GetById(idDanger));
 
             rs.close();
 
         } catch (SQLException e) {
             return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return dechet;
-                }
-            } catch (SQLException ignore) {
-                return null;
+            if (this.connect != null) {
+                return dechet;
+            }
+        }
+
+        return null;
+    }
+
+    public Map<String, Integer> GetTypesDechetsByDemande(int idDemande){
+        Map<String, Integer> listTypeDechets = new HashMap<>();
+        DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(connect);
+        var listId = String.join(",", (CharSequence) detailDemandeDechetDAO.GetDechetsId(idDemande));
+
+        try {
+            String query = "SELECT TYPE_DECHET, COUNT(*) AS COUNT_TYPE " +
+                            "FROM MSPR_DECHET " +
+                            "WHERE ID IN (?) " +
+                            "GROUP BY TYPE_DECHET HAVING COUNT(*) > 0";
+            PreparedStatement ps = this.connect.prepareStatement(query);
+            ps.setString(1, listId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                listTypeDechets.put(rs.getString("TYPE_DECHET"), rs.getInt("COUNT_TYPE"));
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            if (this.connect != null) {
+                return listTypeDechets;
+            }
+        }
+
+        return null;
+    }
+
+    public ArrayList<Dechet> GetDechetsByDemande(int idDemande){
+        ArrayList<Dechet> listDechets = new ArrayList<>();
+        DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(connect);
+        var listId = String.join(",", (CharSequence) detailDemandeDechetDAO.GetDechetsId(idDemande));
+
+        try {
+            String query = "SELECT * " +
+                            "FROM MSPR_DECHET " +
+                            "WHERE ID IN (?) ";
+            PreparedStatement ps = this.connect.prepareStatement(query);
+            ps.setString(1, listId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                Dechet dechet = new Dechet();
+
+                dechet.setId(rs.getInt("ID"));
+                dechet.setType(rs.getString("TYPE_DECHET"));
+                dechet.setUnite(rs.getString("UNITE_DECHET"));
+                dechet.setLimiteForfait(rs.getFloat("LIMITE_FORFAIT"));
+                dechet.setTarifForfait(rs.getFloat("TARIF_FORFAIT"));
+                dechet.setTarifLot(rs.getFloat("TARIF_LOT"));
+                dechet.setNbLot(rs.getInt("NB_LOT"));
+                dechet.setDanger(rs.getInt("NIV_DANGER"));
+
+                listDechets.add(dechet);
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            if (this.connect != null) {
+                return listDechets;
             }
         }
 

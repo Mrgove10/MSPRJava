@@ -1,11 +1,13 @@
 package com.recycl.dashboard.back.DAO;
 
+import com.recycl.dashboard.back.Beans.DemandeEnlevement;
 import com.recycl.dashboard.back.Beans.DetailDemande;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class DetailDemandeDAO {
     protected Connection connect = null;
@@ -20,7 +22,7 @@ public class DetailDemandeDAO {
 
         try {
             String query = "SELECT * " +
-                    "FROM Detail_Demande " +
+                    "FROM MSPR_DETAIL_DEMANDE " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -41,13 +43,37 @@ public class DetailDemandeDAO {
         } catch (SQLException e) {
             return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return detailDemande;
-                }
-            } catch (SQLException ignore) {
-                return null;
+            if (this.connect != null) {
+                return detailDemande;
+            }
+        }
+
+        return null;
+    }
+
+    public Integer GetIdByDemande(int idDemande){
+        int idDetailDemande = -1;
+
+        try {
+            String query = "SELECT * " +
+                    "FROM MSPR_DETAIL_DEMANDE " +
+                    "WHERE ID_DEMANDE_ENLEVEMENT = ?";
+            PreparedStatement ps = this.connect.prepareStatement(query);
+            ps.setInt(1, idDemande);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                idDetailDemande = rs.getInt("ID");
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            if (this.connect != null) {
+                return idDetailDemande;
             }
         }
 

@@ -22,7 +22,7 @@ public class DechetDepotDAO {
 
         try {
             String query = "SELECT * " +
-                    "FROM Dechet_Depot " +
+                    "FROM MSPR_DECHET_DEPOT " +
                     "WHERE ID = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, id);
@@ -46,13 +46,8 @@ public class DechetDepotDAO {
         } catch (SQLException e) {
             return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return dechetDepot;
-                }
-            } catch (SQLException ignore) {
-                return null;
+            if (this.connect != null) {
+                return dechetDepot;
             }
         }
 

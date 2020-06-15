@@ -1,11 +1,14 @@
 package com.recycl.dashboard.back.DAO;
 
+import com.recycl.dashboard.back.Beans.Employe;
 import com.recycl.dashboard.back.Beans.Tournee;
+import com.recycl.dashboard.back.Beans.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class TourneeDAO {
     protected Connection connect = null;
@@ -46,16 +49,13 @@ public class TourneeDAO {
         } catch (SQLException e) {
             return null;
         } finally {
-            try {
-                if (this.connect != null) {
-                    this.connect.close();
-                    return tournee;
-                }
-            } catch (SQLException ignore) {
-                return null;
+            if (this.connect != null) {
+                return tournee;
             }
         }
 
         return null;
     }
+
+
 }
