@@ -28,38 +28,49 @@ public class MainController {
 
     @FXML
     protected void handleButtonR1(ActionEvent actionEvent) throws SQLException, NullPointerException {
-        // Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent
-        System.out.println("-------------------- REQUEST 1 --------------------");
-        System.out.println("// Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent");
-        System.out.println("-- Paramètres : String sous format (yyyy-MM-dd) => 2019-06-05");
+        try {
+            // Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent
+            System.out.println("-------------------- REQUEST 1 --------------------");
+            System.out.println("// Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent");
+            System.out.println("-- Paramètres : String sous format (yyyy-MM-dd) => 2019-06-05");
 
-        DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-        ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2019-06-05");
-        for (DemandeEnlevement demande : demandes) {
-            System.out.println("Demande N° : " + demande.getNumero());
+            DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+            ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2019-06-05");
+            if (demandes.isEmpty()) {
+                AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "list vide", "Il n'y a aucune demande d'enleveùment pour cette date");
+            } else {
+                for (DemandeEnlevement demande : demandes) {
+                    System.out.println("Demande N° : " + demande.getNumero());
+                }
+            }
+        } catch (Exception ex) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
         }
     }
 
     @FXML
     protected void handleButtonR2(ActionEvent actionEvent) throws SQLException, NullPointerException {
-        // Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet
-        System.out.println("-------------------- REQUEST 2 --------------------");
-        System.out.println("// Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet");
-        System.out.println("-- Paramètres : Numéro de la demande (int)");
+        try {
+            // Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet
+            System.out.println("-------------------- REQUEST 2 --------------------");
+            System.out.println("// Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet");
+            System.out.println("-- Paramètres : Numéro de la demande (int)");
 
-        DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-        DemandeEnlevement demande = demandeEnlevementDAO.GetByNumero(0);
-        
-        DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
-        Map<String, Integer> listDechets = dechetDAO.GetTypesDechetsByDemande(demande.getId());
+            DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+            DemandeEnlevement demande = demandeEnlevementDAO.GetByNumero(0);
 
-        System.out.println("Raison sociale entreprise : " + demande.getEntreprise().getRaisonSociale());
-        System.out.println("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye() + ", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
+            DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
+            Map<String, Integer> listDechets = dechetDAO.GetTypesDechetsByDemande(demande.getId());
 
-        for (Map.Entry<String, Integer> entry : listDechets.entrySet()) {
-            System.out.println("Type : " + entry.getKey() + ", Value : " + entry.getValue());
+            System.out.println("Raison sociale entreprise : " + demande.getEntreprise().getRaisonSociale());
+            System.out.println("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye() + ", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
+
+            for (Map.Entry<String, Integer> entry : listDechets.entrySet()) {
+                System.out.println("Type : " + entry.getKey() + ", Value : " + entry.getValue());
+            }
+        } catch (Exception ex) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
         }
-
     }
 
     @FXML
