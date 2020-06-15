@@ -54,7 +54,7 @@ public class LoginController {
         //if not empty and authenticator is good
 
         UserDAO user = new UserDAO(DAOConnection.ConnectDb());
-        
+
 //        User created_user = new User();
 //        created_user.setUsername("azer");
 //        created_user.setPassword("azer");
