@@ -33,7 +33,6 @@ public class MainController {
     private Window owner;
     private ScreenController screenController;
 
-
     @FXML
     private Pane secondtest;
     @FXML
@@ -43,8 +42,8 @@ public class MainController {
 
     public void initialize() {
         System.out.println("coucouille");
+        owner = buttonPane.getScene().getWindow();
         //    Scene scene = buttonPane.getScene();
-        //   owner = buttonPane.getScene().getWindow();
         //   screenController = new ScreenController(scene);
         // screenController.addScreen("testPane", testPane);
         //screenController.addScreen("buttonPane", buttonPane);
@@ -114,13 +113,14 @@ public class MainController {
     @FXML
     protected void handleButtonR4(ActionEvent actionEvent) throws SQLException, NullPointerException {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("R2_user_input.fxml")));
-            Scene scene = new Scene(root, 500, 200);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.show();
-
-        } catch(Exception e) {
+            secondtest.setVisible(true);
+            testPane.setVisible(false);
+            buttonPane.setVisible(false);
+            // Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées
+            System.out.println("-------------------- REQUEST 4 --------------------");
+            System.out.println("// Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées");
+            System.out.println("-- Paramètres : Nombre de tournées (int)");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
