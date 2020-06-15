@@ -56,14 +56,22 @@ public class MainBDD {
             DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
             DemandeEnlevement demande = demandeEnlevementDAO.GetById(1);
 
-            DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
-            Map<String, Integer> listDechets = dechetDAO.GetTypesDechetsByDemande(demande.getId());
+            ArrayList<DemandeEnlevement> demandes = new ArrayList<>();
+            demandes.add(demande);
+
+            DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(DAOConnection.ConnectDb());
+            Map<Integer, Integer> listDechets = detailDemandeDechetDAO.GetDechetsAndQuantity(demandes);
 
             System.out.println("Raison sociale entreprise : " + demande.getEntreprise().getRaisonSociale());
             System.out.println("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye().getNom() + " " + demande.getTournee().getEmploye().getPrenom() +", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
+            DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
 
-            for (Map.Entry<String, Integer> entry : listDechets.entrySet()) {
-                System.out.println("Type : " + entry.getKey() + ", Value : " + entry.getValue());
+            System.out.println("Pour cette demande, voici les déchets récupérés :");
+            for (Map.Entry<Integer, Integer> entry : listDechets.entrySet()) {
+                int idDechet = entry.getKey();
+                int quantite = entry.getValue();
+                Dechet dechet = dechetDAO.GetById(idDechet);
+                System.out.println("Pour le déchet : "+dechet.getType()+", la quantité est de : "+quantite);
             }
         }catch (NullPointerException exception){
 
@@ -71,11 +79,26 @@ public class MainBDD {
 
     }
 
-    private void Request3() {
+    private void Request3() throws SQLException {
         // Afficher la quantité totale récupérée par type de déchet pour un mois/année donné
         System.out.println("-------------------- REQUEST 3 --------------------");
         System.out.println("// Afficher la quantité totale récupérée par type de déchet pour un mois/année donné");
-        System.out.println("-- Paramètres : Mois (int) & Année (int)");
+        System.out.println("-- Paramètres : Mois (int) && Année (int)");
+        // get demandes avec le mois && l'année
+        DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+        ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByMonthYear(9,2018);
+
+        // detail_demande_dechet => pour chaque id_dechet, concat quantite
+        DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(DAOConnection.ConnectDb());
+        Map<Integer, Integer> list = detailDemandeDechetDAO.GetDechetsAndQuantity(demandes);
+        DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
+        System.out.println("Pour le mois et l'année 09/2018, voici les déchets récupérés :");
+        for (Map.Entry<Integer, Integer> entry : list.entrySet()) {
+            int idDechet = entry.getKey();
+            int quantite = entry.getValue();
+            Dechet dechet = dechetDAO.GetById(idDechet);
+            System.out.println("Pour le déchet : "+dechet.getType()+", la quantité est de : "+quantite);
+        }
     }
 
     private void Request4() throws SQLException, NullPointerException {

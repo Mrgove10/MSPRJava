@@ -52,24 +52,26 @@ public class DechetDAO {
     public Map<String, Integer> GetTypesDechetsByDemande(int idDemande){
         Map<String, Integer> listTypeDechets = new HashMap<>();
         DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(connect);
-        List<Integer> temp = detailDemandeDechetDAO.GetDechetsId(idDemande);
-        String listId = temp.stream().map(Object::toString).collect(Collectors.joining(","));
+        List<Integer> listId = detailDemandeDechetDAO.GetDechetsId(idDemande);
 
         try {
-            String query = "SELECT TYPE_DECHET, COUNT(*) AS COUNT_TYPE " +
-                            "FROM MSPR_DECHET " +
-                            "WHERE ID IN (?) " +
-                            "GROUP BY TYPE_DECHET HAVING COUNT(*) > 0";
-            PreparedStatement ps = this.connect.prepareStatement(query);
-            ps.setString(1, listId);
+            for (int id:listId) {
+                String query = "SELECT TYPE_DECHET, COUNT(*) AS COUNT_TYPE " +
+                                "FROM MSPR_DECHET " +
+                                "WHERE ID = ? " +
+                                "GROUP BY TYPE_DECHET HAVING COUNT(*) > 0";
+                PreparedStatement ps = this.connect.prepareStatement(query);
+                ps.setInt(1, id);
 
-            ResultSet rs = ps.executeQuery();
+                ResultSet rs = ps.executeQuery();
 
-            while(rs.next()){
-                listTypeDechets.put(rs.getString("TYPE_DECHET"), rs.getInt("COUNT_TYPE"));
+                while(rs.next()){
+                    listTypeDechets.put(rs.getString("TYPE_DECHET"), rs.getInt("COUNT_TYPE"));
+                }
+
+                rs.close();
             }
 
-            rs.close();
 
         } catch (SQLException e) {
             return null;
@@ -86,7 +88,7 @@ public class DechetDAO {
         ArrayList<Dechet> listDechets = new ArrayList<>();
         DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(connect);
         List<Integer> listId = detailDemandeDechetDAO.GetDechetsId(idDemande);
-//        String listId = temp.stream().map(Object::toString).collect(Collectors.joining(","));
+
         try {
             for (int id:listId) {
                 String query = "SELECT * " +
