@@ -59,7 +59,7 @@ public class DechetDAO {
     public Map<String, Integer> GetTypesDechetsByDemande(int idDemande){
         Map<String, Integer> listTypeDechets = new HashMap<>();
         DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(connect);
-        var listId = String.join(",", (CharSequence) detailDemandeDechetDAO.GetDechetsId(idDemande));
+        String listId = String.join(",", (CharSequence) detailDemandeDechetDAO.GetDechetsId(idDemande));
 
         try {
             String query = "SELECT TYPE_DECHET, COUNT(*) AS COUNT_TYPE " +
@@ -91,7 +91,7 @@ public class DechetDAO {
     public ArrayList<Dechet> GetDechetsByDemande(int idDemande){
         ArrayList<Dechet> listDechets = new ArrayList<>();
         DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(connect);
-        var listId = String.join(",", (CharSequence) detailDemandeDechetDAO.GetDechetsId(idDemande));
+        String listId = String.join(",", (CharSequence) detailDemandeDechetDAO.GetDechetsId(idDemande));
 
         try {
             String query = "SELECT * " +

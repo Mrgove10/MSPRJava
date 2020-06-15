@@ -38,8 +38,8 @@ public class MainBDD {
 
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2019-06-05");
-        for (DemandeEnlevement demande : demandes) {
-            System.out.println("Demande N° : " + demande.getNumero());
+        for (DemandeEnlevement demande:demandes) {
+            System.out.println("Demande N° : "+demande.getNumero());
         }
     }
 
@@ -50,20 +50,20 @@ public class MainBDD {
         System.out.println("-- Paramètres : Numéro de la demande (int)");
 
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-        DemandeEnlevement demande = demandeEnlevementDAO.GetByNumero(0);
+        DemandeEnlevementDAO demande = demandeEnlevementDAO.GetByNumero(0);
 
         DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
-        Map<String, Integer> listDechets = dechetDAO.GetTypesDechetsByDemande(demande.getId());
+        DechetDAO listDechets = dechetDAO.GetTypesDechetsByDemande(demande.getId());
 
-        System.out.println("Raison sociale entreprise : " + demande.getEntreprise().getRaisonSociale());
-        System.out.println("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye() + ", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
+        System.out.println("Raison sociale entreprise : "+demande.getEntreprise().getRaisonSociale());
+        System.out.println("Tournée du "+demande.getTournee().getDate() + ", par " +demande.getTournee().getEmploye() + ", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
 
         for (Map.Entry<String, Integer> entry : listDechets.entrySet()) {
-            System.out.println("Type : " + entry.getKey() + ", Value : " + entry.getValue());
+            System.out.println("Type : "+entry.getKey()+", Value : "+entry.getValue());
         }
     }
 
-    private void Request3() {
+    private void Request3(){
         // Afficher la quantité totale récupérée par type de déchet pour un mois/année donné
         System.out.println("-------------------- REQUEST 3 --------------------");
         System.out.println("// Afficher la quantité totale récupérée par type de déchet pour un mois/année donné");
@@ -77,22 +77,23 @@ public class MainBDD {
         System.out.println("-- Paramètres : Nombre de tournées (int)");
 
         EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
-        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(4);
-        for (Map.Entry<Employe, Integer> entry : listEmployes.entrySet()) {
+        listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(4);
+        for (Map.Entry<Employe, Integer> entry : listEmployes.entrySet())
+        {
             Employe employe = entry.getKey();
             int nbTournee = entry.getValue();
-            System.out.println("Employe : " + employe.getNom() + " " + employe.getPrenom() + " = " + nbTournee + " tournée(s)");
+            System.out.println("Employe : "+employe.getNom()+" "+employe.getPrenom()+" = "+nbTournee+" tournée(s)");
         }
     }
 
-    private void Request5() {
+    private void Request5(){
         // Afficher les informations de l'entreprise qui a réalisé plus de demandes que l'entreprise Formalys (ou une autre entreprise)
         System.out.println("-------------------- REQUEST 5 --------------------");
         System.out.println("// Afficher les informations de l'entreprise qui a réalisé plus de demandes que l'entreprise Formalys (ou une autre entreprise)");
         System.out.println("-- Paramètres : Entreprise (string)");
     }
 
-    private void Request6() {
+    private void Request6(){
         // Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée
         System.out.println("-------------------- REQUEST 6 --------------------");
         System.out.println("// Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée");
@@ -106,33 +107,33 @@ public class MainBDD {
         System.out.println("-- Paramètres : Type de déchet (string), période avant (String), période après (String), Site (string)");
 
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-        ArrayList<DemandeEnlevement> listDemandes = demandeEnlevementDAO.GetByDateEnlevement("2019-06-05", "2020-06-03");
+        var listDemandes = demandeEnlevementDAO.GetByDateEnlevement("2019-06-05", "2020-06-03");
 
-        DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
+        var dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
 
-        ArrayList<Dechet> listDechetsCat = new ArrayList<Dechet>();
+        var listDechetsCat = new ArrayList<Dechet>();
         for (DemandeEnlevement entry : listDemandes) {
-            if (entry.getTournee().getCamion().getSite().getNom().equals("Paris")) {
-                for (Dechet dechet : dechetDAO.GetDechetsByDemande(entry.getId())) {
-                    if (dechet.getType().equals("Plastique")) {
+            if (entry.getTournee().getCamion().getSite().getNom().equals("Paris")){
+                for (Dechet dechet:dechetDAO.GetDechetsByDemande(entry.getId())) {
+                    if (dechet.getType().equals("Plastique")){
                         listDechetsCat.add(dechet);
                     }
                 }
             }
         }
 
-        System.out.println("Pour la période de \"2019-06-05\" à \"2020-06-03\", du site \"Paris\", il y a \"" + listDechetsCat.size() + "\" déchets de type \"Plastique\"");
+        System.out.println("Pour la période de \"2019-06-05\" à \"2020-06-03\", du site \"Paris\", il y a \""+listDechetsCat.size()+"\" déchets de type \"Plastique\"");
 
     }
 
-    private void Request8() {
+    private void Request8(){
         // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national
         System.out.println("-------------------- REQUEST 8 --------------------");
         System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national");
 
     }
 
-    private void Request9() {
+    private void Request9(){
         // Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée
         System.out.println("-------------------- REQUEST 9 --------------------");
         System.out.println("// Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée");
@@ -143,7 +144,9 @@ public class MainBDD {
     }
 
 
-    private void UserMethods() {
+
+
+    private void UserMethods(){
 
 //        UserDAO userDAO = new UserDAO(DAOConnection.ConnectDb());
 //        User user = new User();
