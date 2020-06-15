@@ -42,7 +42,7 @@ public class MainController {
 
     public void initialize() {
         System.out.println("coucouille");
-        owner = buttonPane.getScene().getWindow();
+      //  owner = buttonPane.getScene().getWindow();
         //    Scene scene = buttonPane.getScene();
         //   screenController = new ScreenController(scene);
         // screenController.addScreen("testPane", testPane);
@@ -66,14 +66,14 @@ public class MainController {
             DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
             ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2019-06-05");
             if (demandes.isEmpty()) {
-                AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "list vide", "Il n'y a aucune demande d'enlevement pour cette date");
+        //        AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "list vide", "Il n'y a aucune demande d'enlevement pour cette date");
             } else {
                 for (DemandeEnlevement demande : demandes) {
                     System.out.println("Demande N° : " + demande.getNumero());
                 }
             }
         } catch (Exception ex) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
+          //  AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
         }
     }
 
@@ -98,7 +98,7 @@ public class MainController {
                 System.out.println("Type : " + entry.getKey() + ", Value : " + entry.getValue());
             }
         } catch (Exception ex) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
+       //     AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
         }
     }
 
