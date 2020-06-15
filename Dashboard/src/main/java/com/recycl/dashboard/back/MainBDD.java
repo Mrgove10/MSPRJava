@@ -88,7 +88,8 @@ public class MainBDD {
         Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(10).entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));;
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
         for (Map.Entry<Employe, Integer> entry : listEmployes.entrySet()) {
             Employe employe = entry.getKey();
             int nbTournee = entry.getValue();
@@ -101,17 +102,16 @@ public class MainBDD {
         System.out.println("-------------------- REQUEST 5 --------------------");
         System.out.println("// Afficher les informations de l'entreprise qui a réalisé plus de demandes que l'entreprise Formalys (ou une autre entreprise)");
         System.out.println("-- Paramètres : Entreprise (string)");
-        // get entreprise
+
         EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
         Entreprise entreprise = entrepriseDAO.GetById(1);
-        // get nombre de demande de cette entreprise
+
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         Integer numberDemande = demandeEnlevementDAO.GetNumberEnlevement(entreprise);
 
         System.out.println("Vous avez choisi l'entreprise : "+entreprise.getRaisonSociale()+" qui a réalisé "+numberDemande+" demande(s)");
-
         System.out.println("Voici les entreprises qui ont réalisé plus de demandes :");
-        // get entreprises where nombre demande > Formalys
+
         Map<Integer, Integer> map = demandeEnlevementDAO.GetNumberEnlevementGreaterThan(numberDemande).entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
@@ -124,11 +124,15 @@ public class MainBDD {
 
     }
 
-    private void Request6() {
+    private void Request6() throws SQLException {
         // Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée
         System.out.println("-------------------- REQUEST 6 --------------------");
         System.out.println("// Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée");
-
+        DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+        ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesNotInTournee();
+        for (DemandeEnlevement demande : demandes) {
+            System.out.println("Demande N° : " + demande.getId());
+        }
     }
 
     private void Request7() throws SQLException, NullPointerException {
@@ -138,7 +142,7 @@ public class MainBDD {
         System.out.println("-- Paramètres : Type de déchet (string), période avant (String), période après (String), Site (string)");
 
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-        ArrayList<DemandeEnlevement> listDemandes = demandeEnlevementDAO.GetByDateEnlevement("2019-06-05", "2020-06-03");
+        ArrayList<DemandeEnlevement> listDemandes = demandeEnlevementDAO.GetByDateEnlevement("2017-06-05", "2019-06-03");
 
         DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
 
@@ -153,7 +157,7 @@ public class MainBDD {
             }
         }
 
-        System.out.println("Pour la période de \"2019-06-05\" à \"2020-06-03\", du site \"Paris\", il y a \"" + listDechetsCat.size() + "\" déchets de type \"Plastique\"");
+        System.out.println("Pour la période de \"2017-06-05\" à \"2019-06-03\", du site \"Paris\", il y a \"" + listDechetsCat.size() + "\" déchets de type \"Plastique\"");
 
     }
 

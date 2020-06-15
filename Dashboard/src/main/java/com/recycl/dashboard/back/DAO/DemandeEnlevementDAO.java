@@ -256,4 +256,50 @@ public class DemandeEnlevementDAO {
 
         return null;
     }
+
+    public ArrayList<DemandeEnlevement> GetDemandesNotInTournee(){
+        ArrayList<DemandeEnlevement> listDemandes = new ArrayList<>();
+
+        try {
+            String query = "SELECT * " +
+                            "FROM MSPR_DEMANDE_ENLEVEMENT " +
+                            "WHERE ID_TOURNEE IS NULL";
+            PreparedStatement ps = this.connect.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                DemandeEnlevement demandeEnlevement = new DemandeEnlevement();
+                demandeEnlevement.setId(rs.getInt("ID"));
+                demandeEnlevement.setDateDemande(rs.getDate("DATE_DEMANDE"));
+                demandeEnlevement.setDateEnlevement(rs.getDate("DATE_ENLEVEMENT"));
+
+                int entreprise = rs.getInt("ID_ENTREPRISE");
+                EntrepriseDAO entrepriseDAO = new EntrepriseDAO(connect);
+                demandeEnlevement.setEntreprise(entrepriseDAO.GetById(entreprise));
+
+                int tournee = rs.getInt("ID_TOURNEE");
+                TourneeDAO tourneeDAO = new TourneeDAO(connect);
+                demandeEnlevement.setTournee(tourneeDAO.GetById(tournee));
+
+                listDemandes.add(demandeEnlevement);
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            try {
+                if (this.connect != null) {
+                    this.connect.close();
+                    return listDemandes;
+                }
+            } catch (SQLException ignore) {
+                return null;
+            }
+        }
+
+        return null;
+    }
 }
