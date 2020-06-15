@@ -7,7 +7,10 @@ import com.recycl.dashboard.back.DAO.*;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MainBDD {
     public void startBDD() throws SQLException, ParseException {
@@ -82,7 +85,10 @@ public class MainBDD {
         System.out.println("-- Paramètres : Nombre de tournées (int)");
 
         EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
-        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(10);
+        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(10).entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));;
         for (Map.Entry<Employe, Integer> entry : listEmployes.entrySet()) {
             Employe employe = entry.getKey();
             int nbTournee = entry.getValue();
@@ -90,11 +96,32 @@ public class MainBDD {
         }
     }
 
-    private void Request5() {
+    private void Request5() throws SQLException, NullPointerException {
         // Afficher les informations de l'entreprise qui a réalisé plus de demandes que l'entreprise Formalys (ou une autre entreprise)
         System.out.println("-------------------- REQUEST 5 --------------------");
         System.out.println("// Afficher les informations de l'entreprise qui a réalisé plus de demandes que l'entreprise Formalys (ou une autre entreprise)");
         System.out.println("-- Paramètres : Entreprise (string)");
+        // get entreprise
+        EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
+        Entreprise entreprise = entrepriseDAO.GetById(1);
+        // get nombre de demande de cette entreprise
+        DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+        Integer numberDemande = demandeEnlevementDAO.GetNumberEnlevement(entreprise);
+
+        System.out.println("Vous avez choisi l'entreprise : "+entreprise.getRaisonSociale()+" qui a réalisé "+numberDemande+" demande(s)");
+
+        System.out.println("Voici les entreprises qui ont réalisé plus de demandes :");
+        // get entreprises where nombre demande > Formalys
+        Map<Integer, Integer> map = demandeEnlevementDAO.GetNumberEnlevementGreaterThan(numberDemande).entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            Entreprise tempEntreprise = entrepriseDAO.GetById(entry.getKey());
+            System.out.println("L'entreprise : "+tempEntreprise.getRaisonSociale()+" a réalisé "+entry.getValue()+" demande(s)");
+        }
+
     }
 
     private void Request6() {

@@ -3,12 +3,12 @@ package com.recycl.dashboard.back.Beans;
 public class Entreprise {
     private int Id;
     private Adresse Adresse;
-    private int Siret;
+    private long Siret;
     private String RaisonSociale;
     private String Tel;
     private String NomContact;
 
-    public Entreprise(int id, Adresse adresse, int siret, String raisonSociale, String tel, String nomContact) {
+    public Entreprise(int id, Adresse adresse, long siret, String raisonSociale, String tel, String nomContact) {
         Id = id;
         Adresse = adresse;
         Siret = siret;
@@ -36,11 +36,11 @@ public class Entreprise {
         Adresse = adresse;
     }
 
-    public int getSiret() {
+    public long getSiret() {
         return Siret;
     }
 
-    public void setSiret(int siret) {
+    public void setSiret(long siret) {
         Siret = siret;
     }
 
