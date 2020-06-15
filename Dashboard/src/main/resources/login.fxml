@@ -22,7 +22,7 @@
    </padding>
    <children>
       <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-      <Button fx:id="submitButton" onAction="#handleSubmitButtonAction" mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+      <Button fx:id="submitButton" onAction="#handleSubmitButtonAction" mnemonicParsing="false" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
       <TextField fx:id="loginField" GridPane.columnIndex="1"/>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Username"/>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password" GridPane.rowIndex="1"/>

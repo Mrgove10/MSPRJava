@@ -25,7 +25,7 @@ public class Main extends Application {
         try {
             primaryStage.setTitle("RECYCL Dashboard");
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("login.fxml")));
-            Scene scene = new Scene(root, 320, 240);
+            Scene scene = new Scene(root, 400, 250);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (Exception e) {
