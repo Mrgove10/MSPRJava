@@ -5,7 +5,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.recycl.dashboard.front.controllers.LoginController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900" prefWidth="1600"
+          xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.recycl.dashboard.front.controllers.LoginController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -19,11 +21,11 @@
       <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
    </padding>
    <children>
-      <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Button fx:id="submitButton" onAction="#handleSubmitButtonAction" mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <TextField fx:id="loginField" GridPane.columnIndex="1" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Username" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password" GridPane.rowIndex="1" />
-      <Pane fx:id="TestPane" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
+      <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+      <Button fx:id="submitButton" onAction="#handleSubmitButtonAction" mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+      <TextField fx:id="loginField" GridPane.columnIndex="1"/>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Username"/>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password" GridPane.rowIndex="1"/>
+      <Pane fx:id="TestPane" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2"/>
    </children>
 </GridPane>
