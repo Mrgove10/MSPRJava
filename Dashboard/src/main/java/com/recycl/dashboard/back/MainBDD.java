@@ -42,7 +42,7 @@ public class MainBDD {
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2017-06-05");
         for (DemandeEnlevement demande : demandes) {
-            System.out.println("Demande N° : " + demande.getNumero());
+            System.out.println("Demande N° : " + demande.getId());
         }
     }
 
@@ -54,13 +54,13 @@ public class MainBDD {
             System.out.println("-- Paramètres : Numéro de la demande (int)");
 
             DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-            DemandeEnlevement demande = demandeEnlevementDAO.GetByNumero(new Long("12345678900001"));
+            DemandeEnlevement demande = demandeEnlevementDAO.GetById(1);
 
             DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
             Map<String, Integer> listDechets = dechetDAO.GetTypesDechetsByDemande(demande.getId());
 
             System.out.println("Raison sociale entreprise : " + demande.getEntreprise().getRaisonSociale());
-            System.out.println("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye() + ", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
+            System.out.println("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye().getNom() + " " + demande.getTournee().getEmploye().getPrenom() +", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
 
             for (Map.Entry<String, Integer> entry : listDechets.entrySet()) {
                 System.out.println("Type : " + entry.getKey() + ", Value : " + entry.getValue());
@@ -148,16 +148,19 @@ public class MainBDD {
 
         ArrayList<Dechet> listDechetsCat = new ArrayList<Dechet>();
         for (DemandeEnlevement entry : listDemandes) {
-            if (entry.getTournee().getCamion().getSite().getNom().equals("Paris")) {
-                for (Dechet dechet : dechetDAO.GetDechetsByDemande(entry.getId())) {
-                    if (dechet.getType().equals("Plastique")) {
-                        listDechetsCat.add(dechet);
+            if (entry.getTournee().getId() != 0){
+                if (entry.getTournee().getCamion().getSite().getNom().equals("Site Paris")) {
+                    for (Dechet dechet : dechetDAO.GetDechetsByDemande(entry.getId())) {
+                        if (dechet.getType().equals("Plastique")) {
+                            listDechetsCat.add(dechet);
+                        }
                     }
                 }
             }
+
         }
 
-        System.out.println("Pour la période de \"2017-06-05\" à \"2019-06-03\", du site \"Paris\", il y a \"" + listDechetsCat.size() + "\" déchets de type \"Plastique\"");
+        System.out.println("Pour la période de \"2017-06-05\" à \"2019-06-03\", du site \"Paris\", il y a \"" + listDechetsCat.size() + "\" déchet(s) de type \"Plastique\"");
 
     }
 

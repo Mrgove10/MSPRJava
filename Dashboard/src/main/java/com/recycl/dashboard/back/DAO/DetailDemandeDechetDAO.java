@@ -1,6 +1,5 @@
 package com.recycl.dashboard.back.DAO;
 
-import com.recycl.dashboard.back.Beans.DetailDemande;
 import com.recycl.dashboard.back.Beans.DetailDemandeDechet;
 
 import java.sql.Connection;
@@ -19,7 +18,6 @@ public class DetailDemandeDechetDAO {
 
     public DetailDemandeDechet GetById(int id){
         DetailDemandeDechet detailDemandeDechet = new DetailDemandeDechet();
-        int idDetailDemande = -1;
         int idDechet = -1;
 
         try {
@@ -33,12 +31,8 @@ public class DetailDemandeDechetDAO {
 
             while(rs.next()){
                 detailDemandeDechet.setId(rs.getInt("ID"));
-                idDetailDemande = rs.getInt("ID_DETAIL_DEMANDE");
                 idDechet = rs.getInt("ID_DECHET");
             }
-
-            DetailDemandeDAO detailDemandeDAO = new DetailDemandeDAO(connect);
-            detailDemandeDechet.setDetailDemande(detailDemandeDAO.GetById(idDetailDemande));
 
             DechetDAO dechetDAO = new DechetDAO(connect);
             detailDemandeDechet.setDechet(dechetDAO.GetById(idDechet));
@@ -58,15 +52,13 @@ public class DetailDemandeDechetDAO {
 
     public List<Integer> GetDechetsId(int idDemande){
         List<Integer> listDechets = new ArrayList<>();
-        DetailDemandeDAO detailDemandeDAO = new DetailDemandeDAO(connect);
-        int idDetailDemande = detailDemandeDAO.GetIdByDemande(idDemande);
 
         try {
             String query = "SELECT * " +
                     "FROM MSPR_DETAIL_DEMANDE_DECHET " +
-                    "WHERE ID_DETAIL_DEMANDE = ?";
+                    "WHERE ID_DEMANDE_ENLEVEMENT = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
-            ps.setInt(1, idDetailDemande);
+            ps.setInt(1, idDemande);
 
             ResultSet rs = ps.executeQuery();
 

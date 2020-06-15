@@ -33,7 +33,6 @@ public class DemandeEnlevementDAO {
             while(rs.next()){
                 DemandeEnlevement demandeEnlevement = new DemandeEnlevement();
                 demandeEnlevement.setId(rs.getInt("ID"));
-                demandeEnlevement.setNumero(rs.getLong("NO_DEMANDE"));
                 demandeEnlevement.setDateDemande(rs.getDate("DATE_DEMANDE"));
                 demandeEnlevement.setDateEnlevement(rs.getDate("DATE_ENLEVEMENT"));
 
@@ -82,49 +81,6 @@ public class DemandeEnlevementDAO {
 
             while(rs.next()){
                 demandeEnlevement.setId(rs.getInt("ID"));
-                demandeEnlevement.setNumero(rs.getInt("NO"));
-                demandeEnlevement.setDateDemande(rs.getDate("DATE_DEMANDE"));
-                demandeEnlevement.setDateEnlevement(rs.getDate("DATE_ENLEVEMENT"));
-                idEntreprise = rs.getInt("ID_ENTREPRISE");
-                idTournee = rs.getInt("ID_TOURNEE");
-            }
-
-            EntrepriseDAO entrepriseDAO = new EntrepriseDAO(connect);
-            demandeEnlevement.setEntreprise(entrepriseDAO.GetById(idEntreprise));
-
-            TourneeDAO tourneeDAO = new TourneeDAO(connect);
-            demandeEnlevement.setTournee(tourneeDAO.GetById(idTournee));
-
-            rs.close();
-
-        } catch (SQLException e) {
-            return null;
-        } finally {
-            if (this.connect != null) {
-                return demandeEnlevement;
-            }
-        }
-
-        return null;
-    }
-
-    public DemandeEnlevement GetByNumero(long numero){
-        DemandeEnlevement demandeEnlevement = new DemandeEnlevement();
-        int idEntreprise = -1;
-        int idTournee = -1;
-
-        try {
-            String query = "SELECT * " +
-                    "FROM MSPR_DEMANDE_ENLEVEMENT " +
-                    "WHERE NO_DEMANDE = ?";
-            PreparedStatement ps = this.connect.prepareStatement(query);
-            ps.setLong(1, numero);
-
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()){
-                demandeEnlevement.setId(rs.getInt("ID"));
-                demandeEnlevement.setNumero(rs.getInt("NO"));
                 demandeEnlevement.setDateDemande(rs.getDate("DATE_DEMANDE"));
                 demandeEnlevement.setDateEnlevement(rs.getDate("DATE_ENLEVEMENT"));
                 idEntreprise = rs.getInt("ID_ENTREPRISE");
@@ -165,7 +121,6 @@ public class DemandeEnlevementDAO {
             while(rs.next()){
                 DemandeEnlevement demandeEnlevement = new DemandeEnlevement();
                 demandeEnlevement.setId(rs.getInt("ID"));
-                demandeEnlevement.setNumero(rs.getInt("NO_DEMANDE"));
                 demandeEnlevement.setDateDemande(rs.getDate("DATE_DEMANDE"));
                 demandeEnlevement.setDateEnlevement(rs.getDate("DATE_ENLEVEMENT"));
 

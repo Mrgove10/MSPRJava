@@ -2,16 +2,18 @@ package com.recycl.dashboard.back.Beans;
 
 public class DetailDemandeDechet {
     private int Id;
-    private DetailDemande DetailDemande;
+    private DemandeEnlevement DetailDemande;
     private Dechet Dechet;
+    private int Quantite;
 
-    public DetailDemandeDechet(int id, DetailDemande detailDemande, Dechet dechet) {
+    public DetailDemandeDechet() {
+    }
+
+    public DetailDemandeDechet(int id, DemandeEnlevement detailDemande, com.recycl.dashboard.back.Beans.Dechet dechet, int quantite) {
         Id = id;
         DetailDemande = detailDemande;
         Dechet = dechet;
-    }
-
-    public DetailDemandeDechet() {
+        Quantite = quantite;
     }
 
     public int getId() {
@@ -22,19 +24,27 @@ public class DetailDemandeDechet {
         Id = id;
     }
 
-    public DetailDemande getDetailDemande() {
+    public DemandeEnlevement getDetailDemande() {
         return DetailDemande;
     }
 
-    public void setDetailDemande(DetailDemande detailDemande) {
+    public void setDetailDemande(DemandeEnlevement detailDemande) {
         DetailDemande = detailDemande;
     }
 
-    public Dechet getDechet() {
+    public com.recycl.dashboard.back.Beans.Dechet getDechet() {
         return Dechet;
     }
 
-    public void setDechet(Dechet dechet) {
+    public void setDechet(com.recycl.dashboard.back.Beans.Dechet dechet) {
         Dechet = dechet;
+    }
+
+    public int getQuantite() {
+        return Quantite;
+    }
+
+    public void setQuantite(int quantite) {
+        Quantite = quantite;
     }
 }

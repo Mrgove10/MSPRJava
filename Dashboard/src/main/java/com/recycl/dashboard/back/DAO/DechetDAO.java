@@ -33,11 +33,6 @@ public class DechetDAO {
             while(rs.next()){
                 dechet.setId(rs.getInt("ID"));
                 dechet.setType(rs.getString("TYPE_DECHET"));
-                dechet.setUnite(rs.getString("UNITE_DECHET"));
-                dechet.setLimiteForfait(rs.getFloat("LIMITE_FORFAIT"));
-                dechet.setTarifForfait(rs.getFloat("TARIF_FORFAIT"));
-                dechet.setTarifLot(rs.getFloat("TARIF_LOT"));
-                dechet.setNbLot(rs.getInt("NB_LOT"));
                 dechet.setDanger(rs.getInt("NIV_DANGER"));
             }
 
@@ -90,33 +85,31 @@ public class DechetDAO {
     public ArrayList<Dechet> GetDechetsByDemande(int idDemande){
         ArrayList<Dechet> listDechets = new ArrayList<>();
         DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(connect);
-        String listId = String.join(",", (CharSequence) detailDemandeDechetDAO.GetDechetsId(idDemande));
-
+        List<Integer> listId = detailDemandeDechetDAO.GetDechetsId(idDemande);
+//        String listId = temp.stream().map(Object::toString).collect(Collectors.joining(","));
         try {
-            String query = "SELECT * " +
-                            "FROM MSPR_DECHET " +
-                            "WHERE ID IN (?) ";
-            PreparedStatement ps = this.connect.prepareStatement(query);
-            ps.setString(1, listId);
+            for (int id:listId) {
+                String query = "SELECT * " +
+                        "FROM MSPR_DECHET " +
+                        "WHERE ID = ? ";
+                PreparedStatement ps = this.connect.prepareStatement(query);
+                ps.setInt(1, id);
 
-            ResultSet rs = ps.executeQuery();
+                ResultSet rs = ps.executeQuery();
 
-            while(rs.next()){
-                Dechet dechet = new Dechet();
+                while(rs.next()){
+                    Dechet dechet = new Dechet();
 
-                dechet.setId(rs.getInt("ID"));
-                dechet.setType(rs.getString("TYPE_DECHET"));
-                dechet.setUnite(rs.getString("UNITE_DECHET"));
-                dechet.setLimiteForfait(rs.getFloat("LIMITE_FORFAIT"));
-                dechet.setTarifForfait(rs.getFloat("TARIF_FORFAIT"));
-                dechet.setTarifLot(rs.getFloat("TARIF_LOT"));
-                dechet.setNbLot(rs.getInt("NB_LOT"));
-                dechet.setDanger(rs.getInt("NIV_DANGER"));
+                    dechet.setId(rs.getInt("ID"));
+                    dechet.setType(rs.getString("TYPE_DECHET"));
+                    dechet.setDanger(rs.getInt("NIV_DANGER"));
 
-                listDechets.add(dechet);
+                    listDechets.add(dechet);
+                }
+
+                rs.close();
             }
 
-            rs.close();
 
         } catch (SQLException e) {
             return null;
