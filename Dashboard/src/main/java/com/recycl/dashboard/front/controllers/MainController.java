@@ -10,15 +10,36 @@ import com.recycl.dashboard.back.DAO.EmployeDAO;
 import com.recycl.dashboard.front.helpers.AlertHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.controlsfx.control.MasterDetailPane;
 
+import java.awt.*;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 public class MainController {
+
+    @FXML
+    public TextField input_int;
+
+    @FXML
+    public Pane userPanel;
+
+    @FXML
+    public Button validateButton;
+
+
     private Window owner;
 
     private void initialize() {
@@ -37,7 +58,7 @@ public class MainController {
             DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
             ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2019-06-05");
             if (demandes.isEmpty()) {
-                AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "list vide", "Il n'y a aucune demande d'enleveùment pour cette date");
+                AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "list vide", "Il n'y a aucune demande d'enlevement pour cette date");
             } else {
                 for (DemandeEnlevement demande : demandes) {
                     System.out.println("Demande N° : " + demande.getNumero());
@@ -57,6 +78,9 @@ public class MainController {
             System.out.println("-- Paramètres : Numéro de la demande (int)");
 
             DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+
+
+
             DemandeEnlevement demande = demandeEnlevementDAO.GetByNumero(0);
 
             DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
@@ -88,8 +112,24 @@ public class MainController {
         System.out.println("// Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées");
         System.out.println("-- Paramètres : Nombre de tournées (int)");
 
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("R2_user_input.fxml")));
+            Scene scene = new Scene(root, 500, 200);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void get_R4(ActionEvent actionEvent) throws SQLException, NullPointerException, IOException {
+        hide_input();
         EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
-        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(4);
+
+        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(Integer.parseInt(input_int.getText()));
         for (Map.Entry<Employe, Integer> entry : listEmployes.entrySet()) {
             Employe employe = entry.getKey();
             int nbTournee = entry.getValue();
@@ -155,5 +195,11 @@ public class MainController {
         // -- Inscription dans une tournée déjà créée pour la date demandée
         // -- A condition qu'il reste une place dans la tournée (sinon inscrire dans une tournée le lendemain ou surlendemain)
         // -- Si aucune possibilité sur les 3 dates -7 inscrire la demande dans un journal de demandes à traiter
+    }
+
+
+    private void hide_input() {
+        Stage inputStage = (Stage) userPanel.getScene().getWindow();
+        inputStage.hide();
     }
 }
