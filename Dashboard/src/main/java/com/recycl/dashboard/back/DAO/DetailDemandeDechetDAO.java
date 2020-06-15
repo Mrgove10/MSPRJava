@@ -56,8 +56,8 @@ public class DetailDemandeDechetDAO {
         return null;
     }
 
-    public ArrayList<Integer> GetDechetsId(int idDemande){
-        ArrayList<Integer> listDechets = new ArrayList<>();
+    public List<Integer> GetDechetsId(int idDemande){
+        List<Integer> listDechets = new ArrayList<>();
         DetailDemandeDAO detailDemandeDAO = new DetailDemandeDAO(connect);
         int idDetailDemande = detailDemandeDAO.GetIdByDemande(idDemande);
 
