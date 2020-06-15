@@ -34,10 +34,10 @@ public class MainBDD {
         // Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent
         System.out.println("-------------------- REQUEST 1 --------------------");
         System.out.println("// Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent");
-        System.out.println("-- Paramètres : String sous format (yyyy-MM-dd) => 2019-06-05");
+        System.out.println("-- Paramètres : String sous format (yyyy-MM-dd) => 2017-06-05");
 
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-        ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2019-06-05");
+        ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2017-06-05");
         for (DemandeEnlevement demande : demandes) {
             System.out.println("Demande N° : " + demande.getNumero());
         }
@@ -82,7 +82,7 @@ public class MainBDD {
         System.out.println("-- Paramètres : Nombre de tournées (int)");
 
         EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
-        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(4);
+        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(10);
         for (Map.Entry<Employe, Integer> entry : listEmployes.entrySet()) {
             Employe employe = entry.getKey();
             int nbTournee = entry.getValue();

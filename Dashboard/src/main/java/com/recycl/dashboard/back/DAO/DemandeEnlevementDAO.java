@@ -30,7 +30,7 @@ public class DemandeEnlevementDAO {
             while(rs.next()){
                 DemandeEnlevement demandeEnlevement = new DemandeEnlevement();
                 demandeEnlevement.setId(rs.getInt("ID"));
-                demandeEnlevement.setNumero(rs.getInt("NO_DEMANDE"));
+                demandeEnlevement.setNumero(rs.getLong("NO_DEMANDE"));
                 demandeEnlevement.setDateDemande(rs.getDate("DATE_DEMANDE"));
                 demandeEnlevement.setDateEnlevement(rs.getDate("DATE_ENLEVEMENT"));
 
