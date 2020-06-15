@@ -7,9 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DechetDAO {
@@ -59,7 +57,8 @@ public class DechetDAO {
     public Map<String, Integer> GetTypesDechetsByDemande(int idDemande){
         Map<String, Integer> listTypeDechets = new HashMap<>();
         DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(connect);
-        String listId = String.join(",", (CharSequence) detailDemandeDechetDAO.GetDechetsId(idDemande));
+        List<Integer> temp = detailDemandeDechetDAO.GetDechetsId(idDemande);
+        String listId = temp.stream().map(Object::toString).collect(Collectors.joining(","));
 
         try {
             String query = "SELECT TYPE_DECHET, COUNT(*) AS COUNT_TYPE " +

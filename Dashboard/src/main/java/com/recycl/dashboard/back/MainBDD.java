@@ -30,7 +30,7 @@ public class MainBDD {
 
     }
 
-    private void Request1() throws SQLException {
+    private void Request1() throws SQLException, NullPointerException {
         // Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent
         System.out.println("-------------------- REQUEST 1 --------------------");
         System.out.println("// Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent");
@@ -43,24 +43,29 @@ public class MainBDD {
         }
     }
 
-    private void Request2() throws SQLException {
-        // Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet
-        System.out.println("-------------------- REQUEST 2 --------------------");
-        System.out.println("// Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet");
-        System.out.println("-- Paramètres : Numéro de la demande (int)");
+    private void Request2() throws SQLException, NullPointerException {
+        try {
+            // Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet
+            System.out.println("-------------------- REQUEST 2 --------------------");
+            System.out.println("// Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet");
+            System.out.println("-- Paramètres : Numéro de la demande (int)");
 
-        DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-        DemandeEnlevement demande = demandeEnlevementDAO.GetByNumero(0);
+            DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+            DemandeEnlevement demande = demandeEnlevementDAO.GetByNumero(0);
 
-        DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
-        Map<String, Integer> listDechets = dechetDAO.GetTypesDechetsByDemande(demande.getId());
+            DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
+            Map<String, Integer> listDechets = dechetDAO.GetTypesDechetsByDemande(demande.getId());
 
-        System.out.println("Raison sociale entreprise : " + demande.getEntreprise().getRaisonSociale());
-        System.out.println("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye() + ", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
+            System.out.println("Raison sociale entreprise : " + demande.getEntreprise().getRaisonSociale());
+            System.out.println("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye() + ", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
 
-        for (Map.Entry<String, Integer> entry : listDechets.entrySet()) {
-            System.out.println("Type : " + entry.getKey() + ", Value : " + entry.getValue());
+            for (Map.Entry<String, Integer> entry : listDechets.entrySet()) {
+                System.out.println("Type : " + entry.getKey() + ", Value : " + entry.getValue());
+            }
+        }catch (NullPointerException exception){
+
         }
+
     }
 
     private void Request3() {
@@ -70,7 +75,7 @@ public class MainBDD {
         System.out.println("-- Paramètres : Mois (int) & Année (int)");
     }
 
-    private void Request4() throws SQLException {
+    private void Request4() throws SQLException, NullPointerException {
         // Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées
         System.out.println("-------------------- REQUEST 4 --------------------");
         System.out.println("// Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées");
@@ -99,7 +104,7 @@ public class MainBDD {
 
     }
 
-    private void Request7() throws SQLException {
+    private void Request7() throws SQLException, NullPointerException {
         // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)
         System.out.println("-------------------- REQUEST 7 --------------------");
         System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)");
