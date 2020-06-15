@@ -64,11 +64,11 @@ public class LoginController {
         loginstage.close();
 
         Stage primaryStage = new Stage();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("test.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("main.fxml")));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Main Page");
-        //borderless
+        /*//borderless
         primaryStage.initStyle(StageStyle.UNDECORATED);
         //drag it here
         root.setOnMousePressed(event -> {
@@ -80,7 +80,7 @@ public class LoginController {
             primaryStage.setX(event.getScreenX() - x);
             primaryStage.setY(event.getScreenY() - y);
 
-        });
+        });*/
         primaryStage.show();
     }
 }
