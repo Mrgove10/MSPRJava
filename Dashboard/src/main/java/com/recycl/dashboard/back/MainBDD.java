@@ -84,15 +84,16 @@ public class MainBDD {
         System.out.println("-------------------- REQUEST 3 --------------------");
         System.out.println("// Afficher la quantité totale récupérée par type de déchet pour un mois/année donné");
         System.out.println("-- Paramètres : Mois (int) && Année (int)");
-        // get demandes avec le mois && l'année
+
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByMonthYear(9,2018);
 
-        // detail_demande_dechet => pour chaque id_dechet, concat quantite
         DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(DAOConnection.ConnectDb());
         Map<Integer, Integer> list = detailDemandeDechetDAO.GetDechetsAndQuantity(demandes);
+
         DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
         System.out.println("Pour le mois et l'année 09/2018, voici les déchets récupérés :");
+
         for (Map.Entry<Integer, Integer> entry : list.entrySet()) {
             int idDechet = entry.getKey();
             int quantite = entry.getValue();
@@ -151,6 +152,7 @@ public class MainBDD {
         // Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée
         System.out.println("-------------------- REQUEST 6 --------------------");
         System.out.println("// Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée");
+
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesNotInTournee();
         for (DemandeEnlevement demande : demandes) {
@@ -195,6 +197,7 @@ public class MainBDD {
         // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national
         System.out.println("-------------------- REQUEST 8 --------------------");
         System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national");
+        
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         ArrayList<DemandeEnlevement> listDemandes = demandeEnlevementDAO.GetByDateEnlevement("2017-06-05", "2019-06-03");
 
@@ -223,105 +226,9 @@ public class MainBDD {
         // Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée
         System.out.println("-------------------- REQUEST 9 --------------------");
         System.out.println("// Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée");
-        // -- Inscription dans une tournée déjà créée pour la date demandée
+        // -- Inscription dans une tournée déjà créée pour la date demandée (date du jour)
         // -- A condition qu'il reste une place dans la tournée (sinon inscrire dans une tournée le lendemain ou surlendemain)
-        // -- Si aucune possibilité sur les 3 dates -7 inscrire la demande dans un journal de demandes à traiter
+        // -- Si aucune possibilité sur les 3 dates, inscrire la demande dans un journal de demandes à traiter
 
-    }
-
-
-    private void UserMethods() {
-
-//        UserDAO userDAO = new UserDAO(DAOConnection.ConnectDb());
-//        User user = new User();
-//        user.setId(2);
-//        user.setUsername("User");
-//        user.setPassword("54321");
-//        userDAO.Create(user);
-
-//        var check = userDAO.IsUserExistsByUsernameAndPassword("Test", "12345");
-//        System.out.println("Is exists : "+check);
-
-//        ArrayList<User> listUsers = userDAO.GetAllUsers();
-//        for (User user:listUsers) {
-//            System.out.println(user.getUsername());
-//        }
-    }
-
-    private void AdresseMethods() throws SQLException {
-        AdresseDAO adresseDAO = new AdresseDAO(DAOConnection.ConnectDb());
-        Adresse address = adresseDAO.GetById(1);
-        System.out.println("---------- ADRESSE ----------");
-        System.out.println(address.getId());
-        System.out.println(address.getNumRue());
-        System.out.println(address.getRue());
-        System.out.println(address.getCodePostal());
-        System.out.println(address.getVille());
-    }
-
-    private void CentreMethods() throws SQLException {
-        CentreDAO centreDAO = new CentreDAO(DAOConnection.ConnectDb());
-        Centre centre = centreDAO.GetById(1);
-        System.out.println("---------- CENTRE ----------");
-        System.out.println(centre.getId());
-        System.out.println(centre.getAdresse());
-        System.out.println(centre.getNom());
-    }
-
-    private void EntrepriseMethods() throws SQLException {
-        EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
-        Entreprise entreprise = entrepriseDAO.GetById(1);
-        System.out.println("---------- ENTREPRISE ----------");
-        System.out.println(entreprise.getId());
-        System.out.println(entreprise.getAdresse());
-        System.out.println(entreprise.getRaisonSociale());
-        System.out.println(entreprise.getSiret());
-        System.out.println(entreprise.getTel());
-        System.out.println(entreprise.getNomContact());
-    }
-
-    private void SiteMethods() throws SQLException {
-        SiteDAO siteDAO = new SiteDAO(DAOConnection.ConnectDb());
-        Site site = siteDAO.GetById(1);
-        System.out.println("---------- SITE ----------");
-        System.out.println(site.getId());
-        System.out.println(site.getAdresse());
-        System.out.println(site.getNom());
-    }
-
-    private void EmployeMethods() throws SQLException {
-        EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
-        Employe employe = employeDAO.GetById(1);
-        System.out.println("---------- EMPLOYE ----------");
-        System.out.println(employe.getId());
-        System.out.println(employe.getSite());
-        System.out.println(employe.getNom());
-        System.out.println(employe.getPrenom());
-        System.out.println(employe.getDateNaissance());
-        System.out.println(employe.getDateEmbauche());
-        System.out.println(employe.getSalaire());
-        System.out.println(employe.getFonction());
-    }
-
-    private void TourneeMethods() throws SQLException {
-        TourneeDAO tourneeDAO = new TourneeDAO(DAOConnection.ConnectDb());
-        Tournee tournee = tourneeDAO.GetById(1);
-        System.out.println("---------- TOURNEE ----------");
-        System.out.println(tournee.getId());
-        System.out.println(tournee.getCamion());
-        System.out.println(tournee.getEmploye());
-        System.out.println(tournee.getDate());
-    }
-
-    private void CamionMethods() throws SQLException {
-        CamionDAO camionDAO = new CamionDAO(DAOConnection.ConnectDb());
-        Camion camion = camionDAO.GetById(1);
-        System.out.println("---------- CAMION ----------");
-        System.out.println(camion.getId());
-        System.out.println(camion.getSite());
-        System.out.println(camion.getNumMatricule());
-        System.out.println(camion.getDateAchat());
-        System.out.println(camion.getModele());
-        System.out.println(camion.getMarque());
     }
 }
