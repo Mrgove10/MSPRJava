@@ -87,8 +87,6 @@ public class MainController {
             System.out.println("-- Paramètres : Numéro de la demande (int)");
 
             DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-
-
             DemandeEnlevement demande = demandeEnlevementDAO.GetByNumero(0);
 
             DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
@@ -116,14 +114,13 @@ public class MainController {
     @FXML
     protected void handleButtonR4(ActionEvent actionEvent) throws SQLException, NullPointerException {
         try {
-            secondtest.setVisible(true);
-            testPane.setVisible(false);
-            buttonPane.setVisible(false);
-            // Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées
-            System.out.println("-------------------- REQUEST 4 --------------------");
-            System.out.println("// Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées");
-            System.out.println("-- Paramètres : Nombre de tournées (int)");
-        } catch (Exception e) {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("R2_user_input.fxml")));
+            Scene scene = new Scene(root, 500, 200);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+
+        } catch(Exception e) {
             e.printStackTrace();
         }
     }
