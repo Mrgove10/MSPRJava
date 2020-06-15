@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+// creation et affectation
 public class TourneeDAO {
     protected Connection connect = null;
 

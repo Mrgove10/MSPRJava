@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+// creation
 public class EntrepriseDAO {
     protected Connection connect = null;
 

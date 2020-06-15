@@ -197,7 +197,7 @@ public class MainBDD {
         // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national
         System.out.println("-------------------- REQUEST 8 --------------------");
         System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national");
-        
+
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         ArrayList<DemandeEnlevement> listDemandes = demandeEnlevementDAO.GetByDateEnlevement("2017-06-05", "2019-06-03");
 

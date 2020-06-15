@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CentreDAO {
+    // CRUD
     protected Connection connect = null;
 
     public CentreDAO(Connection conn) {
