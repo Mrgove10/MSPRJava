@@ -51,7 +51,7 @@ public class MainBDD {
             System.out.println("-- Paramètres : Numéro de la demande (int)");
 
             DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-            DemandeEnlevement demande = demandeEnlevementDAO.GetByNumero(0);
+            DemandeEnlevement demande = demandeEnlevementDAO.GetByNumero(new Long("12345678900001"));
 
             DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
             Map<String, Integer> listDechets = dechetDAO.GetTypesDechetsByDemande(demande.getId());

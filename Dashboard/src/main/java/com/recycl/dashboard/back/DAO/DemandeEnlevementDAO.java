@@ -105,7 +105,7 @@ public class DemandeEnlevementDAO {
         return null;
     }
 
-    public DemandeEnlevement GetByNumero(int numero){
+    public DemandeEnlevement GetByNumero(long numero){
         DemandeEnlevement demandeEnlevement = new DemandeEnlevement();
         int idEntreprise = -1;
         int idTournee = -1;
@@ -115,7 +115,7 @@ public class DemandeEnlevementDAO {
                     "FROM Demande_Enlevement " +
                     "WHERE NO_DEMANDE = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
-            ps.setInt(1, numero);
+            ps.setLong(1, numero);
 
             ResultSet rs = ps.executeQuery();
 
