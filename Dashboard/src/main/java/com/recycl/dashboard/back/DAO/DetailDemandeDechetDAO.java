@@ -1,6 +1,6 @@
 package com.recycl.dashboard.back.DAO;
 
-import com.recycl.dashboard.back.Beans.DetailDemande;
+import com.recycl.dashboard.back.Beans.DemandeEnlevement;
 import com.recycl.dashboard.back.Beans.DetailDemandeDechet;
 
 import java.sql.Connection;
@@ -8,7 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 public class DetailDemandeDechetDAO {
     protected Connection connect = null;
@@ -19,7 +21,6 @@ public class DetailDemandeDechetDAO {
 
     public DetailDemandeDechet GetById(int id){
         DetailDemandeDechet detailDemandeDechet = new DetailDemandeDechet();
-        int idDetailDemande = -1;
         int idDechet = -1;
 
         try {
@@ -33,12 +34,8 @@ public class DetailDemandeDechetDAO {
 
             while(rs.next()){
                 detailDemandeDechet.setId(rs.getInt("ID"));
-                idDetailDemande = rs.getInt("ID_DETAIL_DEMANDE");
                 idDechet = rs.getInt("ID_DECHET");
             }
-
-            DetailDemandeDAO detailDemandeDAO = new DetailDemandeDAO(connect);
-            detailDemandeDechet.setDetailDemande(detailDemandeDAO.GetById(idDetailDemande));
 
             DechetDAO dechetDAO = new DechetDAO(connect);
             detailDemandeDechet.setDechet(dechetDAO.GetById(idDechet));
@@ -58,15 +55,13 @@ public class DetailDemandeDechetDAO {
 
     public List<Integer> GetDechetsId(int idDemande){
         List<Integer> listDechets = new ArrayList<>();
-        DetailDemandeDAO detailDemandeDAO = new DetailDemandeDAO(connect);
-        int idDetailDemande = detailDemandeDAO.GetIdByDemande(idDemande);
 
         try {
             String query = "SELECT * " +
                     "FROM MSPR_DETAIL_DEMANDE_DECHET " +
-                    "WHERE ID_DETAIL_DEMANDE = ?";
+                    "WHERE ID_DEMANDE_ENLEVEMENT = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
-            ps.setInt(1, idDetailDemande);
+            ps.setInt(1, idDemande);
 
             ResultSet rs = ps.executeQuery();
 
@@ -88,4 +83,41 @@ public class DetailDemandeDechetDAO {
         return null;
     }
 
+    public Map<Integer, Integer> GetDechetsAndQuantity(ArrayList<DemandeEnlevement> demandes){
+        Map<Integer, Integer> map = new Hashtable<>();
+
+        try {
+            for (DemandeEnlevement demandeEnlevement:demandes) {
+                String query = "SELECT ID_DECHET, SUM(QUANTITE) AS QUANTITE " +
+                        "FROM MSPR_DETAIL_DEMANDE_DECHET " +
+                        "WHERE ID_DEMANDE_ENLEVEMENT = ? " +
+                        "GROUP BY ID_DECHET";
+                PreparedStatement ps = this.connect.prepareStatement(query);
+                ps.setInt(1, demandeEnlevement.getId());
+
+                ResultSet rs = ps.executeQuery();
+
+                while(rs.next()){
+                    int idDechet = rs.getInt("ID_DECHET");
+                    int quantite = rs.getInt("QUANTITE");
+                    if (map.containsKey(idDechet)){
+                        quantite += map.get(idDechet);
+                    }
+                    map.put(idDechet, quantite);
+                }
+
+                rs.close();
+            }
+
+
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            if (this.connect != null) {
+                return map;
+            }
+        }
+
+        return null;
+    }
 }

@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+// creation
 public class EntrepriseDAO {
     protected Connection connect = null;
 
@@ -30,7 +31,7 @@ public class EntrepriseDAO {
 
             while(rs.next()){
                 entreprise.setId(rs.getInt("ID"));
-                entreprise.setSiret(rs.getInt("SIRET"));
+                entreprise.setSiret(rs.getLong("SIRET"));
                 entreprise.setRaisonSociale(rs.getString("RAISON_SOCIAL"));
                 entreprise.setTel(rs.getString("TEL"));
                 entreprise.setNomContact(rs.getString("NOM_CONTACT"));

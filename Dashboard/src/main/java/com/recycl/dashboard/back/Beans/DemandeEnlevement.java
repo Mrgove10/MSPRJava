@@ -6,7 +6,7 @@ public class DemandeEnlevement {
     private int Id;
     private Entreprise Entreprise;
     private Tournee Tournee;
-    private int Numero;
+    private long Numero;
     private Date DateDemande;
     private Date DateEnlevement;
 
@@ -46,11 +46,11 @@ public class DemandeEnlevement {
         Tournee = tournee;
     }
 
-    public int getNumero() {
+    public long getNumero() {
         return Numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(long numero) {
         Numero = numero;
     }
 
