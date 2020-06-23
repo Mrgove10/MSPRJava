@@ -7,6 +7,7 @@ import com.recycl.dashboard.back.Beans.Employe;
 import com.recycl.dashboard.back.Beans.Entreprise;
 import com.recycl.dashboard.back.DAO.*;
 import com.recycl.dashboard.front.Models.DemandeEnlevementModel;
+import com.recycl.dashboard.front.Models.RequestFourModel;
 import com.recycl.dashboard.front.Models.RequestTwoThreeModel;
 import com.recycl.dashboard.front.helpers.AlertHelper;
 import com.recycl.dashboard.front.helpers.UIPaneHelper;
@@ -28,9 +29,9 @@ import static com.recycl.dashboard.front.helpers.CustomUtils.removeDuplicates;
 
 public class MainController {
     @FXML
-    public TextField input_int;
-    @FXML
     public TextField request2_input;
+    @FXML
+    public TextField request4_input;
 
     @FXML
     public Label Request2_EntrepriseInfo;
@@ -48,6 +49,8 @@ public class MainController {
     public TableView<RequestTwoThreeModel> tableRequestTwo;
     @FXML
     public TableView<RequestTwoThreeModel> tableRequestThree;
+    @FXML
+    public TableView<RequestFourModel> tableRequestFour;
     @FXML
     public TableView<DemandeEnlevementModel> tableRequestSix;
     private Window owner;
@@ -226,6 +229,7 @@ public class MainController {
                 if (list.isEmpty()) {
                     AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Information", "Il n'y a aucune demande d'enlevement pour cette date");
                 } else {
+                    tableRequestThree.getItems().clear();
                     for (Map.Entry<Integer, Integer> entry : list.entrySet()) {
                         int idDechet = entry.getKey();
                         int quantite = entry.getValue();
@@ -260,20 +264,20 @@ public class MainController {
     @FXML
     private void get_R4() throws SQLException, NullPointerException {
         EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
-        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(Integer.parseInt(input_int.getText())).entrySet().stream()
+        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(Integer.parseInt(request4_input.getCharacters().toString())).entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
-        listView.getItems().clear();
-        ObservableList<String> items = listView.getItems();
-
+        tableRequestFour.getItems().clear();
         for (Map.Entry<Employe, Integer> entry : listEmployes.entrySet()) {
             Employe employe = entry.getKey();
             int nbTournee = entry.getValue();
-            items.add("Employe : " + employe.getNom() + " " + employe.getPrenom() + " -> " + nbTournee + " tournée(s)");
+
+            RequestFourModel requestFourModel = new RequestFourModel(employe.getNom() + " " + employe.getPrenom(), nbTournee);
+            tableRequestFour.getItems().add(requestFourModel);
         }
-        UIPaneHelper.Show("showList");
+        UIPaneHelper.Show(panerequete_four);
     }
 
     @FXML

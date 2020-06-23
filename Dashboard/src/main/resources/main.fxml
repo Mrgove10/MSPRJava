@@ -159,13 +159,21 @@
 
         <!--===REQUETE 4===-->
         <GridPane fx:id="panerequete_four" layoutX="23.0" layoutY="14.0" prefHeight="380.0" prefWidth="577.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-            <children>
-                <Button fx:id="validateButton_four" mnemonicParsing="false" onAction="#get_R4" text="Valider" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <TextField fx:id="input_int" text="10" GridPane.columnIndex="1" />
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de tournées max :" />
-                <Pane fx:id="userPanel" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
-            </children>
-            <children>
+            <rowConstraints>
+                <RowConstraints percentHeight="20"/>
+                <RowConstraints percentHeight="80"/>
+            </rowConstraints>
+            <GridPane GridPane.rowIndex="0">
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de tournées max :"  GridPane.columnIndex="0"/>
+                <TextField fx:id="request4_input" layoutX="66.0" layoutY="113.0" GridPane.columnIndex="1"/>
+                <Button fx:id="validateButton_four" mnemonicParsing="false" onAction="#get_R4" text="Valider" GridPane.columnIndex="2" />
+            </GridPane>
+            <GridPane GridPane.rowIndex="1">
                 <TableView fx:id="tableRequestFour" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                     <columns>
                         <TableColumn text="Employe">
@@ -176,7 +184,7 @@
                         </TableColumn>
                     </columns>
                 </TableView>
-            </children>
+            </GridPane>
          <columnConstraints>
             <ColumnConstraints />
             <ColumnConstraints />
