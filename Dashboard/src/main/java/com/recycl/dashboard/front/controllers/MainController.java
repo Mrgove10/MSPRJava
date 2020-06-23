@@ -392,7 +392,7 @@ public class MainController {
             ArrayList<DemandeEnlevement> demandesSite = new ArrayList<>();
             for (DemandeEnlevement entry : listDemandes) {
                 if (entry.getTournee().getId() != 0) {
-                    if(choicebox_seven_site.getValue() == "Tous les sites"){
+                    if(choicebox_seven_site.getValue().equals("Tous les sites")){
                         demandesSite.add(entry);
                     }
                     else{
