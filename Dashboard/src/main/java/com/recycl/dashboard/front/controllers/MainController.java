@@ -304,15 +304,10 @@ public class MainController {
         EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
         Entreprise entreprise = entrepriseDAO.GetById(focused.getFocusedItem().getId());
 
-        FocusModel<String> focused = listView_five.getFocusModel();
-
-        EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
-        Entreprise entreprise = entrepriseDAO.GetById(focused.getFocusedIndex());
-
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         Integer numberDemande = demandeEnlevementDAO.GetNumberEnlevement(entreprise);
 
-        System.out.println("Vous avez choisi l'entreprise : " + entreprise.getRaisonSociale() + " qui a réalisé " + numberDemande + " demande(s)");
+        System.out.println("Vous avez choisi l'entreprise : "+entreprise.getRaisonSociale()+" qui a réalisé "+numberDemande+" demande(s)");
         System.out.println("Voici les entreprises qui ont réalisé plus de demandes :");
 
         Map<Integer, Integer> map = demandeEnlevementDAO.GetNumberEnlevementGreaterThan(numberDemande).entrySet().stream()
@@ -322,8 +317,9 @@ public class MainController {
 
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
             Entreprise tempEntreprise = entrepriseDAO.GetById(entry.getKey());
-            System.out.println("L'entreprise : " + tempEntreprise.getRaisonSociale() + " a réalisé " + entry.getValue() + " demande(s)");
+            System.out.println("L'entreprise : "+tempEntreprise.getRaisonSociale()+" a réalisé "+entry.getValue()+" demande(s)");
         }
+
     }
 
 
