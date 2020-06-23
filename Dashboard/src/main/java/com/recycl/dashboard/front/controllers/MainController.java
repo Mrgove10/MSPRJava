@@ -143,9 +143,9 @@ public class MainController {
         for (Map.Entry<Employe, Integer> entry : listEmployes.entrySet()) {
             Employe employe = entry.getKey();
             int nbTournee = entry.getValue();
-            items.add("Employe : " + employe.getNom() + " " + employe.getPrenom() + " = " + nbTournee + " tournée(s)");
+            items.add("Employe : " + employe.getNom() + " " + employe.getPrenom() + " -> " + nbTournee + " tournée(s)");
         }
-        UIPaneHelper.Show("panerequete_four");
+        UIPaneHelper.Show("showList");
     }
 
     @FXML
