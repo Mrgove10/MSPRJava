@@ -108,7 +108,7 @@ public class MainController {
                 System.out.println("-- Paramètres : String sous format (yyyy-MM-dd) => 2019-06-05");
 
                 DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-                ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2017-06-05");
+                ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande(datepicker_one.getValue().format(DateTimeFormatter.ISO_LOCAL_DATE));
 
                 if (demandes.isEmpty()) {
                     AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Information", "Il n'y a aucune demande d'enlevement pour cette date");
