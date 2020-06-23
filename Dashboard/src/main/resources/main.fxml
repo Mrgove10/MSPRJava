@@ -30,8 +30,7 @@
                 <Button mnemonicParsing="false" onAction="#handleButtonR9" text="requete 9" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             </children>
         </GridPane>
-        <Pane fx:id="testPane" prefHeight="400.0" prefWidth="600.0" visible="false" />
-        <GridPane fx:id="secondtest" layoutX="23.0" layoutY="14.0" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+        <GridPane fx:id="panerequete_four" layoutX="23.0" layoutY="14.0" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -51,11 +50,18 @@
                 <Pane fx:id="userPanel" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
             </children>
         </GridPane>
-      <Pane fx:id="panerequete_one" prefHeight="400.0" prefWidth="600.0">
-         <children>
-             <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee" wrappingWidth="233.99998933076859" />
-            <DatePicker layoutX="324.0" layoutY="96.0" />
-         </children>
-      </Pane>
+        <Pane fx:id="panerequete_one" prefHeight="400.0" prefWidth="600.0">
+            <children>
+                <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee" wrappingWidth="233.99998933076859" />
+                <DatePicker layoutX="324.0" layoutY="96.0" />
+            </children>
+        </Pane>
+        <GridPane fx:id="showList" alignment="CENTER" hgap="10.0" vgap="10.0">
+            <VBox xmlns:fx="http://javafx.com/fxml">
+                <children>
+                    <ListView fx:id="listView" prefWidth="Infinity"/>
+                </children>
+            </VBox>
+        </GridPane>
     </children>
 </AnchorPane>

@@ -8,9 +8,11 @@ import com.recycl.dashboard.back.DAO.DechetDAO;
 import com.recycl.dashboard.back.DAO.DemandeEnlevementDAO;
 import com.recycl.dashboard.back.DAO.EmployeDAO;
 import com.recycl.dashboard.front.helpers.UIPaneHelper;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Window;
@@ -31,6 +33,8 @@ public class MainController {
     @FXML
     public Button validateButton;
 
+    @FXML
+    public ListView<String> listView;
 
     private Window owner;
     private ScreenController screenController;
@@ -38,19 +42,19 @@ public class MainController {
     @FXML
     private Pane panerequete_one;
     @FXML
-    private Pane secondtest;
+    private Pane panerequete_four;
     @FXML
     private Pane buttonPane;
     @FXML
-    private Pane testPane;
+    private Pane showList;
 
     public void initialize() {
         System.out.println("Initializing Main Controller JFX");
 
         UIPaneHelper.init();
-        UIPaneHelper.AddPane("secondtest", secondtest);
-        UIPaneHelper.AddPane("testPane", testPane);
+        UIPaneHelper.AddPane("panerequete_four", panerequete_four);
         UIPaneHelper.AddPane("panerequete_one", panerequete_one);
+        UIPaneHelper.AddPane("showList", showList);
         UIPaneHelper.AddPane("buttonPane", buttonPane);
         UIPaneHelper.Show("buttonPane");
     }
@@ -81,7 +85,6 @@ public class MainController {
 
     @FXML
     protected void handleButtonR2(ActionEvent actionEvent) throws SQLException, NullPointerException {
-        UIPaneHelper.Show(testPane);
         try {
             // Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet
             System.out.println("-------------------- REQUEST 2 --------------------");
@@ -116,9 +119,8 @@ public class MainController {
     @FXML
     protected void handleButtonR4(ActionEvent actionEvent) throws SQLException, NullPointerException {
         try {
-            secondtest.setVisible(true);
-            testPane.setVisible(false);
-            buttonPane.setVisible(false);
+            UIPaneHelper.Show("panerequete_four");
+
             // Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées
             System.out.println("-------------------- REQUEST 4 --------------------");
             System.out.println("// Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées");
@@ -136,11 +138,14 @@ public class MainController {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
+        ObservableList<String> items = listView.getItems();
+
         for (Map.Entry<Employe, Integer> entry : listEmployes.entrySet()) {
             Employe employe = entry.getKey();
             int nbTournee = entry.getValue();
-            System.out.println("Employe : " + employe.getNom() + " " + employe.getPrenom() + " = " + nbTournee + " tournée(s)");
+            items.add("Employe : " + employe.getNom() + " " + employe.getPrenom() + " = " + nbTournee + " tournée(s)");
         }
+        UIPaneHelper.Show("panerequete_four");
     }
 
     @FXML
