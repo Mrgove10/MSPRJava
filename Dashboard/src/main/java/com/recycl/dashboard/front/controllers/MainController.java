@@ -53,6 +53,8 @@ public class MainController {
     @FXML
     public TableView<RequestFourModel> tableRequestFour;
     @FXML
+    public TableView<RequestFiveModel> tableRequestFive;
+    @FXML
     public TableView<DemandeEnlevementModel> tableRequestSix;
     private Window owner;
     private ScreenController screenController;
@@ -286,11 +288,11 @@ public class MainController {
     protected void handleButtonR5() throws NullPointerException, SQLException {
         EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
         ArrayList<Entreprise> arrayList = entrepriseDAO.GetAll();
-
+        listView_five.getItems().clear();
         for (Entreprise entreprise : arrayList) {
-
-            RequestFiveModel requestFiveModel = new RequestFiveModel(entreprise.getRaisonSociale(), entreprise.getId());
-
+            RequestFiveModel requestFiveModel = new RequestFiveModel();
+            requestFiveModel.setNomEntreprise(entreprise.getRaisonSociale());
+            requestFiveModel.setId(entreprise.getId());
             listView_five.getItems().add(requestFiveModel);
         }
 
@@ -315,10 +317,16 @@ public class MainController {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
+        tableRequestFive.getItems().clear();
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
             Entreprise tempEntreprise = entrepriseDAO.GetById(entry.getKey());
-            System.out.println("L'entreprise : "+tempEntreprise.getRaisonSociale()+" a réalisé "+entry.getValue()+" demande(s)");
+
+            RequestFiveModel requestFiveModel = new RequestFiveModel();
+            requestFiveModel.setNomEntreprise(tempEntreprise.getRaisonSociale());
+            requestFiveModel.setNumberDemandes(entry.getValue());
+            tableRequestFive.getItems().add(requestFiveModel);
         }
+        UIPaneHelper.Show(panerequete_five);
 
     }
 
