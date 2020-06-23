@@ -14,14 +14,14 @@ public class MainBDD {
     public void startBDD() throws SQLException, ParseException {
         System.out.println("Starting BDD");
 
-//        Request1();
-//        Request2();
-//        Request3();
-//        Request4();
-//        Request5();
-//        Request6();
-//        Request7();
-//        Request8();
+        Request1();
+        Request2();
+        Request3();
+        Request4();
+        Request5();
+        Request6();
+        Request7();
+        Request8();
         Request9();
 
 
