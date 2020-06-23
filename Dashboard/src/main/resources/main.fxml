@@ -170,6 +170,17 @@
         </GridPane>
 
         <!--===REQUETE 5===-->
+        <Pane fx:id="panerequete_five" prefHeight="400.0" prefWidth="600.0">
+            <children>
+                <Button fx:id="validateButton_five" layoutX="274.0" layoutY="361.0" mnemonicParsing="false" onAction="#get_R5" text="Valider" />
+                <ListView fx:id="listView_five" layoutY="47.0" prefHeight="313.0" prefWidth="600.0" />
+                <Text layoutX="183.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entreprises" textAlignment="CENTER" wrappingWidth="233.99998933076859">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Text>
+            </children>
+        </Pane>
 
         <!--===REQUETE 6===-->
         <GridPane fx:id="panerequete_six" layoutX="23.0" layoutY="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">

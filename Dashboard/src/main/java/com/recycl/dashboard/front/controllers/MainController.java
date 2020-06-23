@@ -4,6 +4,7 @@ import com.recycl.dashboard.Configuration.DAOConnection;
 import com.recycl.dashboard.back.Beans.Dechet;
 import com.recycl.dashboard.back.Beans.DemandeEnlevement;
 import com.recycl.dashboard.back.Beans.Employe;
+import com.recycl.dashboard.back.Beans.Entreprise;
 import com.recycl.dashboard.back.DAO.*;
 import com.recycl.dashboard.front.Models.DemandeEnlevementModel;
 import com.recycl.dashboard.front.Models.RequestTwoModel;
@@ -36,6 +37,8 @@ public class MainController {
     @FXML
     public Label Request2_TourneeInfo;
 
+    @FXML
+    public ListView<String> listView_five;
 
     @FXML
     public ListView<String> listView;
@@ -67,6 +70,8 @@ public class MainController {
     @FXML
     private Pane panerequete_four;
     @FXML
+    private Pane panerequete_five;
+    @FXML
     private Pane panerequete_six;
     @FXML
     private Pane panerequete_seven;
@@ -83,7 +88,7 @@ public class MainController {
         UIPaneHelper.AddPane("panerequete_two", panerequete_two);
         UIPaneHelper.AddPane("panerequete_three", panerequete_three);
         UIPaneHelper.AddPane("panerequete_four", panerequete_four);
-        //five
+        UIPaneHelper.AddPane("panerequete_five", panerequete_five);
         UIPaneHelper.AddPane("panerequete_six", panerequete_six);
         UIPaneHelper.AddPane("panerequete_seven", panerequete_seven);
         //eight
@@ -260,12 +265,34 @@ public class MainController {
         UIPaneHelper.Show("showList");
     }
 
+    protected void handleButtonR5() throws NullPointerException, SQLException {
+        EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
+        listView_five.getItems().add("azer");
+        UIPaneHelper.Show("panerequete_five");
+    }
+
     @FXML
-    protected void handleButtonR5() throws NullPointerException {
-        // Afficher les informations de l'entreprise qui a réalisé plus de demandes que l'entreprise Formalys (ou une autre entreprise)
-        System.out.println("-------------------- REQUEST 5 --------------------");
-        System.out.println("// Afficher les informations de l'entreprise qui a réalisé plus de demandes que l'entreprise Formalys (ou une autre entreprise)");
-        System.out.println("-- Paramètres : Entreprise (string)");
+    protected void get_R5() throws NullPointerException, SQLException {
+        FocusModel<String> focused = listView_five.getFocusModel();
+
+        EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
+        Entreprise entreprise = entrepriseDAO.GetById(focused.getFocusedIndex());
+
+        DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+        Integer numberDemande = demandeEnlevementDAO.GetNumberEnlevement(entreprise);
+
+        System.out.println("Vous avez choisi l'entreprise : "+entreprise.getRaisonSociale()+" qui a réalisé "+numberDemande+" demande(s)");
+        System.out.println("Voici les entreprises qui ont réalisé plus de demandes :");
+
+        Map<Integer, Integer> map = demandeEnlevementDAO.GetNumberEnlevementGreaterThan(numberDemande).entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            Entreprise tempEntreprise = entrepriseDAO.GetById(entry.getKey());
+            System.out.println("L'entreprise : "+tempEntreprise.getRaisonSociale()+" a réalisé "+entry.getValue()+" demande(s)");
+        }
     }
 
     @FXML
