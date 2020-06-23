@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 public class UIPaneHelper {
     public static HashMap<String, Pane> panes;
-    public static HashMap<String, TableView> tables;
 
     /**
      * Initialise the helper

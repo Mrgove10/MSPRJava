@@ -19,6 +19,7 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,8 +34,15 @@ public class MainController {
     private ObservableList<DemandeEnlevementModel> DemandeData = FXCollections.observableArrayList();
     private Window owner;
     private ScreenController screenController;
+
+    @FXML
+    public TableView<DemandeEnlevementModel> tableRequestOne;
+    @FXML
+    public TableView<DemandeEnlevementModel> tableRequestSix;
+
     @FXML
     private DatePicker datepicker_one;
+
     @FXML
     private DatePicker datepicker_three;
     @FXML
@@ -85,11 +93,11 @@ public class MainController {
         //three
         //four
         //five
-        UIPaneHelper.AddPane("panerequete_siw", panerequete_six);
+        UIPaneHelper.AddPane("panerequete_six", panerequete_six);
         //seven
         //eight
         //nine
-        UIPaneHelper.AddPane("showList", showList);
+//        UIPaneHelper.AddPane("showList", showList);
         UIPaneHelper.AddPane("buttonPane", buttonPane);
         UIPaneHelper.Show("buttonPane");
     }
@@ -121,7 +129,7 @@ public class MainController {
             if (datepicker_one.getValue() == null) { //in case the user doesnt put a date
                 AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Information", "Valeur invalide : La date ne peut pas etre vide");
             } else {
-                System.out.println("date choisi par le user : " + datepicker_one.getValue().toString()); //debug
+                System.out.println("date choisi par le user : " + datepicker_one.getValue().format(DateTimeFormatter.ISO_LOCAL_DATE)); //debug
 
                 // Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent
                 System.out.println("-------------------- REQUEST 1 --------------------");
@@ -134,12 +142,13 @@ public class MainController {
                 if (demandes.isEmpty()) {
                     AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Information", "Il n'y a aucune demande d'enlevement pour cette date");
                 } else {
-                    listView.getItems().clear();
-                    ObservableList<String> items = listView.getItems();
+                    tableRequestOne.getItems().clear();
+
                     for (DemandeEnlevement demande : demandes) {
-                        items.add("Demande N° : " + demande.getId());
+                        DemandeEnlevementModel demandeEnlevementModel = new DemandeEnlevementModel(demande.getId(), demande.getEntreprise().getRaisonSociale(), (java.sql.Date) demande.getTournee().getDate(), demande.getDateDemande(), demande.getDateEnlevement());
+                        tableRequestOne.getItems().add(demandeEnlevementModel);
                     }
-                    UIPaneHelper.Show("showList");
+                    UIPaneHelper.Show(panerequete_one);
                 }
             }
         } catch (Exception ex) {
@@ -295,14 +304,14 @@ public class MainController {
         DemandeATraiterDAO demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
         List<DemandeEnlevement> demandes = Stream.concat(demandeEnlevementDAO.GetDemandesNotInTournee().stream(), demandeATraiterDAO.GetDemandesInJournal().stream()).collect(Collectors.toList());
         ArrayList<DemandeEnlevement> newList = removeDuplicates(demandes);
-        DemandeData.clear();
+
         tableRequestSix.getItems().clear();
         for (DemandeEnlevement demande : newList) {
             System.out.println("Demande N° : " + demande.getId());
             DemandeEnlevementModel demandeEnlevementModel = new DemandeEnlevementModel(demande.getId(), demande.getEntreprise().getRaisonSociale(), (java.sql.Date) demande.getTournee().getDate(), demande.getDateDemande(), demande.getDateEnlevement());
-            DemandeData.add(demandeEnlevementModel);
+
+            tableRequestSix.getItems().add(demandeEnlevementModel);
         }
-        tableRequestSix.getItems().addAll(DemandeData);
 
         UIPaneHelper.Show(panerequete_six);
     }
