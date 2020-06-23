@@ -82,6 +82,12 @@
                 <Pane fx:id="userPanel" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2"/>
             </children>
         </GridPane>
-
+        <GridPane fx:id="showList" alignment="CENTER" hgap="10.0" vgap="10.0">
+            <VBox xmlns:fx="http://javafx.com/fxml">
+                <children>
+                    <ListView fx:id="listView" prefWidth="Infinity"/>
+                </children>
+            </VBox>
+        </GridPane>
     </children>
 </AnchorPane>
