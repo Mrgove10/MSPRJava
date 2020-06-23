@@ -124,8 +124,8 @@ public class DechetDAO {
         return null;
     }
 
-    public ArrayList<Dechet> GetAll(){
-        ArrayList<Dechet> listDechets = new ArrayList<>();
+    public ArrayList<String> GetAllString(){
+        ArrayList<String> listDechets = new ArrayList<String>();
 
         try {
             String query = "SELECT * " +
@@ -141,7 +141,7 @@ public class DechetDAO {
                 dechet.setType(rs.getString("TYPE_DECHET"));
                 dechet.setDanger(rs.getInt("NIV_DANGER"));
 
-                listDechets.add(dechet);
+                listDechets.add(dechet.getType());
             }
 
             rs.close();

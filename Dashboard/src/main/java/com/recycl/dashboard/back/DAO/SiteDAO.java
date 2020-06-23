@@ -50,8 +50,8 @@ public class SiteDAO {
         return null;
     }
 
-    public ArrayList<Site> GetAll(){
-        ArrayList<Site> sites = new ArrayList<Site>();
+    public ArrayList<String> GetAllString(){
+        ArrayList<String> sites = new ArrayList<String>();
 
         try {
             String query = "SELECT * " +
@@ -69,7 +69,7 @@ public class SiteDAO {
                 AdresseDAO adresseDAO = new AdresseDAO(connect);
                 site.setAdresse(adresseDAO.GetById(idAddress));
 
-                sites.add(site);
+                sites.add(site.getNom());
             }
 
 

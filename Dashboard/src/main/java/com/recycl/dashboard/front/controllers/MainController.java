@@ -60,7 +60,6 @@ public class MainController {
     private DatePicker datepicker_one;
     @FXML
     private DatePicker datepicker_three;
-
     @FXML
     private DatePicker datepicker_seven_start;
     @FXML
@@ -87,6 +86,7 @@ public class MainController {
     private Pane MainRequestMenu;
     @FXML
     private Pane showList;
+
 
     public void initialize() {
         System.out.println("Initializing Main Controller JFX");
@@ -287,7 +287,7 @@ public class MainController {
         EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
         ArrayList<Entreprise> arrayList = entrepriseDAO.GetAll();
 
-        for (Entreprise entreprise: arrayList) {
+        for (Entreprise entreprise : arrayList) {
 
             RequestFiveModel requestFiveModel = new RequestFiveModel(entreprise.getRaisonSociale(), entreprise.getId());
 
@@ -304,30 +304,29 @@ public class MainController {
         EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
         Entreprise entreprise = entrepriseDAO.GetById(focused.getFocusedItem().getId());
 
-            FocusModel<String> focused = listView_five.getFocusModel();
+        FocusModel<String> focused = listView_five.getFocusModel();
 
-            EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
-            Entreprise entreprise = entrepriseDAO.GetById(focused.getFocusedIndex());
+        EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
+        Entreprise entreprise = entrepriseDAO.GetById(focused.getFocusedIndex());
 
-            DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-            Integer numberDemande = demandeEnlevementDAO.GetNumberEnlevement(entreprise);
+        DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+        Integer numberDemande = demandeEnlevementDAO.GetNumberEnlevement(entreprise);
 
-            System.out.println("Vous avez choisi l'entreprise : " + entreprise.getRaisonSociale() + " qui a réalisé " + numberDemande + " demande(s)");
-            System.out.println("Voici les entreprises qui ont réalisé plus de demandes :");
+        System.out.println("Vous avez choisi l'entreprise : " + entreprise.getRaisonSociale() + " qui a réalisé " + numberDemande + " demande(s)");
+        System.out.println("Voici les entreprises qui ont réalisé plus de demandes :");
 
-            Map<Integer, Integer> map = demandeEnlevementDAO.GetNumberEnlevementGreaterThan(numberDemande).entrySet().stream()
-                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                            (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+        Map<Integer, Integer> map = demandeEnlevementDAO.GetNumberEnlevementGreaterThan(numberDemande).entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
-            for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-                Entreprise tempEntreprise = entrepriseDAO.GetById(entry.getKey());
-                System.out.println("L'entreprise : " + tempEntreprise.getRaisonSociale() + " a réalisé " + entry.getValue() + " demande(s)");
-            }
-        } catch (Exception ex) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            Entreprise tempEntreprise = entrepriseDAO.GetById(entry.getKey());
+            System.out.println("L'entreprise : " + tempEntreprise.getRaisonSociale() + " a réalisé " + entry.getValue() + " demande(s)");
         }
     }
+
+
 
     @FXML
     protected void handleButtonR6() throws SQLException, NullPointerException {
@@ -351,29 +350,18 @@ public class MainController {
     }
 
     @FXML
-    protected void handleButtonR7() throws NullPointerException {
-        //todo: This could be MUCH better if we do a request to the database first
+    protected void handleButtonR7() throws NullPointerException, SQLException {
         UIPaneHelper.Show("panerequete_seven");
-        List<String> listDechet = new ArrayList<>();
-        listDechet.add("Papier");
-        listDechet.add("Verre");
-        listDechet.add("Plastique");
-        listDechet.add("Luminaires");
-        listDechet.add("Piles");
-        listDechet.add("Encre");
-        listDechet.add("Métal");
-        listDechet.add("Déchets verts");
-        listDechet.add("Gravats");
-        listDechet.add("Appareils électriques");
-        listDechet.add("Huile et peinture");
-        listDechet.add("Aérosols");
+
+
+        DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
+        List<String> listDechet = dechetDAO.GetAllString();
         ObservableList<String> listDechetOSB = FXCollections.observableList(listDechet);
         choicebox_seven.setItems(listDechetOSB);
 
-        List<String> listSite = new ArrayList<>();
+        SiteDAO siteDAO = new SiteDAO(DAOConnection.ConnectDb());
+        List<String> listSite = siteDAO.GetAllString();
         listSite.add("Tous les sites");
-        listSite.add("Site Paris");
-        listSite.add("Site Lille");
         ObservableList<String> listSiteOSB = FXCollections.observableList(listSite);
         choicebox_seven_site.setItems(listSiteOSB);
 
@@ -382,7 +370,7 @@ public class MainController {
     }
 
     @FXML
-    private void get_R7() throws SQLException {
+    private void get_R7() {
         try {
             System.out.println(choicebox_seven.getValue());
             System.out.println(choicebox_seven_site.getValue());
@@ -403,10 +391,9 @@ public class MainController {
             ArrayList<DemandeEnlevement> demandesSite = new ArrayList<>();
             for (DemandeEnlevement entry : listDemandes) {
                 if (entry.getTournee().getId() != 0) {
-                    if(choicebox_seven_site.getValue().equals("Tous les sites")){
+                    if (choicebox_seven_site.getValue().equals("Tous les sites")) {
                         demandesSite.add(entry);
-                    }
-                    else{
+                    } else {
                         if (entry.getTournee().getCamion().getSite().getNom().equals(choicebox_seven_site.getValue())) {
                             demandesSite.add(entry);
                         }
@@ -434,7 +421,7 @@ public class MainController {
     }
 
     @FXML
-    protected void handleButtonR8() throws NullPointerException {
+    protected void handleButtonR8() throws NullPointerException, SQLException {
         handleButtonR7();
     }
 
