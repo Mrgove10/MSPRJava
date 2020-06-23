@@ -67,6 +67,8 @@ public class MainController {
     @FXML
     private ChoiceBox<String> choicebox_seven;
     @FXML
+    private ChoiceBox<String> choicebox_seven_site;
+    @FXML
     private Pane panerequete_one;
     @FXML
     private Pane panerequete_two;
@@ -96,9 +98,8 @@ public class MainController {
         UIPaneHelper.AddPane("panerequete_five", panerequete_five);
         UIPaneHelper.AddPane("panerequete_six", panerequete_six);
         UIPaneHelper.AddPane("panerequete_seven", panerequete_seven);
-        //eight
         //nine
-//        UIPaneHelper.AddPane("showList", showList);
+
         UIPaneHelper.AddPane("MainRequestMenu", MainRequestMenu);
         UIPaneHelper.Show("MainRequestMenu");
     }
@@ -163,7 +164,7 @@ public class MainController {
             System.out.println("-- Paramètres : Numéro de la demande (int)");
             if (request2_input.getCharacters() == null) { //in case the user doesnt put a date
                 AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Information", "Valeur invalide : La date ne peut pas etre vide");
-            } else{
+            } else {
                 DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
                 DemandeEnlevement demande = demandeEnlevementDAO.GetById(Integer.parseInt(request2_input.getCharacters().toString()));
 
@@ -174,11 +175,11 @@ public class MainController {
                 Map<Integer, Integer> listDechets = detailDemandeDechetDAO.GetDechetsAndQuantity(demandes);
 
                 System.out.println("Raison sociale entreprise : " + demande.getEntreprise().getRaisonSociale());
-                System.out.println("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye().getNom() + " " + demande.getTournee().getEmploye().getPrenom() +", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
+                System.out.println("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye().getNom() + " " + demande.getTournee().getEmploye().getPrenom() + ", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
                 DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
 
                 Request2_EntrepriseInfo.setText("Raison sociale entreprise : " + demande.getEntreprise().getRaisonSociale());
-                Request2_TourneeInfo.setText("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye().getNom() + " " +demande.getTournee().getEmploye().getPrenom()+", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
+                Request2_TourneeInfo.setText("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye().getNom() + " " + demande.getTournee().getEmploye().getPrenom() + ", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
                 tableRequestTwo.getItems().clear();
                 for (Map.Entry<Integer, Integer> entry : listDechets.entrySet()) {
                     int idDechet = entry.getKey();
@@ -234,7 +235,7 @@ public class MainController {
                         int idDechet = entry.getKey();
                         int quantite = entry.getValue();
                         Dechet dechet = dechetDAO.GetById(idDechet);
-                        RequestTwoThreeModel requestTwoThreeModel = new RequestTwoThreeModel(dechet.getType(),quantite);
+                        RequestTwoThreeModel requestTwoThreeModel = new RequestTwoThreeModel(dechet.getType(), quantite);
                         tableRequestThree.getItems().add(requestTwoThreeModel);
                     }
 
@@ -289,25 +290,31 @@ public class MainController {
 
     @FXML
     protected void get_R5() throws NullPointerException, SQLException {
-        FocusModel<String> focused = listView_five.getFocusModel();
+        try {
 
-        EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
-        Entreprise entreprise = entrepriseDAO.GetById(focused.getFocusedIndex());
 
-        DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-        Integer numberDemande = demandeEnlevementDAO.GetNumberEnlevement(entreprise);
+            FocusModel<String> focused = listView_five.getFocusModel();
 
-        System.out.println("Vous avez choisi l'entreprise : "+entreprise.getRaisonSociale()+" qui a réalisé "+numberDemande+" demande(s)");
-        System.out.println("Voici les entreprises qui ont réalisé plus de demandes :");
+            EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
+            Entreprise entreprise = entrepriseDAO.GetById(focused.getFocusedIndex());
 
-        Map<Integer, Integer> map = demandeEnlevementDAO.GetNumberEnlevementGreaterThan(numberDemande).entrySet().stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+            DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+            Integer numberDemande = demandeEnlevementDAO.GetNumberEnlevement(entreprise);
 
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            Entreprise tempEntreprise = entrepriseDAO.GetById(entry.getKey());
-            System.out.println("L'entreprise : "+tempEntreprise.getRaisonSociale()+" a réalisé "+entry.getValue()+" demande(s)");
+            System.out.println("Vous avez choisi l'entreprise : " + entreprise.getRaisonSociale() + " qui a réalisé " + numberDemande + " demande(s)");
+            System.out.println("Voici les entreprises qui ont réalisé plus de demandes :");
+
+            Map<Integer, Integer> map = demandeEnlevementDAO.GetNumberEnlevementGreaterThan(numberDemande).entrySet().stream()
+                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                            (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
+            for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+                Entreprise tempEntreprise = entrepriseDAO.GetById(entry.getKey());
+                System.out.println("L'entreprise : " + tempEntreprise.getRaisonSociale() + " a réalisé " + entry.getValue() + " demande(s)");
+            }
+        } catch (Exception ex) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
         }
     }
 
@@ -334,6 +341,7 @@ public class MainController {
 
     @FXML
     protected void handleButtonR7() throws NullPointerException {
+        //todo: This could be MUCH better if we do a request to the database first
         UIPaneHelper.Show("panerequete_seven");
         List<String> listDechet = new ArrayList<>();
         listDechet.add("Papier");
@@ -350,15 +358,23 @@ public class MainController {
         listDechet.add("Aérosols");
         ObservableList<String> listDechetOSB = FXCollections.observableList(listDechet);
         choicebox_seven.setItems(listDechetOSB);
+
+        List<String> listSite = new ArrayList<>();
+        listSite.add("Tous les sites");
+        listSite.add("Site Paris");
+        listSite.add("Site Lille");
+        ObservableList<String> listSiteOSB = FXCollections.observableList(listSite);
+        choicebox_seven_site.setItems(listSiteOSB);
+
+        datepicker_seven_end.setValue(LocalDate.now());
+        datepicker_seven_start.setValue(LocalDate.now());
     }
 
     @FXML
     private void get_R7() throws SQLException {
         try {
-            datepicker_seven_end.setValue(LocalDate.now());
-            datepicker_seven_start.setValue(LocalDate.now());
-
             System.out.println(choicebox_seven.getValue());
+            System.out.println(choicebox_seven_site.getValue());
             System.out.println(datepicker_seven_end.getValue());
             System.out.println(datepicker_seven_start.getValue());
 
@@ -371,19 +387,36 @@ public class MainController {
             ArrayList<DemandeEnlevement> listDemandes = demandeEnlevementDAO.GetByDateEnlevement(datepicker_seven_start.getValue().toString(), datepicker_seven_end.getValue().toString());
 
             DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
+            DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(DAOConnection.ConnectDb());
 
-            ArrayList<Dechet> listDechetsCat = new ArrayList<>();
+            ArrayList<DemandeEnlevement> demandesSite = new ArrayList<>();
             for (DemandeEnlevement entry : listDemandes) {
-                if (entry.getTournee().getCamion().getSite().getNom().equals("Paris")) {
-                    for (Dechet dechet : dechetDAO.GetDechetsByDemande(entry.getId())) {
-                        if (dechet.getType().equals(choicebox_seven.getValue())) {
-                            listDechetsCat.add(dechet);
+                if (entry.getTournee().getId() != 0) {
+                    if(choicebox_seven_site.getValue() == "Tous les sites"){
+                        demandesSite.add(entry);
+                    }
+                    else{
+                        if (entry.getTournee().getCamion().getSite().getNom().equals(choicebox_seven_site.getValue())) {
+                            demandesSite.add(entry);
                         }
                     }
                 }
             }
 
-            System.out.println("Pour la période de \"2019-06-05\" à \"2020-06-03\", du site \"Paris\", il y a \"" + listDechetsCat.size() + "\" déchets de type \"Plastique\"");
+            Map<Integer, Integer> map = detailDemandeDechetDAO.GetDechetsAndQuantity(demandesSite);
+
+            if (map.isEmpty()) {
+                AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Information", "Resultat vide");
+            } else {
+                for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+                    Dechet dechet = dechetDAO.GetById(entry.getKey());
+                    if (dechet.getType().equals(choicebox_seven.getValue())) {
+                        System.out.println("Pour la période de \"2017-06-05\" à \"2019-06-03\", du site \"Paris\", il y a \"" + entry.getValue() + "\" déchet(s) de type \"Plastique\"");
+                    }
+                }
+            }
+
+
         } catch (Exception ex) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
         }
@@ -391,11 +424,7 @@ public class MainController {
 
     @FXML
     protected void handleButtonR8() throws NullPointerException {
-        UIPaneHelper.Show("panerequete_eight");
-        // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national
-        System.out.println("-------------------- REQUEST 8 --------------------");
-        System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national");
-
+        handleButtonR7();
     }
 
     @FXML
