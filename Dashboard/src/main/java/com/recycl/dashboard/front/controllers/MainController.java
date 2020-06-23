@@ -7,18 +7,18 @@ import com.recycl.dashboard.back.Beans.Employe;
 import com.recycl.dashboard.back.DAO.DechetDAO;
 import com.recycl.dashboard.back.DAO.DemandeEnlevementDAO;
 import com.recycl.dashboard.back.DAO.EmployeDAO;
+import com.recycl.dashboard.front.helpers.AlertHelper;
 import com.recycl.dashboard.front.helpers.UIPaneHelper;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Window;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -29,18 +29,16 @@ public class MainController {
 
     @FXML
     public TextField input_int;
-
-    @FXML
-    public Button validateButton;
-
     @FXML
     public ListView<String> listView;
-
     private Window owner;
     private ScreenController screenController;
-
+    @FXML
+    private DatePicker datepicker_one;
     @FXML
     private Pane panerequete_one;
+    @FXML
+    private Pane panerequete_two;
     @FXML
     private Pane panerequete_four;
     @FXML
@@ -54,37 +52,81 @@ public class MainController {
         UIPaneHelper.init();
         UIPaneHelper.AddPane("panerequete_four", panerequete_four);
         UIPaneHelper.AddPane("panerequete_one", panerequete_one);
+        UIPaneHelper.AddPane("panerequete_two", panerequete_two);
+        //three
+        //four
+        //five
+        //six
+        //seven
+        //eight
+        //nine
         UIPaneHelper.AddPane("showList", showList);
         UIPaneHelper.AddPane("buttonPane", buttonPane);
         UIPaneHelper.Show("buttonPane");
     }
 
+    /**
+     * Handle the click if the button for the first request.
+     *
+     * @throws NullPointerException
+     */
     @FXML
-    protected void handleButtonR1(ActionEvent actionEvent) throws SQLException, NullPointerException {
+    protected void handleButtonR1() throws NullPointerException {
+        UIPaneHelper.Show(panerequete_one);
+        datepicker_one.setValue(LocalDate.now()); //set the date to the current day
+    }
+
+    /**
+     * Handle the validation click of the first request.
+     *
+     * @throws NullPointerException
+     */
+    @FXML
+    private void get_R1() throws NullPointerException {
         try {
-            UIPaneHelper.Show("panerequete_one");
-
-            // Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent
-            System.out.println("-------------------- REQUEST 1 --------------------");
-            System.out.println("// Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent");
-            System.out.println("-- Paramètres : String sous format (yyyy-MM-dd) => 2019-06-05");
-
-            DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-            ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2019-06-05");
-            if (demandes.isEmpty()) {
-                //        AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "list vide", "Il n'y a aucune demande d'enlevement pour cette date");
+            if (datepicker_one.getValue() == null) { //in case the user doesnt put a date
+                AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Information", "Valeur invalide : La date ne peut pas etre vide");
             } else {
-                for (DemandeEnlevement demande : demandes) {
-                    System.out.println("Demande N° : " + demande.getNumero());
+                System.out.println("date choisi par le user : " + datepicker_one.getValue().toString()); //debug
+
+                // Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent
+                System.out.println("-------------------- REQUEST 1 --------------------");
+                System.out.println("// Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent");
+                System.out.println("-- Paramètres : String sous format (yyyy-MM-dd) => 2019-06-05");
+
+                DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2017-06-05");
+
+                if (demandes.isEmpty()) {
+                    AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Information", "Il n'y a aucune demande d'enlevement pour cette date");
+                } else {
+                    for (DemandeEnlevement demande : demandes) {
+                        System.out.println("Demande N° : " + demande.getId());
+                    }
                 }
             }
         } catch (Exception ex) {
-            //  AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
         }
     }
 
+    /**
+     * Handle the click if the button for the second request.
+     *
+     * @throws NullPointerException
+     */
     @FXML
-    protected void handleButtonR2(ActionEvent actionEvent) throws SQLException, NullPointerException {
+    protected void handleButtonR2() throws NullPointerException {
+        UIPaneHelper.Show(panerequete_two);
+    }
+
+    /**
+     * Handle the validation click of the first request.
+     *
+     * @throws NullPointerException
+     */
+    @FXML
+    private void get_R2() throws NullPointerException {
         try {
             // Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet
             System.out.println("-------------------- REQUEST 2 --------------------");
@@ -103,13 +145,15 @@ public class MainController {
             for (Map.Entry<String, Integer> entry : listDechets.entrySet()) {
                 System.out.println("Type : " + entry.getKey() + ", Value : " + entry.getValue());
             }
+
         } catch (Exception ex) {
-            //     AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
         }
     }
 
+
     @FXML
-    protected void handleButtonR3(ActionEvent actionEvent) throws SQLException, NullPointerException {
+    protected void handleButtonR3() throws SQLException, NullPointerException {
         // Afficher la quantité totale récupérée par type de déchet pour un mois/année donné
         System.out.println("-------------------- REQUEST 3 --------------------");
         System.out.println("// Afficher la quantité totale récupérée par type de déchet pour un mois/année donné");
@@ -117,7 +161,7 @@ public class MainController {
     }
 
     @FXML
-    protected void handleButtonR4(ActionEvent actionEvent) throws SQLException, NullPointerException {
+    protected void handleButtonR4() throws SQLException, NullPointerException {
         try {
             UIPaneHelper.Show("panerequete_four");
 
@@ -125,13 +169,14 @@ public class MainController {
             System.out.println("-------------------- REQUEST 4 --------------------");
             System.out.println("// Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées");
             System.out.println("-- Paramètres : Nombre de tournées (int)");
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
+            ex.printStackTrace();
         }
     }
 
     @FXML
-    private void get_R4(ActionEvent actionEvent) throws SQLException, NullPointerException, IOException {
+    private void get_R4() throws SQLException, NullPointerException, IOException {
         EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
         Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(Integer.parseInt(input_int.getText())).entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))

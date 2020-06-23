@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Main extends Application {
     public static void main(String[] args) throws SQLException, ParseException {
         MainBDD bdd = new MainBDD();
-//        bdd.startBDD();
+       // bdd.startBDD();
         launch(args); //Comment this to deactivate the UI
     }
 

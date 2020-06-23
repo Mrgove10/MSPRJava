@@ -16,6 +16,7 @@ public class UIPaneHelper {
 
     /**
      * Add a pane to the list of available ones
+     *
      * @param name
      * @param pane
      */
@@ -26,6 +27,7 @@ public class UIPaneHelper {
 
     /**
      * Show a single pane (based on the given name) by hiding all the over ones at the same time
+     *
      * @param name
      */
     public static void Show(String name) {
@@ -34,24 +36,25 @@ public class UIPaneHelper {
         }
         panes.get(name).setVisible(true);
     }
+
     /**
      * Show a single pane (based on the Pane object name) by hiding all the over ones at the same time
+     *
      * @param pane
      */
     public static void Show(Pane pane) {
         for (Pane p : panes.values()) {
-            if(pane == p ) {
+            if (pane == p) {
                 p.setVisible(true);
-            }
-            else{
+            } else {
                 p.setVisible(false);
             }
         }
     }
 
-
     /**
      * Hides a Single pane based on its name
+     *
      * @param name
      */
     public static void Hide(String name) {
