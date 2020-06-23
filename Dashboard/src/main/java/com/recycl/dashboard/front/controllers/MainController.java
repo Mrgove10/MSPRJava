@@ -8,6 +8,7 @@ import com.recycl.dashboard.back.DAO.*;
 import com.recycl.dashboard.front.Models.DemandeEnlevementModel;
 import com.recycl.dashboard.front.helpers.AlertHelper;
 import com.recycl.dashboard.front.helpers.UIPaneHelper;
+import com.recycl.dashboard.front.helpers.CustomUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,6 +24,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.recycl.dashboard.front.helpers.CustomUtils.removeDuplicates;
 
 public class MainController {
     @FXML
@@ -54,45 +57,23 @@ public class MainController {
     @FXML
     private Pane panerequete_six;
     @FXML
+    private Pane panerequete_seven;
+    @FXML
     private Pane buttonPane;
     @FXML
     private Pane showList;
-
-    // Function to remove duplicates from an ArrayList
-    private static ArrayList<DemandeEnlevement> removeDuplicates(List<DemandeEnlevement> list) {
-        ArrayList<DemandeEnlevement> newList = new ArrayList<DemandeEnlevement>();
-
-        for (DemandeEnlevement element : list) {
-            boolean isFind = false;
-            for (DemandeEnlevement itemToCompare : newList) {
-                if (element.getId() == itemToCompare.getId()) {
-                    isFind = true;
-                    break;
-                }
-            }
-
-            if (!isFind) {
-
-                newList.add(element);
-            }
-        }
-
-        return newList;
-    }
 
     public void initialize() {
         System.out.println("Initializing Main Controller JFX");
 
         UIPaneHelper.init();
-        UIPaneHelper.AddPane("panerequete_four", panerequete_four);
         UIPaneHelper.AddPane("panerequete_one", panerequete_one);
         UIPaneHelper.AddPane("panerequete_two", panerequete_two);
         UIPaneHelper.AddPane("panerequete_three", panerequete_three);
-        //three
-        //four
+        UIPaneHelper.AddPane("panerequete_four", panerequete_four);
         //five
         UIPaneHelper.AddPane("panerequete_six", panerequete_six);
-        //seven
+        UIPaneHelper.AddPane("panerequete_seven", panerequete_seven);
         //eight
         //nine
 //        UIPaneHelper.AddPane("showList", showList);
@@ -105,22 +86,14 @@ public class MainController {
         UIPaneHelper.Show("buttonPane");
     }
 
-    /**
-     * Handle the click if the button for the first request.
-     *
-     * @throws NullPointerException
-     */
+    //Handle the click if the button for the first request.
     @FXML
     protected void handleButtonR1() throws NullPointerException {
         UIPaneHelper.Show(panerequete_one);
         datepicker_one.setValue(LocalDate.now()); //set the date to the current day
     }
 
-    /**
-     * Handle the validation click of the first request.
-     *
-     * @throws NullPointerException
-     */
+    //Handle the validation click of the first request.
     @FXML
     private void get_R1() throws NullPointerException {
         try {
@@ -154,21 +127,13 @@ public class MainController {
         }
     }
 
-    /**
-     * Handle the click if the button for the second request.
-     *
-     * @throws NullPointerException
-     */
+    //Handle the click if the button for the second request.
     @FXML
     protected void handleButtonR2() throws NullPointerException {
         UIPaneHelper.Show(panerequete_two);
     }
 
-    /**
-     * Handle the validation click of the second request.
-     *
-     * @throws NullPointerException
-     */
+    //Handle the validation click of the second request.
     @FXML
     private void get_R2() throws NullPointerException {
         try {
@@ -195,23 +160,14 @@ public class MainController {
         }
     }
 
-    /**
-     * Handle the click if the button for the third request.
-     *
-     * @throws NullPointerException
-     */
+    //Handle the click if the button for the third request.
     @FXML
-    protected void handleButtonR3() throws SQLException, NullPointerException {
+    protected void handleButtonR3() throws NullPointerException {
         UIPaneHelper.Show(panerequete_three);
         datepicker_three.setValue(LocalDate.now());
     }
 
-
-    /**
-     * Handle the validation click of the third request.
-     *
-     * @throws NullPointerException
-     */
+    //Handle the validation click of the third request.
     @FXML
     private void get_R3() {
         try {
@@ -252,7 +208,7 @@ public class MainController {
     }
 
     @FXML
-    protected void handleButtonR4() throws SQLException, NullPointerException {
+    protected void handleButtonR4() throws NullPointerException {
         try {
             UIPaneHelper.Show("panerequete_four");
 
@@ -267,7 +223,7 @@ public class MainController {
     }
 
     @FXML
-    private void get_R4() throws SQLException, NullPointerException, IOException {
+    private void get_R4() throws SQLException, NullPointerException {
         EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
         Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(Integer.parseInt(input_int.getText())).entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
@@ -286,7 +242,7 @@ public class MainController {
     }
 
     @FXML
-    protected void handleButtonR5(ActionEvent actionEvent) throws SQLException, NullPointerException {
+    protected void handleButtonR5() throws NullPointerException {
         // Afficher les informations de l'entreprise qui a réalisé plus de demandes que l'entreprise Formalys (ou une autre entreprise)
         System.out.println("-------------------- REQUEST 5 --------------------");
         System.out.println("// Afficher les informations de l'entreprise qui a réalisé plus de demandes que l'entreprise Formalys (ou une autre entreprise)");
@@ -294,7 +250,7 @@ public class MainController {
     }
 
     @FXML
-    protected void handleButtonR6(ActionEvent actionEvent) throws SQLException, NullPointerException {
+    protected void handleButtonR6() throws SQLException, NullPointerException {
         // Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée
         System.out.println("-------------------- REQUEST 6 --------------------");
         System.out.println("// Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée");
@@ -315,7 +271,11 @@ public class MainController {
     }
 
     @FXML
-    protected void handleButtonR7(ActionEvent actionEvent) throws SQLException, NullPointerException {
+    protected void handleButtonR7() throws SQLException, NullPointerException {
+
+    }
+
+    private void get_R7() throws SQLException {
         // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)
         System.out.println("-------------------- REQUEST 7 --------------------");
         System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)");
@@ -326,7 +286,7 @@ public class MainController {
 
         DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
 
-        ArrayList<Dechet> listDechetsCat = new ArrayList<Dechet>();
+        ArrayList<Dechet> listDechetsCat = new ArrayList<>();
         for (DemandeEnlevement entry : listDemandes) {
             if (entry.getTournee().getCamion().getSite().getNom().equals("Paris")) {
                 for (Dechet dechet : dechetDAO.GetDechetsByDemande(entry.getId())) {
@@ -338,11 +298,10 @@ public class MainController {
         }
 
         System.out.println("Pour la période de \"2019-06-05\" à \"2020-06-03\", du site \"Paris\", il y a \"" + listDechetsCat.size() + "\" déchets de type \"Plastique\"");
-
     }
 
     @FXML
-    protected void handleButtonR8(ActionEvent actionEvent) throws SQLException, NullPointerException {
+    protected void handleButtonR8() throws  NullPointerException {
         // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national
         System.out.println("-------------------- REQUEST 8 --------------------");
         System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national");
@@ -350,7 +309,7 @@ public class MainController {
     }
 
     @FXML
-    protected void handleButtonR9(ActionEvent actionEvent) throws SQLException, NullPointerException {
+    protected void handleButtonR9() throws  NullPointerException {
         // Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée
         System.out.println("-------------------- REQUEST 9 --------------------");
         System.out.println("// Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée");
