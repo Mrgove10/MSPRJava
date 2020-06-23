@@ -33,7 +33,7 @@ public class MainBDD {
 
     private void Request1() throws SQLException, NullPointerException {
         // Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent
-        System.out.println("-------------------- REQUEST 1 --------------------");
+      /*  System.out.println("-------------------- REQUEST 1 --------------------");
         System.out.println("// Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent");
         System.out.println("-- Paramètres : String sous format (yyyy-MM-dd) => 2017-06-05");
 
@@ -41,11 +41,11 @@ public class MainBDD {
         ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2017-06-05");
         for (DemandeEnlevement demande : demandes) {
             System.out.println("Demande N° : " + demande.getId());
-        }
+        }*/
     }
 
     private void Request2() throws SQLException, NullPointerException {
-        try {
+      /*  try {
             // Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet
             System.out.println("-------------------- REQUEST 2 --------------------");
             System.out.println("// Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet");
@@ -73,12 +73,12 @@ public class MainBDD {
             }
         }catch (NullPointerException exception){
 
-        }
+        }*/
 
     }
 
     private void Request3() throws SQLException {
-        // Afficher la quantité totale récupérée par type de déchet pour un mois/année donné
+      /*  // Afficher la quantité totale récupérée par type de déchet pour un mois/année donné
         System.out.println("-------------------- REQUEST 3 --------------------");
         System.out.println("// Afficher la quantité totale récupérée par type de déchet pour un mois/année donné");
         System.out.println("-- Paramètres : Mois (int) && Année (int)");
@@ -97,11 +97,11 @@ public class MainBDD {
             int quantite = entry.getValue();
             Dechet dechet = dechetDAO.GetById(idDechet);
             System.out.println("Pour le déchet : "+dechet.getType()+", la quantité est de : "+quantite);
-        }
+        }*/
     }
 
     private void Request4() throws SQLException, NullPointerException {
-        // Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées
+     /*   // Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées
         System.out.println("-------------------- REQUEST 4 --------------------");
         System.out.println("// Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées");
         System.out.println("-- Paramètres : Nombre de tournées (int)");
@@ -116,7 +116,7 @@ public class MainBDD {
             Employe employe = entry.getKey();
             int nbTournee = entry.getValue();
             System.out.println("Employe : " + employe.getNom() + " " + employe.getPrenom() + " = " + nbTournee + " tournée(s)");
-        }
+        }*/
     }
 
     private void Request5() throws SQLException, NullPointerException {
@@ -147,15 +147,17 @@ public class MainBDD {
     }
 
     private void Request6() throws SQLException {
-        // Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée
+     /*   // Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée
         System.out.println("-------------------- REQUEST 6 --------------------");
         System.out.println("// Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée");
 
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-        ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesNotInTournee();
+        DemandeATraiterDAO demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
+        List<DemandeEnlevement> demandes = Stream.concat(demandeEnlevementDAO.GetDemandesNotInTournee().stream(), demandeATraiterDAO.GetDemandesInJournal().stream()).collect(Collectors.toList());
+        ArrayList<DemandeEnlevement> newList = removeDuplicates(demandes);
         for (DemandeEnlevement demande : demandes) {
             System.out.println("Demande N° : " + demande.getId());
-        }
+        }*/
     }
 
     private void Request7() throws SQLException, NullPointerException {

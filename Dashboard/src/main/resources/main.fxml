@@ -1,93 +1,308 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
-<AnchorPane minHeight="150.0" minWidth="150.0" prefHeight="400.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.recycl.dashboard.front.controllers.MainController">
+<?import javafx.scene.text.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<AnchorPane minHeight="150.0" minWidth="150.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.recycl.dashboard.front.controllers.MainController">
     <children>
-        <GridPane fx:id="buttonPane" prefHeight="400.0" prefWidth="600.0" visible="false">
+        <Button mnemonicParsing="false" onAction="#handleHome" text="HOME" />
+        <GridPane fx:id="MainRequestMenu" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button mnemonicParsing="false" onAction="#handleButtonR1" text="requete 1" GridPane.halignment="CENTER"
-                        GridPane.valignment="CENTER"/>
-                <Button mnemonicParsing="false" onAction="#handleButtonR2" text="requete 2" GridPane.columnIndex="1"
-                        GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
-                <Button mnemonicParsing="false" onAction="#handleButtonR3" text="requete 3" GridPane.columnIndex="2"
-                        GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
-                <Button mnemonicParsing="false" onAction="#handleButtonR4" text="requete 4" GridPane.halignment="CENTER"
-                        GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
-                <Button mnemonicParsing="false" onAction="#handleButtonR5" text="requete 5" GridPane.columnIndex="1"
-                        GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
-                <Button mnemonicParsing="false" onAction="#handleButtonR6" text="requete 6" GridPane.columnIndex="2"
-                        GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
-                <Button mnemonicParsing="false" onAction="#handleButtonR7" text="requete 7" GridPane.halignment="CENTER"
-                        GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
-                <Button mnemonicParsing="false" onAction="#handleButtonR8" text="requete 8" GridPane.columnIndex="1"
-                        GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
-                <Button mnemonicParsing="false" onAction="#handleButtonR9" text="requete 9" GridPane.columnIndex="2"
-                        GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
+                <Button mnemonicParsing="false" onAction="#handleButtonR1" text="requete 1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR2" text="requete 2" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR3" text="requete 3" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR4" text="requete 4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR5" text="requete 5" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR6" text="requete 6" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR7" text="requete 7" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR8" text="requete 8" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR9" text="requete 9" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             </children>
         </GridPane>
+
         <!--===REQUETE 1===-->
-        <Pane fx:id="panerequete_one" prefHeight="400.0" prefWidth="600.0">
-            <children>
-                <Button fx:id="validateButton_one" mnemonicParsing="false" onAction="#get_R1" text="Valider"
-                        GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee"
-                      wrappingWidth="233.99998933076859"/>
-                <DatePicker fx:id="datepicker_one" layoutX="324.0" layoutY="96.0"/>
-            </children>
-        </Pane>
-        <!--===REQUETE 2===-->
-        <Pane fx:id="panerequete_two" prefHeight="400.0" prefWidth="600.0">
-            <children>
-                <Button fx:id="validateButton_two" mnemonicParsing="false" onAction="#get_R2" text="Valider"
-                        GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee"
-                      wrappingWidth="233.99998933076859"/>
-            </children>
-        </Pane>
-        <!--===REQUETE 4===-->
-        <GridPane fx:id="panerequete_four" layoutX="23.0" layoutY="14.0" minWidth="-Infinity" prefHeight="400.0"
-                  prefWidth="600.0">
+        <GridPane fx:id="panerequete_one" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <rowConstraints>
+                <RowConstraints percentHeight="20" />
+                <RowConstraints percentHeight="80" />
+            </rowConstraints>
+            <GridPane GridPane.rowIndex="0">
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee :" wrappingWidth="233.99998933076859" GridPane.columnIndex="0" />
+                <DatePicker fx:id="datepicker_one" layoutX="324.0" layoutY="96.0" GridPane.columnIndex="1" />
+                <Button fx:id="validateButton_one" mnemonicParsing="false" onAction="#get_R1" text="Valider" GridPane.columnIndex="2" />
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
+            </GridPane>
+            <GridPane GridPane.rowIndex="1">
+                <TableView fx:id="tableRequestOne" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn text="Id">
+                            <cellValueFactory><PropertyValueFactory property="Id" /></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Entreprise">
+                            <cellValueFactory><PropertyValueFactory property="Entreprise" /></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Tournee">
+                            <cellValueFactory><PropertyValueFactory property="Tournee" /></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Date Demande">
+                            <cellValueFactory><PropertyValueFactory property="DateDemande" /></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Date Enlevement">
+                            <cellValueFactory><PropertyValueFactory property="DateEnlevement" /></cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+               <ColumnConstraints />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+               <RowConstraints />
             </rowConstraints>
-            <padding>
-                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
-            </padding>
+            </GridPane>
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
+        </GridPane>
+
+        <!--===REQUETE 2===-->
+        <GridPane fx:id="panerequete_two" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <rowConstraints>
+                <RowConstraints percentHeight="20" />
+                <RowConstraints percentHeight="80" />
+            </rowConstraints>
+            <GridPane GridPane.rowIndex="0">
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Numéro de la demande :" GridPane.columnIndex="0" />
+                <TextField fx:id="request2_input" layoutX="66.0" layoutY="113.0" GridPane.columnIndex="1" />
+                <Button fx:id="validateButton_two" mnemonicParsing="false" onAction="#get_R2" text="Valider" GridPane.columnIndex="2" />
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
+            </GridPane>
+            <GridPane GridPane.rowIndex="1">
+                <rowConstraints>
+                    <RowConstraints percentHeight="20" />
+                    <RowConstraints percentHeight="80" />
+                </rowConstraints>
+                <GridPane GridPane.rowIndex="0">
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                    <Label fx:id="Request2_EntrepriseInfo" GridPane.rowIndex="0" />
+                    <Label fx:id="Request2_TourneeInfo" GridPane.rowIndex="1" />
+               <columnConstraints>
+                  <ColumnConstraints />
+               </columnConstraints>
+                </GridPane>
+                <GridPane GridPane.rowIndex="1">
+                    <TableView fx:id="tableRequestTwo" prefHeight="375.0" prefWidth="600.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn text="Dechet">
+                                <cellValueFactory><PropertyValueFactory property="Dechet" /></cellValueFactory>
+                            </TableColumn>
+                            <TableColumn text="Quantite">
+                                <cellValueFactory><PropertyValueFactory property="Quantite" /></cellValueFactory>
+                            </TableColumn>
+                        </columns>
+                    </TableView>
+               <columnConstraints>
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+               </rowConstraints>
+                </GridPane>
+            <columnConstraints>
+               <ColumnConstraints />
+            </columnConstraints>
+            </GridPane>
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
+        </GridPane>
+
+        <!--===REQUETE 3===-->
+        <GridPane fx:id="panerequete_three" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <rowConstraints>
+                <RowConstraints percentHeight="20" />
+                <RowConstraints percentHeight="80" />
+            </rowConstraints>
+            <GridPane GridPane.rowIndex="0">
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee" wrappingWidth="233.99998933076859" GridPane.columnIndex="0" />
+                <DatePicker fx:id="datepicker_three" layoutX="324.0" layoutY="96.0" GridPane.columnIndex="1" />
+                <Button fx:id="validateButton_three" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#get_R3" text="Valider" GridPane.columnIndex="2" />
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
+            </GridPane>
+           <GridPane GridPane.rowIndex="1">
+               <TableView fx:id="tableRequestThree" prefHeight="375.0" prefWidth="600.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                   <columns>
+                       <TableColumn text="Dechet">
+                           <cellValueFactory><PropertyValueFactory property="Dechet" /></cellValueFactory>
+                       </TableColumn>
+                       <TableColumn text="Quantite">
+                           <cellValueFactory><PropertyValueFactory property="Quantite" /></cellValueFactory>
+                       </TableColumn>
+                   </columns>
+               </TableView>
+            <columnConstraints>
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
+           </GridPane>
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
+        </GridPane>
+
+        <!--===REQUETE 4===-->
+        <GridPane fx:id="panerequete_four" layoutX="23.0" layoutY="14.0" prefHeight="380.0" prefWidth="577.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <rowConstraints>
+                <RowConstraints percentHeight="20" />
+                <RowConstraints percentHeight="80" />
+            </rowConstraints>
+            <GridPane GridPane.rowIndex="0">
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de tournées max :" GridPane.columnIndex="0" />
+                <TextField fx:id="request4_input" layoutX="66.0" layoutY="113.0" GridPane.columnIndex="1" />
+                <Button fx:id="validateButton_four" mnemonicParsing="false" onAction="#get_R4" text="Valider" GridPane.columnIndex="2" />
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
+            </GridPane>
+            <GridPane GridPane.rowIndex="1">
+                <TableView fx:id="tableRequestFour" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn text="Employe">
+                            <cellValueFactory><PropertyValueFactory property="Employe" /></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Number Tournees">
+                            <cellValueFactory><PropertyValueFactory property="NumberTournees" /></cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+            <columnConstraints>
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
+            </GridPane>
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+        </GridPane>
+
+        <!--===REQUETE 5===-->
+        <Pane fx:id="panerequete_five" prefHeight="400.0" prefWidth="600.0">
             <children>
-                <Button fx:id="validateButton_four" mnemonicParsing="false" onAction="#get_R4" text="Valider"
-                        GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                <TextField fx:id="input_int" text="10" GridPane.columnIndex="1"/>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de tournées max :"/>
-                <Pane fx:id="userPanel" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2"/>
+                <Button fx:id="validateButton_five" layoutX="274.0" layoutY="361.0" mnemonicParsing="false" onAction="#get_R5" text="Valider" />
+                <ListView fx:id="listView_five" layoutY="47.0" prefHeight="313.0" prefWidth="600.0">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                        </FXCollections>
+                    </items>
+                </ListView>
+                <Text layoutX="183.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entreprises" textAlignment="CENTER" wrappingWidth="233.99998933076859">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Text>
             </children>
+        </Pane>
+
+        <!--===REQUETE 6===-->
+        <GridPane fx:id="panerequete_six" layoutX="23.0" layoutY="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <children>
+                <TableView fx:id="tableRequestSix" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn text="Id">
+                            <cellValueFactory><PropertyValueFactory property="Id" /></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Entreprise">
+                            <cellValueFactory><PropertyValueFactory property="Entreprise" /></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Tournee">
+                            <cellValueFactory><PropertyValueFactory property="Tournee" /></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Date Demande">
+                            <cellValueFactory><PropertyValueFactory property="DateDemande" /></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Date Enlevement">
+                            <cellValueFactory><PropertyValueFactory property="DateEnlevement" /></cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+            </children>
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+         </rowConstraints>
         </GridPane>
-        <GridPane fx:id="showList" alignment="CENTER" hgap="10.0" vgap="10.0">
-            <VBox xmlns:fx="http://javafx.com/fxml">
-                <children>
-                    <ListView fx:id="listView" prefWidth="Infinity"/>
-                </children>
-            </VBox>
-        </GridPane>
+
+        <!--===REQUETE 7===-->
+        <Pane fx:id="panerequete_seven" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <children>
+                <Button fx:id="validateButton_seven" layoutX="533.0" layoutY="66.0" mnemonicParsing="false" onAction="#get_R7" text="Valider" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Text layoutX="340.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="type dechet :" />
+            <Text layoutX="190.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="a" wrappingWidth="30.10546875" />
+                <Text layoutX="14.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="De" wrappingWidth="67.000000923872" />
+            <ChoiceBox fx:id="choicebox_seven" layoutX="436.0" layoutY="28.0" prefWidth="150.0" />
+            <DatePicker fx:id="datepicker_seven_start" layoutX="48.0" layoutY="28.0" prefHeight="25.0" prefWidth="134.0" />
+            <DatePicker fx:id="datepicker_seven_end" layoutX="211.0" layoutY="28.0" prefHeight="25.0" prefWidth="125.0" />
+            <ChoiceBox fx:id="choicebox_seven_site" layoutX="312.0" layoutY="66.0" prefWidth="150.0" />
+            <Text layoutX="261.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="site :" />
+            </children>
+        </Pane>
     </children>
 </AnchorPane>
