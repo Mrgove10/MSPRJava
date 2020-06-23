@@ -59,7 +59,7 @@ public class MainController {
     @FXML
     private Pane panerequete_seven;
     @FXML
-    private Pane buttonPane;
+    private Pane MainRequestMenu;
     @FXML
     private Pane showList;
 
@@ -77,13 +77,13 @@ public class MainController {
         //eight
         //nine
 //        UIPaneHelper.AddPane("showList", showList);
-        UIPaneHelper.AddPane("buttonPane", buttonPane);
-        UIPaneHelper.Show("buttonPane");
+        UIPaneHelper.AddPane("MainRequestMenu", MainRequestMenu);
+        UIPaneHelper.Show("MainRequestMenu");
     }
 
     @FXML
     protected void handleHome() {
-        UIPaneHelper.Show("buttonPane");
+        UIPaneHelper.Show("MainRequestMenu");
     }
 
     //Handle the click if the button for the first request.
