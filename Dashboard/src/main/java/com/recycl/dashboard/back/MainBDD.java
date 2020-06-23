@@ -152,7 +152,9 @@ public class MainBDD {
         System.out.println("// Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée");
 
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-        ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesNotInTournee();
+        DemandeATraiterDAO demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
+        List<DemandeEnlevement> demandes = Stream.concat(demandeEnlevementDAO.GetDemandesNotInTournee().stream(), demandeATraiterDAO.GetDemandesInJournal().stream()).collect(Collectors.toList());
+        ArrayList<DemandeEnlevement> newList = removeDuplicates(demandes);
         for (DemandeEnlevement demande : demandes) {
             System.out.println("Demande N° : " + demande.getId());
         }
