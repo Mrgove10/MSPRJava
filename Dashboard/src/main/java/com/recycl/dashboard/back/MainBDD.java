@@ -6,24 +6,22 @@ import com.recycl.dashboard.back.DAO.*;
 
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MainBDD {
     public void startBDD() throws SQLException, ParseException {
         System.out.println("Starting BDD");
 
-        Request1();
-        Request2();
-        Request3();
-        Request4();
-        Request5();
-        Request6();
-        Request7();
-        Request8();
+//        Request1();
+//        Request2();
+//        Request3();
+//        Request4();
+//        Request5();
+//        Request6();
+//        Request7();
+//        Request8();
         Request9();
 
 
@@ -109,7 +107,7 @@ public class MainBDD {
         System.out.println("-- Paramètres : Nombre de tournées (int)");
 
         EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
-        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(10).entrySet().stream()
+        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(3).entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
@@ -222,7 +220,7 @@ public class MainBDD {
         }
     }
 
-    private void Request9() {
+    private void Request9() throws SQLException {
         // Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée
         System.out.println("-------------------- REQUEST 9 --------------------");
         System.out.println("// Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée");
@@ -230,5 +228,123 @@ public class MainBDD {
         // -- A condition qu'il reste une place dans la tournée (sinon inscrire dans une tournée le lendemain ou surlendemain)
         // -- Si aucune possibilité sur les 3 dates, inscrire la demande dans un journal de demandes à traiter
 
+        DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+        DemandeATraiterDAO demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
+        TourneeDAO tourneeDAO = new TourneeDAO(DAOConnection.ConnectDb());
+
+        List<DemandeEnlevement> demandes = Stream.concat(demandeEnlevementDAO.GetDemandesNotInTournee().stream(), demandeATraiterDAO.GetDemandesInJournal().stream()).collect(Collectors.toList());
+        ArrayList<DemandeEnlevement> newList = removeDuplicates(demandes);
+        System.out.println("Listes des demandes non inscrites dans une tournée :");
+        for (DemandeEnlevement demande : newList) {
+            System.out.println("Demande N° : " + demande.getId());
+            boolean canBeInsertInTournee = false;
+            // get entreprise -> get ville de l'address
+            String ville = demande.getEntreprise().getAdresse().getVille();
+            // get tournee aujourdhui => get camion => get site => get ville adresse
+            ArrayList<Tournee> tourneesAvailable = new ArrayList<>();
+            for (Tournee tournee:tourneeDAO.GetTodayTournees()) {
+                String tempVille = tournee.getCamion().getSite().getAdresse().getVille();
+                if (ville.equals(tempVille)){
+                    tourneesAvailable.add(tournee);
+                }
+            }
+
+            for (Tournee tournee:tourneesAvailable) {
+                int maxPlaces = tournee.getCamion().getMaxPlaces();
+                demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                int numberEnlevement = demandeEnlevementDAO.GetNumberDemandeForTournee(tournee.getId());
+                if(numberEnlevement < maxPlaces){
+                    // insert demande for this tournee
+                    demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                    demandeEnlevementDAO.UpdateTournee(tournee.getId(), demande.getId());
+                    canBeInsertInTournee = true;
+                    break;
+                }
+            }
+            if (canBeInsertInTournee == false){
+                // si pas de place => get tournee demain
+                tourneesAvailable = new ArrayList<>();
+                tourneeDAO = new TourneeDAO(DAOConnection.ConnectDb());
+                for (Tournee tournee:tourneeDAO.GetTomorrowTournees()) {
+                    String tempVille = tournee.getCamion().getSite().getAdresse().getVille();
+                    if (ville.equals(tempVille)){
+                        tourneesAvailable.add(tournee);
+                    }
+                }
+
+                for (Tournee tournee:tourneesAvailable) {
+                    int maxPlaces = tournee.getCamion().getMaxPlaces();
+                    demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                    int numberEnlevement = demandeEnlevementDAO.GetNumberDemandeForTournee(tournee.getId());
+                    if(numberEnlevement < maxPlaces){
+                        // insert demande for this tournee
+                        demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                        demandeEnlevementDAO.UpdateTournee(tournee.getId(), demande.getId());
+                        canBeInsertInTournee = true;
+                        break;
+                    }
+                }
+                if (canBeInsertInTournee == false){
+                    // si pas de place => get tournee après-demain
+                    tourneesAvailable = new ArrayList<>();
+                    tourneeDAO = new TourneeDAO(DAOConnection.ConnectDb());
+                    for (Tournee tournee:tourneeDAO.GetDayAfterTomorrowTournees()) {
+                        String tempVille = tournee.getCamion().getSite().getAdresse().getVille();
+                        if (ville.equals(tempVille)){
+                            tourneesAvailable.add(tournee);
+                        }
+                    }
+
+                    for (Tournee tournee:tourneesAvailable) {
+                        int maxPlaces = tournee.getCamion().getMaxPlaces();
+                        demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                        int numberEnlevement = demandeEnlevementDAO.GetNumberDemandeForTournee(tournee.getId());
+                        if(numberEnlevement < maxPlaces){
+                            // insert demande for this tournee
+                            demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                            demandeEnlevementDAO.UpdateTournee(tournee.getId(), demande.getId());
+                            canBeInsertInTournee = true;
+                            break;
+                        }
+                    }
+                    if (canBeInsertInTournee == false){
+                        // si pas de place => insert dans journal de demandes à traiter
+                        demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
+                        demandeATraiterDAO.Insert(demande.getId());
+                    }
+                }
+
+            }
+
+            if (canBeInsertInTournee == true){
+                // delete du journal
+                demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
+                demandeATraiterDAO.Delete(demande.getId());
+            }
+
+        }
+    }
+
+    // Function to remove duplicates from an ArrayList
+    public static ArrayList<DemandeEnlevement> removeDuplicates(List<DemandeEnlevement> list)
+    {
+        ArrayList<DemandeEnlevement> newList = new ArrayList<DemandeEnlevement>();
+
+        for (DemandeEnlevement element : list) {
+            boolean isFind = false;
+            for (DemandeEnlevement itemToCompare :newList) {
+                if (element.getId() == itemToCompare.getId()) {
+                    isFind = true;
+                    break;
+                }
+            }
+
+            if (!isFind) {
+
+                newList.add(element);
+            }
+        }
+
+        return newList;
     }
 }

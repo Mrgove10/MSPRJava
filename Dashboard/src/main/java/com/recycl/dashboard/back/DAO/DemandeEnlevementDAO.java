@@ -306,4 +306,57 @@ public class DemandeEnlevementDAO {
 
         return null;
     }
+
+    public Integer GetNumberDemandeForTournee(int idTournee){
+        Integer number = -1;
+
+        try {
+            String query = "SELECT COUNT(*) AS NUMBER_ENLEVEMENT " +
+                    "FROM MSPR_DEMANDE_ENLEVEMENT " +
+                    "WHERE ID_TOURNEE = ?";
+            PreparedStatement ps = this.connect.prepareStatement(query);
+            ps.setInt(1, idTournee);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                number = rs.getInt("NUMBER_ENLEVEMENT");
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            if (this.connect != null) {
+                return number;
+            }
+        }
+
+        return null;
+    }
+
+    public void UpdateTournee(int idTournee, int idDemande){
+        try {
+            String query = "UPDATE MSPR_DEMANDE_ENLEVEMENT SET ID_TOURNEE = ? WHERE ID = "+idDemande;
+            PreparedStatement ps = this.connect.prepareStatement(query);
+            ps.setInt(1, idTournee);
+
+            ps.executeUpdate();
+
+            ps.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (this.connect != null) {
+                    this.connect.close();
+
+                }
+            } catch (SQLException ignore) {
+
+            }
+        }
+    }
 }

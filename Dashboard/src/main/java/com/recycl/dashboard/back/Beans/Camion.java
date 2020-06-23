@@ -9,14 +9,16 @@ public class Camion {
     private Date DateAchat;
     private String Modele;
     private String Marque;
+    private int MaxPlaces;
 
-    public Camion(int id, Site site, String numMatricule, Date dateAchat, String modele, String marque) {
+    public Camion(int id, com.recycl.dashboard.back.Beans.Site site, String numMatricule, Date dateAchat, String modele, String marque, int maxPlaces) {
         Id = id;
         Site = site;
         NumMatricule = numMatricule;
         DateAchat = dateAchat;
         Modele = modele;
         Marque = marque;
+        MaxPlaces = maxPlaces;
     }
 
     public Camion() {
@@ -68,5 +70,13 @@ public class Camion {
 
     public void setMarque(String marque) {
         Marque = marque;
+    }
+
+    public int getMaxPlaces() {
+        return MaxPlaces;
+    }
+
+    public void setMaxPlaces(int maxPlaces) {
+        MaxPlaces = maxPlaces;
     }
 }
