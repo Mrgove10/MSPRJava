@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.cell.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane minHeight="150.0" minWidth="150.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.recycl.dashboard.front.controllers.MainController">
+<AnchorPane minHeight="150.0" minWidth="150.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.recycl.dashboard.front.controllers.MainController">
     <children>
         <Button mnemonicParsing="false" onAction="#handleHome" text="HOME" />
         <GridPane fx:id="MainRequestMenu" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
@@ -39,8 +35,8 @@
         <!--===REQUETE 1===-->
         <GridPane fx:id="panerequete_one" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
             <rowConstraints>
-                <RowConstraints percentHeight="20"/>
-                <RowConstraints percentHeight="80"/>
+                <RowConstraints percentHeight="20" />
+                <RowConstraints percentHeight="80" />
             </rowConstraints>
             <GridPane GridPane.rowIndex="0">
                 <columnConstraints>
@@ -48,9 +44,12 @@
                     <ColumnConstraints />
                     <ColumnConstraints />
                 </columnConstraints>
-                <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee :" wrappingWidth="233.99998933076859" GridPane.columnIndex="0"/>
-                <DatePicker fx:id="datepicker_one" layoutX="324.0" layoutY="96.0" GridPane.columnIndex="1"/>
-                <Button fx:id="validateButton_one" mnemonicParsing="false" onAction="#get_R1" text="Valider" GridPane.columnIndex="2"/>
+                <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee :" wrappingWidth="233.99998933076859" GridPane.columnIndex="0" />
+                <DatePicker fx:id="datepicker_one" layoutX="324.0" layoutY="96.0" GridPane.columnIndex="1" />
+                <Button fx:id="validateButton_one" mnemonicParsing="false" onAction="#get_R1" text="Valider" GridPane.columnIndex="2" />
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
             </GridPane>
             <GridPane GridPane.rowIndex="1">
                 <TableView fx:id="tableRequestOne" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
@@ -72,7 +71,16 @@
                         </TableColumn>
                     </columns>
                 </TableView>
+            <columnConstraints>
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
             </GridPane>
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
         </GridPane>
 
         <!--===REQUETE 2===-->
@@ -175,8 +183,13 @@
         <!--===REQUETE 7===-->
         <Pane fx:id="panerequete_seven" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
             <children>
-                <Button fx:id="validateButton_seven" mnemonicParsing="false" onAction="#get_R3" text="Valider" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee" wrappingWidth="233.99998933076859" />
+                <Button fx:id="validateButton_seven" layoutX="247.0" layoutY="78.0" mnemonicParsing="false" onAction="#get_R7" text="Valider" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Text layoutX="340.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="type dechet :" />
+            <Text layoutX="190.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="a" wrappingWidth="30.10546875" />
+                <Text layoutX="14.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="De" wrappingWidth="67.000000923872" />
+            <ChoiceBox fx:id="choicebox_seven" layoutX="436.0" layoutY="28.0" prefWidth="150.0" />
+            <DatePicker fx:id="datepicker_seven_start" layoutX="48.0" layoutY="28.0" prefHeight="25.0" prefWidth="134.0" />
+            <DatePicker fx:id="datepicker_seven_end" layoutX="211.0" layoutY="28.0" prefHeight="25.0" prefWidth="125.0" />
             </children>
         </Pane>
     </children>

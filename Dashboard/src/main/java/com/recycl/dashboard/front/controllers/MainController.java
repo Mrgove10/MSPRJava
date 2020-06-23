@@ -8,16 +8,13 @@ import com.recycl.dashboard.back.DAO.*;
 import com.recycl.dashboard.front.Models.DemandeEnlevementModel;
 import com.recycl.dashboard.front.helpers.AlertHelper;
 import com.recycl.dashboard.front.helpers.UIPaneHelper;
-import com.recycl.dashboard.front.helpers.CustomUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Window;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -32,20 +29,22 @@ public class MainController {
     public TextField input_int;
     @FXML
     public ListView<String> listView;
-
-    private Window owner;
-    private ScreenController screenController;
-
     @FXML
     public TableView<DemandeEnlevementModel> tableRequestOne;
     @FXML
     public TableView<DemandeEnlevementModel> tableRequestSix;
-
+    private Window owner;
+    private ScreenController screenController;
     @FXML
     private DatePicker datepicker_one;
-
     @FXML
     private DatePicker datepicker_three;
+    @FXML
+    private DatePicker datepicker_seven_start;
+    @FXML
+    private DatePicker datepicker_seven_end;
+    @FXML
+    private ChoiceBox<String> choicebox_seven;
     @FXML
     private Pane panerequete_one;
     @FXML
@@ -127,13 +126,11 @@ public class MainController {
         }
     }
 
-    //Handle the click if the button for the second request.
     @FXML
     protected void handleButtonR2() throws NullPointerException {
         UIPaneHelper.Show(panerequete_two);
     }
 
-    //Handle the validation click of the second request.
     @FXML
     private void get_R2() throws NullPointerException {
         try {
@@ -160,14 +157,12 @@ public class MainController {
         }
     }
 
-    //Handle the click if the button for the third request.
     @FXML
     protected void handleButtonR3() throws NullPointerException {
         UIPaneHelper.Show(panerequete_three);
         datepicker_three.setValue(LocalDate.now());
     }
 
-    //Handle the validation click of the third request.
     @FXML
     private void get_R3() {
         try {
@@ -271,37 +266,65 @@ public class MainController {
     }
 
     @FXML
-    protected void handleButtonR7() throws SQLException, NullPointerException {
-
-    }
-
-    private void get_R7() throws SQLException {
-        // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)
-        System.out.println("-------------------- REQUEST 7 --------------------");
-        System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)");
-        System.out.println("-- Paramètres : Type de déchet (string), période avant (String), période après (String), Site (string)");
-
-        DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-        ArrayList<DemandeEnlevement> listDemandes = demandeEnlevementDAO.GetByDateEnlevement("2019-06-05", "2020-06-03");
-
-        DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
-
-        ArrayList<Dechet> listDechetsCat = new ArrayList<>();
-        for (DemandeEnlevement entry : listDemandes) {
-            if (entry.getTournee().getCamion().getSite().getNom().equals("Paris")) {
-                for (Dechet dechet : dechetDAO.GetDechetsByDemande(entry.getId())) {
-                    if (dechet.getType().equals("Plastique")) {
-                        listDechetsCat.add(dechet);
-                    }
-                }
-            }
-        }
-
-        System.out.println("Pour la période de \"2019-06-05\" à \"2020-06-03\", du site \"Paris\", il y a \"" + listDechetsCat.size() + "\" déchets de type \"Plastique\"");
+    protected void handleButtonR7() throws NullPointerException {
+        UIPaneHelper.Show("panerequete_seven");
+        List<String> listDechet = new ArrayList<>();
+        listDechet.add("Papier");
+        listDechet.add("Verre");
+        listDechet.add("Plastique");
+        listDechet.add("Luminaires");
+        listDechet.add("Piles");
+        listDechet.add("Encre");
+        listDechet.add("Métal");
+        listDechet.add("Déchets verts");
+        listDechet.add("Gravats");
+        listDechet.add("Appareils électriques");
+        listDechet.add("Huile et peinture");
+        listDechet.add("Aérosols");
+        ObservableList<String> listDechetOSB = FXCollections.observableList(listDechet);
+        choicebox_seven.setItems(listDechetOSB);
     }
 
     @FXML
-    protected void handleButtonR8() throws  NullPointerException {
+    private void get_R7() throws SQLException {
+        try {
+            datepicker_seven_end.setValue(LocalDate.now());
+            datepicker_seven_start.setValue(LocalDate.now());
+
+            System.out.println(choicebox_seven.getValue());
+            System.out.println(datepicker_seven_end.getValue());
+            System.out.println(datepicker_seven_start.getValue());
+
+            // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)
+            System.out.println("-------------------- REQUEST 7 --------------------");
+            System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)");
+            System.out.println("-- Paramètres : Type de déchet (string), période avant (String), période après (String), Site (string)");
+
+            DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+            ArrayList<DemandeEnlevement> listDemandes = demandeEnlevementDAO.GetByDateEnlevement(datepicker_seven_start.getValue().toString(), datepicker_seven_end.getValue().toString());
+
+            DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
+
+            ArrayList<Dechet> listDechetsCat = new ArrayList<>();
+            for (DemandeEnlevement entry : listDemandes) {
+                if (entry.getTournee().getCamion().getSite().getNom().equals("Paris")) {
+                    for (Dechet dechet : dechetDAO.GetDechetsByDemande(entry.getId())) {
+                        if (dechet.getType().equals(choicebox_seven.getValue())) {
+                            listDechetsCat.add(dechet);
+                        }
+                    }
+                }
+            }
+
+            System.out.println("Pour la période de \"2019-06-05\" à \"2020-06-03\", du site \"Paris\", il y a \"" + listDechetsCat.size() + "\" déchets de type \"Plastique\"");
+        } catch (Exception ex) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
+        }
+    }
+
+    @FXML
+    protected void handleButtonR8() throws NullPointerException {
+        UIPaneHelper.Show("panerequete_eight");
         // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national
         System.out.println("-------------------- REQUEST 8 --------------------");
         System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national");
@@ -309,7 +332,8 @@ public class MainController {
     }
 
     @FXML
-    protected void handleButtonR9() throws  NullPointerException {
+    protected void handleButtonR9() throws NullPointerException {
+        UIPaneHelper.Show("panerequete_nine");
         // Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée
         System.out.println("-------------------- REQUEST 9 --------------------");
         System.out.println("// Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée");
