@@ -7,10 +7,9 @@ import com.recycl.dashboard.back.Beans.Employe;
 import com.recycl.dashboard.back.DAO.DechetDAO;
 import com.recycl.dashboard.back.DAO.DemandeEnlevementDAO;
 import com.recycl.dashboard.back.DAO.EmployeDAO;
-import com.recycl.dashboard.front.helpers.AlertHelper;
+import com.recycl.dashboard.front.helpers.UIPaneHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -37,6 +36,8 @@ public class MainController {
     private ScreenController screenController;
 
     @FXML
+    private Pane panerequete_one;
+    @FXML
     private Pane secondtest;
     @FXML
     private Pane buttonPane;
@@ -44,22 +45,20 @@ public class MainController {
     private Pane testPane;
 
     public void initialize() {
-        System.out.println("coucouille");
-      //  owner = buttonPane.getScene().getWindow();
-        //    Scene scene = buttonPane.getScene();
-        //   screenController = new ScreenController(scene);
-        // screenController.addScreen("testPane", testPane);
-        //screenController.addScreen("buttonPane", buttonPane);
-        secondtest.setVisible(false);
-        testPane.setVisible(false);
-        buttonPane.setVisible(true);
+        System.out.println("Initializing Main Controller JFX");
+
+        UIPaneHelper.init();
+        UIPaneHelper.AddPane("secondtest", secondtest);
+        UIPaneHelper.AddPane("testPane", testPane);
+        UIPaneHelper.AddPane("panerequete_one", panerequete_one);
+        UIPaneHelper.AddPane("buttonPane", buttonPane);
+        UIPaneHelper.Show("buttonPane");
     }
 
     @FXML
     protected void handleButtonR1(ActionEvent actionEvent) throws SQLException, NullPointerException {
         try {
-            buttonPane.setVisible(false);
-            testPane.setVisible(true);
+            UIPaneHelper.Show("panerequete_one");
 
             // Chercher et afficher les demandes qui ont été faites après une date donnée saisie par l'agent
             System.out.println("-------------------- REQUEST 1 --------------------");
@@ -69,19 +68,20 @@ public class MainController {
             DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
             ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByDateDemande("2019-06-05");
             if (demandes.isEmpty()) {
-        //        AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "list vide", "Il n'y a aucune demande d'enlevement pour cette date");
+                //        AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "list vide", "Il n'y a aucune demande d'enlevement pour cette date");
             } else {
                 for (DemandeEnlevement demande : demandes) {
                     System.out.println("Demande N° : " + demande.getNumero());
                 }
             }
         } catch (Exception ex) {
-          //  AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
+            //  AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
         }
     }
 
     @FXML
     protected void handleButtonR2(ActionEvent actionEvent) throws SQLException, NullPointerException {
+        UIPaneHelper.Show(testPane);
         try {
             // Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet
             System.out.println("-------------------- REQUEST 2 --------------------");
@@ -101,7 +101,7 @@ public class MainController {
                 System.out.println("Type : " + entry.getKey() + ", Value : " + entry.getValue());
             }
         } catch (Exception ex) {
-       //     AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
+            //     AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
         }
     }
 
