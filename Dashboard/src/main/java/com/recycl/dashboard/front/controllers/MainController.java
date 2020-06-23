@@ -47,6 +47,8 @@ public class MainController {
     @FXML
     public TableView<RequestTwoThreeModel> tableRequestTwo;
     @FXML
+    public TableView<RequestTwoThreeModel> tableRequestThree;
+    @FXML
     public TableView<DemandeEnlevementModel> tableRequestSix;
     private Window owner;
     private ScreenController screenController;
@@ -220,7 +222,6 @@ public class MainController {
                 Map<Integer, Integer> list = detailDemandeDechetDAO.GetDechetsAndQuantity(demandes);
 
                 DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
-                System.out.println("Pour le mois et l'année 09/2018, voici les déchets récupérés :");
 
                 if (list.isEmpty()) {
                     AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Information", "Il n'y a aucune demande d'enlevement pour cette date");
@@ -229,8 +230,11 @@ public class MainController {
                         int idDechet = entry.getKey();
                         int quantite = entry.getValue();
                         Dechet dechet = dechetDAO.GetById(idDechet);
-                        System.out.println("Pour le déchet : " + dechet.getType() + ", la quantité est de : " + quantite);
+                        RequestTwoThreeModel requestTwoThreeModel = new RequestTwoThreeModel(dechet.getType(),quantite);
+                        tableRequestThree.getItems().add(requestTwoThreeModel);
                     }
+
+                    UIPaneHelper.Show(panerequete_three);
                 }
             }
         } catch (Exception ex) {
@@ -272,6 +276,7 @@ public class MainController {
         UIPaneHelper.Show("showList");
     }
 
+    @FXML
     protected void handleButtonR5() throws NullPointerException, SQLException {
         EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
         listView_five.getItems().add("azer");

@@ -128,15 +128,34 @@
         </GridPane>
 
         <!--===REQUETE 3===-->
-        <Pane fx:id="panerequete_three" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-            <children>
-                <Button fx:id="validateButton_three" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#get_R3" text="Valider" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee" wrappingWidth="233.99998933076859" />
-            </children>
-   <children>
-               <DatePicker fx:id="datepicker_three" layoutX="324.0" layoutY="96.0" />
-   </children>
-        </Pane>
+        <GridPane fx:id="panerequete_three" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <rowConstraints>
+                <RowConstraints percentHeight="20"/>
+                <RowConstraints percentHeight="80"/>
+            </rowConstraints>
+            <GridPane GridPane.rowIndex="0">
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee" wrappingWidth="233.99998933076859" GridPane.columnIndex="0"/>
+                <DatePicker fx:id="datepicker_three" layoutX="324.0" layoutY="96.0" GridPane.columnIndex="1"/>
+                <Button fx:id="validateButton_three" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#get_R3" text="Valider" GridPane.columnIndex="2" />
+            </GridPane>
+           <GridPane GridPane.rowIndex="1">
+               <TableView fx:id="tableRequestThree" prefHeight="375.0" prefWidth="600.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                   <columns>
+                       <TableColumn text="Dechet">
+                           <cellValueFactory><PropertyValueFactory property="Dechet" /></cellValueFactory>
+                       </TableColumn>
+                       <TableColumn text="Quantite">
+                           <cellValueFactory><PropertyValueFactory property="Quantite" /></cellValueFactory>
+                       </TableColumn>
+                   </columns>
+               </TableView>
+           </GridPane>
+        </GridPane>
 
         <!--===REQUETE 4===-->
         <GridPane fx:id="panerequete_four" layoutX="23.0" layoutY="14.0" prefHeight="380.0" prefWidth="577.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
