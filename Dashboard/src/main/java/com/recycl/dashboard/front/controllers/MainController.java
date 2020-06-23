@@ -7,7 +7,7 @@ import com.recycl.dashboard.back.Beans.Employe;
 import com.recycl.dashboard.back.Beans.Entreprise;
 import com.recycl.dashboard.back.DAO.*;
 import com.recycl.dashboard.front.Models.DemandeEnlevementModel;
-import com.recycl.dashboard.front.Models.RequestTwoModel;
+import com.recycl.dashboard.front.Models.RequestTwoThreeModel;
 import com.recycl.dashboard.front.helpers.AlertHelper;
 import com.recycl.dashboard.front.helpers.UIPaneHelper;
 import javafx.collections.FXCollections;
@@ -45,7 +45,7 @@ public class MainController {
     @FXML
     public TableView<DemandeEnlevementModel> tableRequestOne;
     @FXML
-    public TableView<RequestTwoModel> tableRequestTwo;
+    public TableView<RequestTwoThreeModel> tableRequestTwo;
     @FXML
     public TableView<DemandeEnlevementModel> tableRequestSix;
     private Window owner;
@@ -162,19 +162,26 @@ public class MainController {
                 DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
                 DemandeEnlevement demande = demandeEnlevementDAO.GetById(Integer.parseInt(request2_input.getCharacters().toString()));
 
-                DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
-                Map<String, Integer> listDechets = dechetDAO.GetTypesDechetsByDemande(demande.getId());
+                ArrayList<DemandeEnlevement> demandes = new ArrayList<>();
+                demandes.add(demande);
+
+                DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(DAOConnection.ConnectDb());
+                Map<Integer, Integer> listDechets = detailDemandeDechetDAO.GetDechetsAndQuantity(demandes);
 
                 System.out.println("Raison sociale entreprise : " + demande.getEntreprise().getRaisonSociale());
-                System.out.println("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye().getNom() + " " +demande.getTournee().getEmploye().getPrenom()+", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
+                System.out.println("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye().getNom() + " " + demande.getTournee().getEmploye().getPrenom() +", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
+                DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
 
                 Request2_EntrepriseInfo.setText("Raison sociale entreprise : " + demande.getEntreprise().getRaisonSociale());
                 Request2_TourneeInfo.setText("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye().getNom() + " " +demande.getTournee().getEmploye().getPrenom()+", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
                 tableRequestTwo.getItems().clear();
-                for (Map.Entry<String, Integer> entry : listDechets.entrySet()) {
-                    System.out.println("Type : " + entry.getKey() + ", Value : " + entry.getValue());
-                    RequestTwoModel requestTwoModel = new RequestTwoModel(entry.getKey(), entry.getValue());
-                    tableRequestTwo.getItems().add(requestTwoModel);
+                for (Map.Entry<Integer, Integer> entry : listDechets.entrySet()) {
+                    int idDechet = entry.getKey();
+                    int quantite = entry.getValue();
+                    Dechet dechet = dechetDAO.GetById(idDechet);
+
+                    RequestTwoThreeModel requestTwoThreeModel = new RequestTwoThreeModel(dechet.getType(), quantite);
+                    tableRequestTwo.getItems().add(requestTwoThreeModel);
                 }
 
                 UIPaneHelper.Show(panerequete_two);

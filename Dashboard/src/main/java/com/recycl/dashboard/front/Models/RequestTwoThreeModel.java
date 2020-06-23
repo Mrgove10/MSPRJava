@@ -1,13 +1,13 @@
 package com.recycl.dashboard.front.Models;
 
-public class RequestTwoModel {
+public class RequestTwoThreeModel {
     private String Dechet;
     private int Quantite;
 
-    public RequestTwoModel() {
+    public RequestTwoThreeModel() {
     }
 
-    public RequestTwoModel(String dechet, int quantite) {
+    public RequestTwoThreeModel(String dechet, int quantite) {
         Dechet = dechet;
         Quantite = quantite;
     }
