@@ -33,6 +33,7 @@ public class CamionDAO {
                 camion.setDateAchat(rs.getDate("DATE_ACHAT"));
                 camion.setModele(rs.getString("MODELE"));
                 camion.setMarque(rs.getString("MARQUE"));
+                camion.setMaxPlaces(rs.getInt("MAX_PLACES"));
                 idSite = rs.getInt("ID_SITE");
             }
 
