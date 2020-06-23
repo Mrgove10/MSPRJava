@@ -19,7 +19,10 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MainController {
 
@@ -86,7 +89,7 @@ public class MainController {
             System.out.println("-- Paramètres : Numéro de la demande (int)");
 
             DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-            DemandeEnlevement demande = demandeEnlevementDAO.GetByNumero(0);
+            DemandeEnlevement demande = demandeEnlevementDAO.GetById(0);
 
             DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
             Map<String, Integer> listDechets = dechetDAO.GetTypesDechetsByDemande(demande.getId());
@@ -128,8 +131,11 @@ public class MainController {
     @FXML
     private void get_R4(ActionEvent actionEvent) throws SQLException, NullPointerException, IOException {
         EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
+        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(Integer.parseInt(input_int.getText())).entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
-        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(Integer.parseInt(input_int.getText()));
         for (Map.Entry<Employe, Integer> entry : listEmployes.entrySet()) {
             Employe employe = entry.getKey();
             int nbTournee = entry.getValue();
