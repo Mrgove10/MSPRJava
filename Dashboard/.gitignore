@@ -74,6 +74,8 @@ fabric.properties
 
 out/
 
+target/
+
 # Compiled class file
 *.class
 

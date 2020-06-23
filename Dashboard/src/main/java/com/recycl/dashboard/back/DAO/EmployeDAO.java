@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+// embauche,licenciement, indisponibilité
 public class EmployeDAO {
     protected Connection connect = null;
 
