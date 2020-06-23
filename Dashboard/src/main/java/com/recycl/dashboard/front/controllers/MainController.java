@@ -5,10 +5,13 @@ import com.recycl.dashboard.back.Beans.Dechet;
 import com.recycl.dashboard.back.Beans.DemandeEnlevement;
 import com.recycl.dashboard.back.Beans.Employe;
 import com.recycl.dashboard.back.DAO.DechetDAO;
+import com.recycl.dashboard.back.DAO.DemandeATraiterDAO;
 import com.recycl.dashboard.back.DAO.DemandeEnlevementDAO;
 import com.recycl.dashboard.back.DAO.EmployeDAO;
+import com.recycl.dashboard.front.Models.DemandeEnlevementModel;
 import com.recycl.dashboard.front.helpers.AlertHelper;
 import com.recycl.dashboard.front.helpers.UIPaneHelper;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,20 +22,20 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MainController {
-
+    private ObservableList<DemandeEnlevementModel> DemandeData = FXCollections.observableArrayList();
     @FXML
     public TextField input_int;
     @FXML
     public ListView<String> listView;
     private Window owner;
     private ScreenController screenController;
+    @FXML
+    public TableView<DemandeEnlevementModel> tableRequestSix;
     @FXML
     private DatePicker datepicker_one;
     @FXML
@@ -41,6 +44,8 @@ public class MainController {
     private Pane panerequete_two;
     @FXML
     private Pane panerequete_four;
+    @FXML
+    private Pane panerequete_six;
     @FXML
     private Pane buttonPane;
     @FXML
@@ -56,7 +61,7 @@ public class MainController {
         //three
         //four
         //five
-        //six
+        UIPaneHelper.AddPane("panerequete_siw", panerequete_six);
         //seven
         //eight
         //nine
@@ -215,6 +220,20 @@ public class MainController {
         // Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée
         System.out.println("-------------------- REQUEST 6 --------------------");
         System.out.println("// Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée");
+        DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+        DemandeATraiterDAO demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
+        List<DemandeEnlevement> demandes = Stream.concat(demandeEnlevementDAO.GetDemandesNotInTournee().stream(), demandeATraiterDAO.GetDemandesInJournal().stream()).collect(Collectors.toList());
+        ArrayList<DemandeEnlevement> newList = removeDuplicates(demandes);
+        DemandeData.clear();
+        tableRequestSix.getItems().clear();
+        for (DemandeEnlevement demande : newList) {
+            System.out.println("Demande N° : " + demande.getId());
+            DemandeEnlevementModel demandeEnlevementModel = new DemandeEnlevementModel(demande.getId(), demande.getEntreprise().getRaisonSociale(), (java.sql.Date) demande.getTournee().getDate(), demande.getDateDemande(), demande.getDateEnlevement());
+            DemandeData.add(demandeEnlevementModel);
+        }
+        tableRequestSix.getItems().addAll(DemandeData);
+
+        UIPaneHelper.Show(panerequete_six);
     }
 
     @FXML
@@ -262,5 +281,28 @@ public class MainController {
         // -- Si aucune possibilité sur les 3 dates -7 inscrire la demande dans un journal de demandes à traiter
     }
 
+
+    // Function to remove duplicates from an ArrayList
+    private static ArrayList<DemandeEnlevement> removeDuplicates(List<DemandeEnlevement> list)
+    {
+        ArrayList<DemandeEnlevement> newList = new ArrayList<DemandeEnlevement>();
+
+        for (DemandeEnlevement element : list) {
+            boolean isFind = false;
+            for (DemandeEnlevement itemToCompare :newList) {
+                if (element.getId() == itemToCompare.getId()) {
+                    isFind = true;
+                    break;
+                }
+            }
+
+            if (!isFind) {
+
+                newList.add(element);
+            }
+        }
+
+        return newList;
+    }
 
 }

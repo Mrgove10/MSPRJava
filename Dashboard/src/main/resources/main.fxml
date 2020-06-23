@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <AnchorPane minHeight="150.0" minWidth="150.0" prefHeight="400.0" prefWidth="600.0"
             xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.recycl.dashboard.front.controllers.MainController">
@@ -89,6 +90,32 @@
                 </children>
             </VBox>
         </GridPane>
+
+        <!--===REQUETE 6===-->
+        <GridPane fx:id="panerequete_six" layoutX="23.0" layoutY="14.0" minWidth="-Infinity" prefHeight="1000.0" prefWidth="2000.0">
+            <children>
+                <TableView fx:id="tableRequestSix" prefHeight="1000.0" prefWidth="2000.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn text="Id" >
+                            <cellValueFactory><PropertyValueFactory property="Id"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Entreprise">
+                            <cellValueFactory><PropertyValueFactory property="Entreprise"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Tournee">
+                            <cellValueFactory><PropertyValueFactory property="Tournee"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Date Demande">
+                            <cellValueFactory><PropertyValueFactory property="DateDemande"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Date Enlevement">
+                            <cellValueFactory><PropertyValueFactory property="DateEnlevement"/></cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+            </children>
+        </GridPane>
+
     </children>
     <Button mnemonicParsing="false" onAction="#handleHome" text="HOME"/>
 </AnchorPane>

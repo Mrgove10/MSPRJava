@@ -1,11 +1,14 @@
 package com.recycl.dashboard.front.helpers;
 
+import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 
+import javax.swing.text.TabableView;
 import java.util.HashMap;
 
 public class UIPaneHelper {
     public static HashMap<String, Pane> panes;
+    public static HashMap<String, TableView> tables;
 
     /**
      * Initialise the helper
