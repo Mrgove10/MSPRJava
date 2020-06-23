@@ -7,6 +7,7 @@ import com.recycl.dashboard.back.Beans.Employe;
 import com.recycl.dashboard.back.Beans.Entreprise;
 import com.recycl.dashboard.back.DAO.*;
 import com.recycl.dashboard.front.Models.DemandeEnlevementModel;
+import com.recycl.dashboard.front.Models.RequestFiveModel;
 import com.recycl.dashboard.front.Models.RequestFourModel;
 import com.recycl.dashboard.front.Models.RequestTwoThreeModel;
 import com.recycl.dashboard.front.helpers.AlertHelper;
@@ -39,7 +40,7 @@ public class MainController {
     public Label Request2_TourneeInfo;
 
     @FXML
-    public ListView<String> listView_five;
+    public ListView<RequestFiveModel> listView_five;
 
     @FXML
     public ListView<String> listView;
@@ -284,14 +285,24 @@ public class MainController {
     @FXML
     protected void handleButtonR5() throws NullPointerException, SQLException {
         EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
-        listView_five.getItems().add("azer");
+        ArrayList<Entreprise> arrayList = entrepriseDAO.GetAll();
+
+        for (Entreprise entreprise: arrayList) {
+
+            RequestFiveModel requestFiveModel = new RequestFiveModel(entreprise.getRaisonSociale(), entreprise.getId());
+
+            listView_five.getItems().add(requestFiveModel);
+        }
+
         UIPaneHelper.Show("panerequete_five");
     }
 
     @FXML
     protected void get_R5() throws NullPointerException, SQLException {
-        try {
+        FocusModel<RequestFiveModel> focused = listView_five.getFocusModel();
 
+        EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
+        Entreprise entreprise = entrepriseDAO.GetById(focused.getFocusedItem().getId());
 
             FocusModel<String> focused = listView_five.getFocusModel();
 
