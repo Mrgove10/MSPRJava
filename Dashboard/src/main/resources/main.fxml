@@ -90,4 +90,5 @@
             </VBox>
         </GridPane>
     </children>
+    <Button mnemonicParsing="false" onAction="#handleHome" text="HOME"/>
 </AnchorPane>

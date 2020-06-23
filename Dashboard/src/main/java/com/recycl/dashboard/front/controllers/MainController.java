@@ -65,6 +65,11 @@ public class MainController {
         UIPaneHelper.Show("buttonPane");
     }
 
+    @FXML
+    protected void handleHome(){
+        UIPaneHelper.Show("buttonPane");
+    }
+
     /**
      * Handle the click if the button for the first request.
      *
@@ -100,9 +105,12 @@ public class MainController {
                 if (demandes.isEmpty()) {
                     AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Information", "Il n'y a aucune demande d'enlevement pour cette date");
                 } else {
+                    listView.getItems().clear();
+                    ObservableList<String> items = listView.getItems();
                     for (DemandeEnlevement demande : demandes) {
-                        System.out.println("Demande N° : " + demande.getId());
+                        items.add("Demande N° : " + demande.getId());
                     }
+                    UIPaneHelper.Show("showList");
                 }
             }
         } catch (Exception ex) {
@@ -183,6 +191,7 @@ public class MainController {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
+        listView.getItems().clear();
         ObservableList<String> items = listView.getItems();
 
         for (Map.Entry<Employe, Integer> entry : listEmployes.entrySet()) {
