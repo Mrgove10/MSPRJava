@@ -38,12 +38,21 @@
 
         <!--===REQUETE 1===-->
         <GridPane fx:id="panerequete_one" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-            <children>
-                <Button fx:id="validateButton_one" mnemonicParsing="false" onAction="#get_R1" text="Valider" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee" wrappingWidth="233.99998933076859" />
-                <DatePicker fx:id="datepicker_one" layoutX="324.0" layoutY="96.0" />
-            </children>
-            <children>
+            <rowConstraints>
+                <RowConstraints percentHeight="20"/>
+                <RowConstraints percentHeight="80"/>
+            </rowConstraints>
+            <GridPane GridPane.rowIndex="0">
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee :" wrappingWidth="233.99998933076859" GridPane.columnIndex="0"/>
+                <DatePicker fx:id="datepicker_one" layoutX="324.0" layoutY="96.0" GridPane.columnIndex="1"/>
+                <Button fx:id="validateButton_one" mnemonicParsing="false" onAction="#get_R1" text="Valider" GridPane.columnIndex="2"/>
+            </GridPane>
+            <GridPane GridPane.rowIndex="1">
                 <TableView fx:id="tableRequestOne" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                     <columns>
                         <TableColumn text="Id">
@@ -63,16 +72,7 @@
                         </TableColumn>
                     </columns>
                 </TableView>
-            </children>
-         <columnConstraints>
-            <ColumnConstraints />
-            <ColumnConstraints />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
+            </GridPane>
         </GridPane>
 
         <!--===REQUETE 2===-->
