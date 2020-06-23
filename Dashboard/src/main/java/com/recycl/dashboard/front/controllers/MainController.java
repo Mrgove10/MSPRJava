@@ -29,9 +29,7 @@ public class MainController {
     public TextField input_int;
     @FXML
     public ListView<String> listView;
-    @FXML
-    public TableView<DemandeEnlevementModel> tableRequestSix;
-    private ObservableList<DemandeEnlevementModel> DemandeData = FXCollections.observableArrayList();
+
     private Window owner;
     private ScreenController screenController;
 
