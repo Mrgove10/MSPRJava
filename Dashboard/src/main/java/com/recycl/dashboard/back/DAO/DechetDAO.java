@@ -124,4 +124,37 @@ public class DechetDAO {
         return null;
     }
 
+    public ArrayList<Dechet> GetAll(){
+        ArrayList<Dechet> listDechets = new ArrayList<>();
+
+        try {
+            String query = "SELECT * " +
+                    "FROM MSPR_DECHET ";
+            PreparedStatement ps = this.connect.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                Dechet dechet = new Dechet();
+
+                dechet.setId(rs.getInt("ID"));
+                dechet.setType(rs.getString("TYPE_DECHET"));
+                dechet.setDanger(rs.getInt("NIV_DANGER"));
+
+                listDechets.add(dechet);
+            }
+
+            rs.close();
+
+
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            if (this.connect != null) {
+                return listDechets;
+            }
+        }
+
+        return null;
+    }
 }
