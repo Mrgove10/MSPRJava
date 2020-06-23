@@ -6,6 +6,7 @@ import com.recycl.dashboard.back.Beans.DemandeEnlevement;
 import com.recycl.dashboard.back.Beans.Employe;
 import com.recycl.dashboard.back.DAO.*;
 import com.recycl.dashboard.front.Models.DemandeEnlevementModel;
+import com.recycl.dashboard.front.Models.RequestTwoModel;
 import com.recycl.dashboard.front.helpers.AlertHelper;
 import com.recycl.dashboard.front.helpers.UIPaneHelper;
 import com.recycl.dashboard.front.helpers.CustomUtils;
@@ -31,6 +32,15 @@ public class MainController {
     @FXML
     public TextField input_int;
     @FXML
+    public TextField request2_input;
+
+    @FXML
+    public Label Request2_EntrepriseInfo;
+    @FXML
+    public Label Request2_TourneeInfo;
+
+
+    @FXML
     public ListView<String> listView;
 
     private Window owner;
@@ -39,13 +49,15 @@ public class MainController {
     @FXML
     public TableView<DemandeEnlevementModel> tableRequestOne;
     @FXML
+    public TableView<RequestTwoModel> tableRequestTwo;
+    @FXML
     public TableView<DemandeEnlevementModel> tableRequestSix;
 
     @FXML
     private DatePicker datepicker_one;
-
     @FXML
     private DatePicker datepicker_three;
+
     @FXML
     private Pane panerequete_one;
     @FXML
@@ -141,19 +153,30 @@ public class MainController {
             System.out.println("-------------------- REQUEST 2 --------------------");
             System.out.println("// Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet");
             System.out.println("-- Paramètres : Numéro de la demande (int)");
+            if (request2_input.getCharacters() == null) { //in case the user doesnt put a date
+                AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Information", "Valeur invalide : La date ne peut pas etre vide");
+            } else{
+                DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                DemandeEnlevement demande = demandeEnlevementDAO.GetById(Integer.parseInt(request2_input.getCharacters().toString()));
 
-            DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
-            DemandeEnlevement demande = demandeEnlevementDAO.GetById(0);
+                DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
+                Map<String, Integer> listDechets = dechetDAO.GetTypesDechetsByDemande(demande.getId());
 
-            DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
-            Map<String, Integer> listDechets = dechetDAO.GetTypesDechetsByDemande(demande.getId());
+                System.out.println("Raison sociale entreprise : " + demande.getEntreprise().getRaisonSociale());
+                System.out.println("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye().getNom() + " " +demande.getTournee().getEmploye().getPrenom()+", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
 
-            System.out.println("Raison sociale entreprise : " + demande.getEntreprise().getRaisonSociale());
-            System.out.println("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye() + ", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
+                Request2_EntrepriseInfo.setText("Raison sociale entreprise : " + demande.getEntreprise().getRaisonSociale());
+                Request2_TourneeInfo.setText("Tournée du " + demande.getTournee().getDate() + ", par " + demande.getTournee().getEmploye().getNom() + " " +demande.getTournee().getEmploye().getPrenom()+", avec le camion " + demande.getTournee().getCamion().getNumMatricule());
+                tableRequestTwo.getItems().clear();
+                for (Map.Entry<String, Integer> entry : listDechets.entrySet()) {
+                    System.out.println("Type : " + entry.getKey() + ", Value : " + entry.getValue());
+                    RequestTwoModel requestTwoModel = new RequestTwoModel(entry.getKey(), entry.getValue());
+                    tableRequestTwo.getItems().add(requestTwoModel);
+                }
 
-            for (Map.Entry<String, Integer> entry : listDechets.entrySet()) {
-                System.out.println("Type : " + entry.getKey() + ", Value : " + entry.getValue());
+                UIPaneHelper.Show(panerequete_two);
             }
+
 
         } catch (Exception ex) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
