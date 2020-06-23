@@ -9,6 +9,7 @@
             xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.recycl.dashboard.front.controllers.MainController">
     <children>
+        <Button mnemonicParsing="false" onAction="#handleHome" text="HOME"/>
         <GridPane fx:id="buttonPane" prefHeight="400.0" prefWidth="600.0" visible="false">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
@@ -59,6 +60,16 @@
                 <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee"
                       wrappingWidth="233.99998933076859"/>
             </children>
+        </Pane>
+        <!--===REQUETE 3===-->
+        <Pane fx:id="panerequete_three" prefHeight="400.0" prefWidth="600.0">
+            <children>
+                <Button fx:id="validateButton_three" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#get_R3" text="Valider"
+                        GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <Text layoutX="66.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de la tournee"
+                      wrappingWidth="233.99998933076859"/>
+            </children>
+            <DatePicker fx:id="datepicker_three" layoutX="324.0" layoutY="96.0"/>
         </Pane>
         <!--===REQUETE 4===-->
         <GridPane fx:id="panerequete_four" layoutX="23.0" layoutY="14.0" minWidth="-Infinity" prefHeight="400.0"
@@ -117,5 +128,4 @@
         </GridPane>
 
     </children>
-    <Button mnemonicParsing="false" onAction="#handleHome" text="HOME"/>
 </AnchorPane>

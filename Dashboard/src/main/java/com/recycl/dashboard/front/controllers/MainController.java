@@ -4,10 +4,7 @@ import com.recycl.dashboard.Configuration.DAOConnection;
 import com.recycl.dashboard.back.Beans.Dechet;
 import com.recycl.dashboard.back.Beans.DemandeEnlevement;
 import com.recycl.dashboard.back.Beans.Employe;
-import com.recycl.dashboard.back.DAO.DechetDAO;
-import com.recycl.dashboard.back.DAO.DemandeATraiterDAO;
-import com.recycl.dashboard.back.DAO.DemandeEnlevementDAO;
-import com.recycl.dashboard.back.DAO.EmployeDAO;
+import com.recycl.dashboard.back.DAO.*;
 import com.recycl.dashboard.front.Models.DemandeEnlevementModel;
 import com.recycl.dashboard.front.helpers.AlertHelper;
 import com.recycl.dashboard.front.helpers.UIPaneHelper;
@@ -27,21 +24,25 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MainController {
-    private ObservableList<DemandeEnlevementModel> DemandeData = FXCollections.observableArrayList();
     @FXML
     public TextField input_int;
     @FXML
     public ListView<String> listView;
+    @FXML
+    public TableView<DemandeEnlevementModel> tableRequestSix;
+    private ObservableList<DemandeEnlevementModel> DemandeData = FXCollections.observableArrayList();
     private Window owner;
     private ScreenController screenController;
     @FXML
-    public TableView<DemandeEnlevementModel> tableRequestSix;
-    @FXML
     private DatePicker datepicker_one;
+    @FXML
+    private DatePicker datepicker_three;
     @FXML
     private Pane panerequete_one;
     @FXML
     private Pane panerequete_two;
+    @FXML
+    private Pane panerequete_three;
     @FXML
     private Pane panerequete_four;
     @FXML
@@ -51,6 +52,28 @@ public class MainController {
     @FXML
     private Pane showList;
 
+    // Function to remove duplicates from an ArrayList
+    private static ArrayList<DemandeEnlevement> removeDuplicates(List<DemandeEnlevement> list) {
+        ArrayList<DemandeEnlevement> newList = new ArrayList<DemandeEnlevement>();
+
+        for (DemandeEnlevement element : list) {
+            boolean isFind = false;
+            for (DemandeEnlevement itemToCompare : newList) {
+                if (element.getId() == itemToCompare.getId()) {
+                    isFind = true;
+                    break;
+                }
+            }
+
+            if (!isFind) {
+
+                newList.add(element);
+            }
+        }
+
+        return newList;
+    }
+
     public void initialize() {
         System.out.println("Initializing Main Controller JFX");
 
@@ -58,6 +81,7 @@ public class MainController {
         UIPaneHelper.AddPane("panerequete_four", panerequete_four);
         UIPaneHelper.AddPane("panerequete_one", panerequete_one);
         UIPaneHelper.AddPane("panerequete_two", panerequete_two);
+        UIPaneHelper.AddPane("panerequete_three", panerequete_three);
         //three
         //four
         //five
@@ -71,7 +95,7 @@ public class MainController {
     }
 
     @FXML
-    protected void handleHome(){
+    protected void handleHome() {
         UIPaneHelper.Show("buttonPane");
     }
 
@@ -134,7 +158,7 @@ public class MainController {
     }
 
     /**
-     * Handle the validation click of the first request.
+     * Handle the validation click of the second request.
      *
      * @throws NullPointerException
      */
@@ -164,13 +188,60 @@ public class MainController {
         }
     }
 
-
+    /**
+     * Handle the click if the button for the third request.
+     *
+     * @throws NullPointerException
+     */
     @FXML
     protected void handleButtonR3() throws SQLException, NullPointerException {
-        // Afficher la quantité totale récupérée par type de déchet pour un mois/année donné
-        System.out.println("-------------------- REQUEST 3 --------------------");
-        System.out.println("// Afficher la quantité totale récupérée par type de déchet pour un mois/année donné");
-        System.out.println("-- Paramètres : Mois (int) & Année (int)");
+        UIPaneHelper.Show(panerequete_three);
+        datepicker_three.setValue(LocalDate.now());
+    }
+
+
+    /**
+     * Handle the validation click of the third request.
+     *
+     * @throws NullPointerException
+     */
+    @FXML
+    private void get_R3() {
+        try {
+            if (datepicker_three.getValue() == null) { //in case the user doesnt put a date
+                AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Information", "Valeur invalide : La date ne peut pas etre vide");
+            } else {
+                System.out.println("date choisi par le user : " + datepicker_three.getValue().toString()); //debug
+
+                // Afficher la quantité totale récupérée par type de déchet pour un mois/année donné
+
+                System.out.println("-------------------- REQUEST 3 --------------------");
+                System.out.println("// Afficher la quantité totale récupérée par type de déchet pour un mois/année donné");
+                System.out.println("-- Paramètres : Mois (int) & Année (int)");
+
+                DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                ArrayList<DemandeEnlevement> demandes = demandeEnlevementDAO.GetDemandesByMonthYear(datepicker_three.getValue().getMonthValue(), datepicker_three.getValue().getYear());
+
+                DetailDemandeDechetDAO detailDemandeDechetDAO = new DetailDemandeDechetDAO(DAOConnection.ConnectDb());
+                Map<Integer, Integer> list = detailDemandeDechetDAO.GetDechetsAndQuantity(demandes);
+
+                DechetDAO dechetDAO = new DechetDAO(DAOConnection.ConnectDb());
+                System.out.println("Pour le mois et l'année 09/2018, voici les déchets récupérés :");
+
+                if (list.isEmpty()) {
+                    AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Information", "Il n'y a aucune demande d'enlevement pour cette date");
+                } else {
+                    for (Map.Entry<Integer, Integer> entry : list.entrySet()) {
+                        int idDechet = entry.getKey();
+                        int quantite = entry.getValue();
+                        Dechet dechet = dechetDAO.GetById(idDechet);
+                        System.out.println("Pour le déchet : " + dechet.getType() + ", la quantité est de : " + quantite);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, ex.getMessage(), ex.toString());
+        }
     }
 
     @FXML
@@ -279,30 +350,6 @@ public class MainController {
         // -- Inscription dans une tournée déjà créée pour la date demandée
         // -- A condition qu'il reste une place dans la tournée (sinon inscrire dans une tournée le lendemain ou surlendemain)
         // -- Si aucune possibilité sur les 3 dates -7 inscrire la demande dans un journal de demandes à traiter
-    }
-
-
-    // Function to remove duplicates from an ArrayList
-    private static ArrayList<DemandeEnlevement> removeDuplicates(List<DemandeEnlevement> list)
-    {
-        ArrayList<DemandeEnlevement> newList = new ArrayList<DemandeEnlevement>();
-
-        for (DemandeEnlevement element : list) {
-            boolean isFind = false;
-            for (DemandeEnlevement itemToCompare :newList) {
-                if (element.getId() == itemToCompare.getId()) {
-                    isFind = true;
-                    break;
-                }
-            }
-
-            if (!isFind) {
-
-                newList.add(element);
-            }
-        }
-
-        return newList;
     }
 
 }
