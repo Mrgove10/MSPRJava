@@ -238,21 +238,31 @@ public class MainBDD {
         for (DemandeEnlevement demande : newList) {
             System.out.println("Demande N° : " + demande.getId());
             boolean canBeInsertInTournee = false;
+
             // get entreprise -> get ville de l'address
             String ville = demande.getEntreprise().getAdresse().getVille();
-            // get tournee aujourdhui => get camion => get site => get ville adresse
+
+            // get all tournee aujourdhui
             ArrayList<Tournee> tourneesAvailable = new ArrayList<>();
             for (Tournee tournee:tourneeDAO.GetTodayTournees()) {
+                // get camion => get site => get ville adresse
                 String tempVille = tournee.getCamion().getSite().getAdresse().getVille();
+                // if les 2 sont sur le meme site alors add
                 if (ville.equals(tempVille)){
                     tourneesAvailable.add(tournee);
                 }
             }
 
+            // pour chaque tournee disponible
             for (Tournee tournee:tourneesAvailable) {
+                // get le nombre de place max
                 int maxPlaces = tournee.getCamion().getMaxPlaces();
+
+                // get le nombre de demandes pour la tournee
                 demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
                 int numberEnlevement = demandeEnlevementDAO.GetNumberDemandeForTournee(tournee.getId());
+
+                // si il y a encore de la place dans la tournee
                 if(numberEnlevement < maxPlaces){
                     // insert demande for this tournee
                     demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
@@ -261,21 +271,32 @@ public class MainBDD {
                     break;
                 }
             }
+
+            // si la demande n'a pas été inscrite dans une tournée pour aujourd'hui
             if (canBeInsertInTournee == false){
-                // si pas de place => get tournee demain
+                // récupération des tournees pour demain
                 tourneesAvailable = new ArrayList<>();
                 tourneeDAO = new TourneeDAO(DAOConnection.ConnectDb());
                 for (Tournee tournee:tourneeDAO.GetTomorrowTournees()) {
+                    // get camion => get site => get ville adresse
                     String tempVille = tournee.getCamion().getSite().getAdresse().getVille();
+
+                    // if les 2 sont sur le meme site alors add
                     if (ville.equals(tempVille)){
                         tourneesAvailable.add(tournee);
                     }
                 }
 
+                // pour chaque tournee disponible
                 for (Tournee tournee:tourneesAvailable) {
+                    // get le nombre de place max
                     int maxPlaces = tournee.getCamion().getMaxPlaces();
+
+                    // get le nombre de demandes pour la tournee
                     demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
                     int numberEnlevement = demandeEnlevementDAO.GetNumberDemandeForTournee(tournee.getId());
+
+                    // si il y a encore de la place dans la tournee
                     if(numberEnlevement < maxPlaces){
                         // insert demande for this tournee
                         demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
@@ -284,21 +305,32 @@ public class MainBDD {
                         break;
                     }
                 }
+
+                // si la demande n'a pas été inscrite dans une tournée pour demain
                 if (canBeInsertInTournee == false){
-                    // si pas de place => get tournee après-demain
+                    // récupération des tournees pour apres demain
                     tourneesAvailable = new ArrayList<>();
                     tourneeDAO = new TourneeDAO(DAOConnection.ConnectDb());
                     for (Tournee tournee:tourneeDAO.GetDayAfterTomorrowTournees()) {
+                        // get camion => get site => get ville adresse
                         String tempVille = tournee.getCamion().getSite().getAdresse().getVille();
+
+                        // if les 2 sont sur le meme site alors add
                         if (ville.equals(tempVille)){
                             tourneesAvailable.add(tournee);
                         }
                     }
 
+                    // pour chaque tournee disponible
                     for (Tournee tournee:tourneesAvailable) {
+                        // get le nombre de place max
                         int maxPlaces = tournee.getCamion().getMaxPlaces();
+
+                        // get le nombre de demandes pour la tournee
                         demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
                         int numberEnlevement = demandeEnlevementDAO.GetNumberDemandeForTournee(tournee.getId());
+
+                        // si il y a encore de la place dans la tournee
                         if(numberEnlevement < maxPlaces){
                             // insert demande for this tournee
                             demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
@@ -307,8 +339,10 @@ public class MainBDD {
                             break;
                         }
                     }
+
+                    // si il n'y a pas de places pour les 3 prochains jours
                     if (canBeInsertInTournee == false){
-                        // si pas de place => insert dans journal de demandes à traiter
+                        // insert dans journal de demandes à traiter
                         demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
                         demandeATraiterDAO.Insert(demande.getId());
                     }
@@ -316,6 +350,7 @@ public class MainBDD {
 
             }
 
+            // si la demande a été attribué à une tournée
             if (canBeInsertInTournee == true){
                 // delete du journal
                 demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
