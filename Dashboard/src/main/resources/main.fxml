@@ -5,6 +5,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <AnchorPane minHeight="150.0" minWidth="150.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.recycl.dashboard.front.controllers.MainController">
     <children>
         <Button mnemonicParsing="false" onAction="#handleHome" text="HOME" />
@@ -173,7 +175,12 @@
         <Pane fx:id="panerequete_five" prefHeight="400.0" prefWidth="600.0">
             <children>
                 <Button fx:id="validateButton_five" layoutX="274.0" layoutY="361.0" mnemonicParsing="false" onAction="#get_R5" text="Valider" />
-                <ListView fx:id="listView_five" layoutY="47.0" prefHeight="313.0" prefWidth="600.0" />
+                <ListView fx:id="listView_five" layoutY="47.0" prefHeight="313.0" prefWidth="600.0">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                        </FXCollections>
+                    </items>
+                </ListView>
                 <Text layoutX="183.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entreprises" textAlignment="CENTER" wrappingWidth="233.99998933076859">
                     <font>
                         <Font size="24.0" />
