@@ -1,0 +1,34 @@
+create table MSPR_ADRESSE
+(
+    ID     NUMBER(10)   not null
+        constraint PK_ADRESSE
+            primary key,
+    NO_RUE NUMBER(3),
+    RUE    VARCHAR2(50),
+    CP     NUMBER(5)    not null,
+    VILLE  VARCHAR2(50) not null
+)
+/
+
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (6, 15, 'rue Pasteur', 75004, 'Paris');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (1, 23, 'rue des Accassias', 95800, 'Jouy-le-Moutier');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (2, 218, 'Avenue des ponts', 75019, 'Paris');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (3, 56, 'allÃ©e des Sycomores', 94400, 'Vitry-sur-Seine');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (4, 36, 'rue des grands espoirs', 94490, 'Ivry');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (5, 78, 'Boulevard Jourdan', 95000, 'Cergy');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (7, 152, 'Boulevard des milles fleurs', 59160, 'Lille');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (8, 10, 'Boulevard de Pontoise', 95000, 'Pontoise');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (9, 18, 'Rue des Nouvelles', 95490, 'VaurÃ©al');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (10, 145, 'rue des Allouettes', 78000, 'Saint Germain');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (11, 84, 'avenue de la RÃ©publique', 75011, 'Paris');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (12, 140, 'rue du faubourg Saint HonorÃ©', 75008, 'Paris');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (13, 32, 'rue du GÃ©nÃ©ral Beuret', 75015, 'Paris');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (14, 26, 'rue Nicolai', 7512, 'Paris');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (15, 7, 'rue de logelbach', 75017, 'Paris');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (16, 51, 'rue Anjou', 75008, 'Paris');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (17, 135, 'Boulevard de Sebastopol', 75002, 'Paris');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (18, 12, 'rue Dauphine', 75006, 'Paris');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (19, 3, 'rue du colonel Moll', 75017, 'Paris');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (20, 18, 'rue Saint Ferdinand', 75017, 'Paris');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (21, 103, 'rue de Rennes', 75006, 'Paris');
+INSERT INTO SYSTEM.MSPR_ADRESSE (ID, NO_RUE, RUE, CP, VILLE) VALUES (22, 27, 'rue de Linne', 75005, 'Paris');
