@@ -1,10 +1,7 @@
 package com.recycl.dashboard.front.controllers;
 
 import com.recycl.dashboard.Configuration.DAOConnection;
-import com.recycl.dashboard.back.Beans.Dechet;
-import com.recycl.dashboard.back.Beans.DemandeEnlevement;
-import com.recycl.dashboard.back.Beans.Employe;
-import com.recycl.dashboard.back.Beans.Entreprise;
+import com.recycl.dashboard.back.Beans.*;
 import com.recycl.dashboard.back.DAO.*;
 import com.recycl.dashboard.front.Models.DemandeEnlevementModel;
 import com.recycl.dashboard.front.Models.RequestFiveModel;
@@ -429,14 +426,138 @@ public class MainController {
     }
 
     @FXML
-    protected void handleButtonR9() throws NullPointerException {
-        UIPaneHelper.Show("panerequete_nine");
-        // Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée
-        System.out.println("-------------------- REQUEST 9 --------------------");
-        System.out.println("// Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée");
-        // -- Inscription dans une tournée déjà créée pour la date demandée
-        // -- A condition qu'il reste une place dans la tournée (sinon inscrire dans une tournée le lendemain ou surlendemain)
-        // -- Si aucune possibilité sur les 3 dates -7 inscrire la demande dans un journal de demandes à traiter
+    protected void handleButtonR9() throws NullPointerException, SQLException {
+//        UIPaneHelper.Show("panerequete_nine");
+        DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+        DemandeATraiterDAO demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
+        TourneeDAO tourneeDAO = new TourneeDAO(DAOConnection.ConnectDb());
+
+        List<DemandeEnlevement> demandes = Stream.concat(demandeEnlevementDAO.GetDemandesNotInTournee().stream(), demandeATraiterDAO.GetDemandesInJournal().stream()).collect(Collectors.toList());
+        ArrayList<DemandeEnlevement> newList = removeDuplicates(demandes);
+        System.out.println("Listes des demandes non inscrites dans une tournée :");
+        for (DemandeEnlevement demande : newList) {
+            System.out.println("Demande N° : " + demande.getId());
+            boolean canBeInsertInTournee = false;
+
+            // get entreprise -> get ville de l'address
+            String ville = demande.getEntreprise().getAdresse().getVille();
+
+            // get all tournee aujourdhui
+            ArrayList<Tournee> tourneesAvailable = new ArrayList<>();
+            for (Tournee tournee:tourneeDAO.GetTodayTournees()) {
+                // get camion => get site => get ville adresse
+                String tempVille = tournee.getCamion().getSite().getAdresse().getVille();
+                // if les 2 sont sur le meme site alors add
+                if (ville.equals(tempVille)){
+                    tourneesAvailable.add(tournee);
+                }
+            }
+
+            // pour chaque tournee disponible
+            for (Tournee tournee:tourneesAvailable) {
+                // get le nombre de place max
+                int maxPlaces = tournee.getCamion().getMaxPlaces();
+
+                // get le nombre de demandes pour la tournee
+                demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                int numberEnlevement = demandeEnlevementDAO.GetNumberDemandeForTournee(tournee.getId());
+
+                // si il y a encore de la place dans la tournee
+                if(numberEnlevement < maxPlaces){
+                    // insert demande for this tournee
+                    demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                    demandeEnlevementDAO.UpdateTournee(tournee.getId(), demande.getId());
+                    canBeInsertInTournee = true;
+                    break;
+                }
+            }
+
+            // si la demande n'a pas été inscrite dans une tournée pour aujourd'hui
+            if (!canBeInsertInTournee){
+                // récupération des tournees pour demain
+                tourneesAvailable = new ArrayList<>();
+                tourneeDAO = new TourneeDAO(DAOConnection.ConnectDb());
+                for (Tournee tournee:tourneeDAO.GetTomorrowTournees()) {
+                    // get camion => get site => get ville adresse
+                    String tempVille = tournee.getCamion().getSite().getAdresse().getVille();
+
+                    // if les 2 sont sur le meme site alors add
+                    if (ville.equals(tempVille)){
+                        tourneesAvailable.add(tournee);
+                    }
+                }
+
+                // pour chaque tournee disponible
+                for (Tournee tournee:tourneesAvailable) {
+                    // get le nombre de place max
+                    int maxPlaces = tournee.getCamion().getMaxPlaces();
+
+                    // get le nombre de demandes pour la tournee
+                    demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                    int numberEnlevement = demandeEnlevementDAO.GetNumberDemandeForTournee(tournee.getId());
+
+                    // si il y a encore de la place dans la tournee
+                    if(numberEnlevement < maxPlaces){
+                        // insert demande for this tournee
+                        demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                        demandeEnlevementDAO.UpdateTournee(tournee.getId(), demande.getId());
+                        canBeInsertInTournee = true;
+                        break;
+                    }
+                }
+
+                // si la demande n'a pas été inscrite dans une tournée pour demain
+                if (!canBeInsertInTournee){
+                    // récupération des tournees pour apres demain
+                    tourneesAvailable = new ArrayList<>();
+                    tourneeDAO = new TourneeDAO(DAOConnection.ConnectDb());
+                    for (Tournee tournee:tourneeDAO.GetDayAfterTomorrowTournees()) {
+                        // get camion => get site => get ville adresse
+                        String tempVille = tournee.getCamion().getSite().getAdresse().getVille();
+
+                        // if les 2 sont sur le meme site alors add
+                        if (ville.equals(tempVille)){
+                            tourneesAvailable.add(tournee);
+                        }
+                    }
+
+                    // pour chaque tournee disponible
+                    for (Tournee tournee:tourneesAvailable) {
+                        // get le nombre de place max
+                        int maxPlaces = tournee.getCamion().getMaxPlaces();
+
+                        // get le nombre de demandes pour la tournee
+                        demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                        int numberEnlevement = demandeEnlevementDAO.GetNumberDemandeForTournee(tournee.getId());
+
+                        // si il y a encore de la place dans la tournee
+                        if(numberEnlevement < maxPlaces){
+                            // insert demande for this tournee
+                            demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
+                            demandeEnlevementDAO.UpdateTournee(tournee.getId(), demande.getId());
+                            canBeInsertInTournee = true;
+                            break;
+                        }
+                    }
+
+                    // si il n'y a pas de places pour les 3 prochains jours
+                    if (!canBeInsertInTournee){
+                        // insert dans journal de demandes à traiter
+                        demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
+                        demandeATraiterDAO.Insert(demande.getId());
+                    }
+                }
+
+            }
+
+            // si la demande a été attribué à une tournée
+            if (canBeInsertInTournee){
+                // delete du journal
+                demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
+                demandeATraiterDAO.Delete(demande.getId());
+            }
+
+        }
     }
 
 }
