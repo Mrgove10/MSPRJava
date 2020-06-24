@@ -53,6 +53,8 @@ public class MainController {
     @FXML
     public TableView<RequestFourModel> tableRequestFour;
     @FXML
+    public TableView<RequestFiveModel> tableRequestFive;
+    @FXML
     public TableView<DemandeEnlevementModel> tableRequestSix;
     private Window owner;
     private ScreenController screenController;
@@ -286,11 +288,9 @@ public class MainController {
     protected void handleButtonR5() throws NullPointerException, SQLException {
         EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
         ArrayList<Entreprise> arrayList = entrepriseDAO.GetAll();
-
+        listView_five.getItems().clear();
         for (Entreprise entreprise : arrayList) {
-
-            RequestFiveModel requestFiveModel = new RequestFiveModel(entreprise.getRaisonSociale(), entreprise.getId());
-
+            RequestFiveModel requestFiveModel = new RequestFiveModel(entreprise.getRaisonSociale(),entreprise.getId());
             listView_five.getItems().add(requestFiveModel);
         }
 
@@ -304,15 +304,10 @@ public class MainController {
         EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
         Entreprise entreprise = entrepriseDAO.GetById(focused.getFocusedItem().getId());
 
-        FocusModel<String> focused = listView_five.getFocusModel();
-
-        EntrepriseDAO entrepriseDAO = new EntrepriseDAO(DAOConnection.ConnectDb());
-        Entreprise entreprise = entrepriseDAO.GetById(focused.getFocusedIndex());
-
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         Integer numberDemande = demandeEnlevementDAO.GetNumberEnlevement(entreprise);
 
-        System.out.println("Vous avez choisi l'entreprise : " + entreprise.getRaisonSociale() + " qui a réalisé " + numberDemande + " demande(s)");
+        System.out.println("Vous avez choisi l'entreprise : "+entreprise.getRaisonSociale()+" qui a réalisé "+numberDemande+" demande(s)");
         System.out.println("Voici les entreprises qui ont réalisé plus de demandes :");
 
         Map<Integer, Integer> map = demandeEnlevementDAO.GetNumberEnlevementGreaterThan(numberDemande).entrySet().stream()
@@ -320,10 +315,15 @@ public class MainController {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
+        tableRequestFive.getItems().clear();
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
             Entreprise tempEntreprise = entrepriseDAO.GetById(entry.getKey());
-            System.out.println("L'entreprise : " + tempEntreprise.getRaisonSociale() + " a réalisé " + entry.getValue() + " demande(s)");
+
+            RequestFiveModel requestFiveModel = new RequestFiveModel(tempEntreprise.getRaisonSociale(),tempEntreprise.getId(), entry.getValue());
+            tableRequestFive.getItems().add(requestFiveModel);
         }
+        UIPaneHelper.Show(panerequete_five);
+
     }
 
 
