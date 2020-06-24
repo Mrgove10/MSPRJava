@@ -311,7 +311,7 @@
          </rowConstraints>
         </GridPane>
 
-        <!--===REQUETE 7===-->
+        <!--===REQUETE 7 & 8===-->
         <Pane fx:id="panerequete_seven" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
             <children>
                 <Label fx:id="Request78_QuantiteDechet" layoutX="10" layoutY="100"/>
