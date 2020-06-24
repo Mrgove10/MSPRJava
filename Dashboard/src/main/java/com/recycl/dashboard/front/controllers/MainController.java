@@ -290,13 +290,11 @@ public class MainController {
         ArrayList<Entreprise> arrayList = entrepriseDAO.GetAll();
         listView_five.getItems().clear();
         for (Entreprise entreprise : arrayList) {
-            RequestFiveModel requestFiveModel = new RequestFiveModel();
-            requestFiveModel.setNomEntreprise(entreprise.getRaisonSociale());
-            requestFiveModel.setId(entreprise.getId());
+            RequestFiveModel requestFiveModel = new RequestFiveModel(entreprise.getRaisonSociale(),entreprise.getId());
             listView_five.getItems().add(requestFiveModel);
         }
 
-        UIPaneHelper.Show(panerequete_five);
+        UIPaneHelper.Show("panerequete_five");
     }
 
     @FXML
@@ -321,9 +319,7 @@ public class MainController {
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
             Entreprise tempEntreprise = entrepriseDAO.GetById(entry.getKey());
 
-            RequestFiveModel requestFiveModel = new RequestFiveModel();
-            requestFiveModel.setNomEntreprise(tempEntreprise.getRaisonSociale());
-            requestFiveModel.setNumberDemandes(entry.getValue());
+            RequestFiveModel requestFiveModel = new RequestFiveModel(tempEntreprise.getRaisonSociale(),tempEntreprise.getId(), entry.getValue());
             tableRequestFive.getItems().add(requestFiveModel);
         }
         UIPaneHelper.Show(panerequete_five);

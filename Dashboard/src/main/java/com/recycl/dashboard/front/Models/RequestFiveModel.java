@@ -1,40 +1,36 @@
 package com.recycl.dashboard.front.Models;
 
 public class RequestFiveModel {
-    private int Id;
+    private final int Id;
     private String NomEntreprise;
     private int NumberDemandes;
 
-    public RequestFiveModel(int id, String nomEntreprise, int numberDemandes) {
+    public RequestFiveModel(String nomEntreprise, int id) {
+        Id = id;
+        NomEntreprise = nomEntreprise;
+    }
+
+    public RequestFiveModel(String nomEntreprise, int id, int numberDemandes) {
         Id = id;
         NomEntreprise = nomEntreprise;
         NumberDemandes = numberDemandes;
-    }
-
-    public RequestFiveModel() {
     }
 
     public int getId() {
         return Id;
     }
 
-    public void setId(int id) {
-        Id = id;
-    }
-
     public String getNomEntreprise() {
         return NomEntreprise;
     }
 
-    public void setNomEntreprise(String nomEntreprise) {
-        NomEntreprise = nomEntreprise;
-    }
-
-    public int getNumberDemandes() {
+    public int getNumberDemandes(){
         return NumberDemandes;
     }
 
-    public void setNumberDemandes(int numberDemandes) {
-        NumberDemandes = numberDemandes;
+    @Override
+    public String toString() {
+        return getNomEntreprise();
     }
+
 }
