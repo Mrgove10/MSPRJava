@@ -38,6 +38,8 @@ public class MainController {
     public Label Request2_EntrepriseInfo;
     @FXML
     public Label Request2_TourneeInfo;
+    @FXML
+    public Label Request78_QuantiteDechet;
 
     @FXML
     public ListView<RequestFiveModel> listView_five;
@@ -400,7 +402,7 @@ public class MainController {
                     }
                 }
             }
-
+            Request78_QuantiteDechet.setText("Wait ...");
             Map<Integer, Integer> map = detailDemandeDechetDAO.GetDechetsAndQuantity(demandesSite);
 
             if (map.isEmpty()) {
@@ -409,7 +411,8 @@ public class MainController {
                 for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
                     Dechet dechet = dechetDAO.GetById(entry.getKey());
                     if (dechet.getType().equals(choicebox_seven.getValue())) {
-                        System.out.println("Pour la période de \"2017-06-05\" à \"2019-06-03\", du site \"Paris\", il y a \"" + entry.getValue() + "\" déchet(s) de type \"Plastique\"");
+                        Request78_QuantiteDechet.setText("Pour la période de \""+datepicker_seven_start.getValue().toString()+"\" à \""+datepicker_seven_end.getValue().toString()+"\", pour \""+choicebox_seven_site.getValue()+"\", il y a \"" + entry.getValue() + "\" déchet(s) de type \""+choicebox_seven.getValue()+"\"");
+//                        System.out.println("Pour la période de \"2017-06-05\" à \"2019-06-03\", du site \"Paris\", il y a \"" + entry.getValue() + "\" déchet(s) de type \"Plastique\"");
                     }
                 }
             }

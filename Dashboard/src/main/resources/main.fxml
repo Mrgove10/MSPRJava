@@ -314,15 +314,18 @@
         <!--===REQUETE 7===-->
         <Pane fx:id="panerequete_seven" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
             <children>
+                <Label fx:id="Request78_QuantiteDechet" layoutX="10" layoutY="100"/>
+
                 <Button fx:id="validateButton_seven" layoutX="533.0" layoutY="66.0" mnemonicParsing="false" onAction="#get_R7" text="Valider" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Text layoutX="340.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="type dechet :" />
-            <Text layoutX="190.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="a" wrappingWidth="30.10546875" />
-                <Text layoutX="14.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="De" wrappingWidth="67.000000923872" />
-            <ChoiceBox fx:id="choicebox_seven" layoutX="436.0" layoutY="28.0" prefWidth="150.0" />
-            <DatePicker fx:id="datepicker_seven_start" layoutX="48.0" layoutY="28.0" prefHeight="25.0" prefWidth="134.0" />
-            <DatePicker fx:id="datepicker_seven_end" layoutX="211.0" layoutY="28.0" prefHeight="25.0" prefWidth="125.0" />
-            <ChoiceBox fx:id="choicebox_seven_site" layoutX="312.0" layoutY="66.0" prefWidth="150.0" />
-            <Text layoutX="261.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="site :" />
+                <Text layoutX="340.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="type dechet :" />
+                <Text layoutX="190.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="a" wrappingWidth="30.10546875" />
+                    <Text layoutX="14.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="De" wrappingWidth="67.000000923872" />
+                <ChoiceBox fx:id="choicebox_seven" layoutX="436.0" layoutY="28.0" prefWidth="150.0" />
+                <DatePicker fx:id="datepicker_seven_start" layoutX="48.0" layoutY="28.0" prefHeight="25.0" prefWidth="134.0" />
+                <DatePicker fx:id="datepicker_seven_end" layoutX="211.0" layoutY="28.0" prefHeight="25.0" prefWidth="125.0" />
+                <ChoiceBox fx:id="choicebox_seven_site" layoutX="312.0" layoutY="66.0" prefWidth="150.0" />
+                <Text layoutX="261.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="site :" />
+
             </children>
         </Pane>
     </children>
