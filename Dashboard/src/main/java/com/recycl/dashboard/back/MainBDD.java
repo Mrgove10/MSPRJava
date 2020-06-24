@@ -120,7 +120,7 @@ public class MainBDD {
     }
 
     private void Request5() throws SQLException, NullPointerException {
-        // Afficher les informations de l'entreprise qui a réalisé plus de demandes que l'entreprise Formalys (ou une autre entreprise)
+    /*    // Afficher les informations de l'entreprise qui a réalisé plus de demandes que l'entreprise Formalys (ou une autre entreprise)
         System.out.println("-------------------- REQUEST 5 --------------------");
         System.out.println("// Afficher les informations de l'entreprise qui a réalisé plus de demandes que l'entreprise Formalys (ou une autre entreprise)");
         System.out.println("-- Paramètres : Entreprise (string)");
@@ -143,7 +143,7 @@ public class MainBDD {
             Entreprise tempEntreprise = entrepriseDAO.GetById(entry.getKey());
             System.out.println("L'entreprise : "+tempEntreprise.getRaisonSociale()+" a réalisé "+entry.getValue()+" demande(s)");
         }
-
+*/
     }
 
     private void Request6() throws SQLException {
