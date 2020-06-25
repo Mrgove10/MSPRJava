@@ -100,7 +100,6 @@ public class MainController {
         UIPaneHelper.AddPane("panerequete_five", panerequete_five);
         UIPaneHelper.AddPane("panerequete_six", panerequete_six);
         UIPaneHelper.AddPane("panerequete_seven", panerequete_seven);
-        //nine
 
         UIPaneHelper.AddPane("MainRequestMenu", MainRequestMenu);
         UIPaneHelper.Show("MainRequestMenu");
@@ -255,7 +254,6 @@ public class MainController {
             UIPaneHelper.Show("panerequete_four");
 
             // Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées
-            System.out.println("-------------------- REQUEST 4 --------------------");
             System.out.println("// Afficher les employés ayant réalisé moins de n tournées. Triez le résultat sur le nombre de tournées");
             System.out.println("-- Paramètres : Nombre de tournées (int)");
         } catch (Exception ex) {
@@ -267,7 +265,7 @@ public class MainController {
     @FXML
     private void get_R4() throws SQLException, NullPointerException {
         EmployeDAO employeDAO = new EmployeDAO(DAOConnection.ConnectDb());
-        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(Integer.parseInt(request4_input.getCharacters().toString())).entrySet().stream()
+        Map<Employe, Integer> listEmployes = employeDAO.GetEmployesWhereNbTourneesSmallerThan(Integer.parseInt(request4_input.getCharacters().toString()) +1).entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
@@ -306,9 +304,6 @@ public class MainController {
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         Integer numberDemande = demandeEnlevementDAO.GetNumberEnlevement(entreprise);
 
-        System.out.println("Vous avez choisi l'entreprise : "+entreprise.getRaisonSociale()+" qui a réalisé "+numberDemande+" demande(s)");
-        System.out.println("Voici les entreprises qui ont réalisé plus de demandes :");
-
         Map<Integer, Integer> map = demandeEnlevementDAO.GetNumberEnlevementGreaterThan(numberDemande).entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
@@ -330,8 +325,6 @@ public class MainController {
     @FXML
     protected void handleButtonR6() throws SQLException, NullPointerException {
         // Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée
-        System.out.println("-------------------- REQUEST 6 --------------------");
-        System.out.println("// Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée");
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         DemandeATraiterDAO demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
         List<DemandeEnlevement> demandes = Stream.concat(demandeEnlevementDAO.GetDemandesNotInTournee().stream(), demandeATraiterDAO.GetDemandesInJournal().stream()).collect(Collectors.toList());
@@ -339,12 +332,10 @@ public class MainController {
 
         tableRequestSix.getItems().clear();
         for (DemandeEnlevement demande : newList) {
-            System.out.println("Demande N° : " + demande.getId());
             DemandeEnlevementModel demandeEnlevementModel = new DemandeEnlevementModel(demande.getId(), demande.getEntreprise().getRaisonSociale(), (java.sql.Date) demande.getTournee().getDate(), demande.getDateDemande(), demande.getDateEnlevement());
 
             tableRequestSix.getItems().add(demandeEnlevementModel);
         }
-
         UIPaneHelper.Show(panerequete_six);
     }
 
@@ -371,16 +362,6 @@ public class MainController {
     @FXML
     private void get_R7() {
         try {
-            System.out.println(choicebox_seven.getValue());
-            System.out.println(choicebox_seven_site.getValue());
-            System.out.println(datepicker_seven_end.getValue());
-            System.out.println(datepicker_seven_start.getValue());
-
-            // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)
-            System.out.println("-------------------- REQUEST 7 --------------------");
-            System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)");
-            System.out.println("-- Paramètres : Type de déchet (string), période avant (String), période après (String), Site (string)");
-
             DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
             ArrayList<DemandeEnlevement> listDemandes = demandeEnlevementDAO.GetByDateEnlevement(datepicker_seven_start.getValue().toString(), datepicker_seven_end.getValue().toString());
 
@@ -409,7 +390,6 @@ public class MainController {
                     Dechet dechet = dechetDAO.GetById(entry.getKey());
                     if (dechet.getType().equals(choicebox_seven.getValue())) {
                         Request78_QuantiteDechet.setText("Pour la période de \""+datepicker_seven_start.getValue().toString()+"\" à \""+datepicker_seven_end.getValue().toString()+"\", pour \""+choicebox_seven_site.getValue()+"\", il y a \"" + entry.getValue() + "\" déchet(s) de type \""+choicebox_seven.getValue()+"\"");
-//                        System.out.println("Pour la période de \"2017-06-05\" à \"2019-06-03\", du site \"Paris\", il y a \"" + entry.getValue() + "\" déchet(s) de type \"Plastique\"");
                     }
                 }
             }
@@ -421,13 +401,7 @@ public class MainController {
     }
 
     @FXML
-    protected void handleButtonR8() throws NullPointerException, SQLException {
-        handleButtonR7();
-    }
-
-    @FXML
     protected void handleButtonR9() throws NullPointerException, SQLException {
-//        UIPaneHelper.Show("panerequete_nine");
         DemandeEnlevementDAO demandeEnlevementDAO = new DemandeEnlevementDAO(DAOConnection.ConnectDb());
         DemandeATraiterDAO demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
         TourneeDAO tourneeDAO = new TourneeDAO(DAOConnection.ConnectDb());
@@ -556,7 +530,7 @@ public class MainController {
                 demandeATraiterDAO = new DemandeATraiterDAO(DAOConnection.ConnectDb());
                 demandeATraiterDAO.Delete(demande.getId());
             }
-
+        handleButtonR6();
         }
     }
 
