@@ -159,7 +159,7 @@ public class DemandeEnlevementDAO {
         try {
             String query = "SELECT COUNT(*) AS NUMBER_ENLEVEMENT " +
                     "FROM MSPR_DEMANDE_ENLEVEMENT " +
-                    "WHERE ID = ?";
+                    "WHERE ID_ENTREPRISE = ?";
             PreparedStatement ps = this.connect.prepareStatement(query);
             ps.setInt(1, entreprise.getId());
 

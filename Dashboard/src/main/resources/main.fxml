@@ -1,46 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
 <AnchorPane minHeight="150.0" minWidth="150.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.recycl.dashboard.front.controllers.MainController">
     <children>
-        <Button mnemonicParsing="false" onAction="#handleHome" text="HOME" />
-        <GridPane fx:id="MainRequestMenu" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-                <Button mnemonicParsing="false" onAction="#handleButtonR1" text="requete 1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                <Button mnemonicParsing="false" onAction="#handleButtonR2" text="requete 2" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                <Button mnemonicParsing="false" onAction="#handleButtonR3" text="requete 3" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                <Button mnemonicParsing="false" onAction="#handleButtonR4" text="requete 4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                <Button mnemonicParsing="false" onAction="#handleButtonR5" text="requete 5" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                <Button mnemonicParsing="false" onAction="#handleButtonR6" text="requete 6" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                <Button mnemonicParsing="false" onAction="#handleButtonR7" text="requete 7" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                <Button mnemonicParsing="false" onAction="#handleButtonR8" text="requete 8" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                <Button mnemonicParsing="false" onAction="#handleButtonR9" text="requete 9" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            </children>
-        </GridPane>
+        <Button mnemonicParsing="false" onAction="#handleHome" text="Accueil" />
 
         <!--===REQUETE 1===-->
         <GridPane fx:id="panerequete_one" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
             <rowConstraints>
+                <RowConstraints percentHeight="10" />
                 <RowConstraints percentHeight="20" />
-                <RowConstraints percentHeight="80" />
+                <RowConstraints percentHeight="70" />
             </rowConstraints>
-            <GridPane GridPane.rowIndex="0">
+            <Label alignment="CENTER" style="-fx-underline: true;" text="Chercher et afficher les demandes qui ont été faites après une date donnée" textAlignment="CENTER" GridPane.rowIndex="0" />
+            <GridPane GridPane.rowIndex="1">
                 <columnConstraints>
                     <ColumnConstraints />
                     <ColumnConstraints />
@@ -53,7 +31,7 @@
                <RowConstraints />
             </rowConstraints>
             </GridPane>
-            <GridPane GridPane.rowIndex="1">
+            <GridPane GridPane.rowIndex="2">
                 <TableView fx:id="tableRequestOne" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                     <columns>
                         <TableColumn text="Id">
@@ -88,10 +66,12 @@
         <!--===REQUETE 2===-->
         <GridPane fx:id="panerequete_two" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
             <rowConstraints>
+                <RowConstraints percentHeight="10" />
                 <RowConstraints percentHeight="20" />
-                <RowConstraints percentHeight="80" />
+                <RowConstraints percentHeight="70" />
             </rowConstraints>
-            <GridPane GridPane.rowIndex="0">
+            <Label alignment="CENTER" style="-fx-underline: true;" text="Pour une demande donnée, afficher la raison sociale de l'entreprise, la tournée correspondante et la quantité à récupérer pour chaque type de déchet" textAlignment="CENTER" GridPane.rowIndex="0" />
+            <GridPane GridPane.rowIndex="1">
                 <columnConstraints>
                     <ColumnConstraints />
                     <ColumnConstraints />
@@ -104,7 +84,7 @@
                <RowConstraints />
             </rowConstraints>
             </GridPane>
-            <GridPane GridPane.rowIndex="1">
+            <GridPane GridPane.rowIndex="2">
                 <rowConstraints>
                     <RowConstraints percentHeight="20" />
                     <RowConstraints percentHeight="80" />
@@ -150,10 +130,12 @@
         <!--===REQUETE 3===-->
         <GridPane fx:id="panerequete_three" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
             <rowConstraints>
+                <RowConstraints percentHeight="10" />
                 <RowConstraints percentHeight="20" />
-                <RowConstraints percentHeight="80" />
+                <RowConstraints percentHeight="70" />
             </rowConstraints>
-            <GridPane GridPane.rowIndex="0">
+            <Label alignment="CENTER" style="-fx-underline: true;" text="Afficher la quantité totale récupérée par type de déchet pour un mois/année donné" textAlignment="CENTER" GridPane.rowIndex="0" />
+            <GridPane GridPane.rowIndex="1">
                 <columnConstraints>
                     <ColumnConstraints />
                     <ColumnConstraints />
@@ -166,7 +148,7 @@
                <RowConstraints />
             </rowConstraints>
             </GridPane>
-           <GridPane GridPane.rowIndex="1">
+           <GridPane GridPane.rowIndex="2">
                <TableView fx:id="tableRequestThree" prefHeight="375.0" prefWidth="600.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                    <columns>
                        <TableColumn text="Dechet">
@@ -192,10 +174,12 @@
         <!--===REQUETE 4===-->
         <GridPane fx:id="panerequete_four" layoutX="23.0" layoutY="14.0" prefHeight="380.0" prefWidth="577.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
             <rowConstraints>
+                <RowConstraints percentHeight="10" />
                 <RowConstraints percentHeight="20" />
-                <RowConstraints percentHeight="80" />
+                <RowConstraints percentHeight="70" />
             </rowConstraints>
-            <GridPane GridPane.rowIndex="0">
+            <Label alignment="CENTER" style="-fx-underline: true;" text="Afficher les employés ayant réalisé moins de n tournées" textAlignment="CENTER" GridPane.rowIndex="0" />
+            <GridPane GridPane.rowIndex="1">
                 <columnConstraints>
                     <ColumnConstraints />
                     <ColumnConstraints />
@@ -208,7 +192,7 @@
                <RowConstraints />
             </rowConstraints>
             </GridPane>
-            <GridPane GridPane.rowIndex="1">
+            <GridPane GridPane.rowIndex="2">
                 <TableView fx:id="tableRequestFour" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                     <columns>
                         <TableColumn text="Employe">
@@ -238,52 +222,27 @@
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
          </rowConstraints>
-        </GridPane>
-
-        <!--===REQUETE 5===-->
-        <GridPane fx:id="panerequete_five" prefHeight="400.0" prefWidth="600.0">
-            <rowConstraints>
-                <RowConstraints />
-                <RowConstraints />
-            </rowConstraints>
-            <GridPane GridPane.rowIndex="0">
-                <rowConstraints>
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints />
-                </rowConstraints>
-                <Button fx:id="validateButton_five" layoutX="274.0" layoutY="361.0" mnemonicParsing="false" onAction="#get_R5" text="Valider"  GridPane.rowIndex="2"/>
-                <ListView fx:id="listView_five" layoutY="47.0" prefHeight="313.0" prefWidth="600.0"  GridPane.rowIndex="1">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                        </FXCollections>
-                    </items>
-                </ListView>
-                <Text layoutX="183.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entreprises" textAlignment="CENTER" wrappingWidth="233.99998933076859"  GridPane.rowIndex="0">
-                    <font>
-                        <Font size="24.0" />
-                    </font>
-                </Text>
-            </GridPane>
-            <GridPane GridPane.rowIndex="1">
-                <TableView fx:id="tableRequestFive" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn text="Entreprise">
-                            <cellValueFactory><PropertyValueFactory property="NomEntreprise" /></cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="Number Demandes">
-                            <cellValueFactory><PropertyValueFactory property="NumberDemandes" /></cellValueFactory>
-                        </TableColumn>
-                    </columns>
-                </TableView>
-            </GridPane>
         </GridPane>
 
         <!--===REQUETE 6===-->
         <GridPane fx:id="panerequete_six" layoutX="23.0" layoutY="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-            <children>
-                <TableView fx:id="tableRequestSix" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <GridPane>
+                <rowConstraints>
+                    <RowConstraints percentHeight="10" />
+                    <RowConstraints />
+                </rowConstraints>
+                <Label alignment="CENTER" style="-fx-underline: true;" text="Afficher les informations des demandes qui ne sont pas encore inscrites dans une tournée" textAlignment="CENTER" GridPane.rowIndex="0" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR9" prefHeight="26.0" prefWidth="244.0" text="Inscrire les demandes" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                <TableView fx:id="tableRequestSix" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                     <columns>
                         <TableColumn text="Id">
                             <cellValueFactory><PropertyValueFactory property="Id" /></cellValueFactory>
@@ -302,7 +261,10 @@
                         </TableColumn>
                     </columns>
                 </TableView>
-            </children>
+            <columnConstraints>
+               <ColumnConstraints />
+            </columnConstraints>
+            </GridPane>
          <columnConstraints>
             <ColumnConstraints />
          </columnConstraints>
@@ -311,19 +273,99 @@
          </rowConstraints>
         </GridPane>
 
-        <!--===REQUETE 7===-->
+        <!--===REQUETE 7 & 8===-->
         <Pane fx:id="panerequete_seven" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
             <children>
+
+                <Label layoutX="10" layoutY="10" style="-fx-underline: true;" text="Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site ou national" />
+
+                <Label fx:id="Request78_QuantiteDechet" layoutX="10" layoutY="100" />
+
                 <Button fx:id="validateButton_seven" layoutX="533.0" layoutY="66.0" mnemonicParsing="false" onAction="#get_R7" text="Valider" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Text layoutX="340.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="type dechet :" />
-            <Text layoutX="190.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="a" wrappingWidth="30.10546875" />
-                <Text layoutX="14.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="De" wrappingWidth="67.000000923872" />
-            <ChoiceBox fx:id="choicebox_seven" layoutX="436.0" layoutY="28.0" prefWidth="150.0" />
-            <DatePicker fx:id="datepicker_seven_start" layoutX="48.0" layoutY="28.0" prefHeight="25.0" prefWidth="134.0" />
-            <DatePicker fx:id="datepicker_seven_end" layoutX="211.0" layoutY="28.0" prefHeight="25.0" prefWidth="125.0" />
-            <ChoiceBox fx:id="choicebox_seven_site" layoutX="312.0" layoutY="66.0" prefWidth="150.0" />
-            <Text layoutX="261.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="site :" />
+                <Text layoutX="340.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="type dechet :" />
+                <Text layoutX="190.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="a" wrappingWidth="30.10546875" />
+                    <Text layoutX="14.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="De" wrappingWidth="67.000000923872" />
+                <ChoiceBox fx:id="choicebox_seven" layoutX="436.0" layoutY="28.0" prefWidth="150.0" />
+                <DatePicker fx:id="datepicker_seven_start" layoutX="48.0" layoutY="28.0" prefHeight="25.0" prefWidth="134.0" />
+                <DatePicker fx:id="datepicker_seven_end" layoutX="211.0" layoutY="28.0" prefHeight="25.0" prefWidth="125.0" />
+                <ChoiceBox fx:id="choicebox_seven_site" layoutX="312.0" layoutY="66.0" prefWidth="150.0" />
+                <Text layoutX="261.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="site :" />
+
             </children>
         </Pane>
+
+        <!--===REQUETE 5===-->
+        <GridPane fx:id="panerequete_five" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <rowConstraints>
+                <RowConstraints percentHeight="10" />
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
+            <Label alignment="CENTER" style="-fx-underline: true;" text="Afficher les informations des entreprises qui ont réalisé plus de demandes que l'entreprise N" textAlignment="CENTER" GridPane.rowIndex="0" />
+            <GridPane GridPane.rowIndex="1">
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                </rowConstraints>
+                <Button fx:id="validateButton_five" layoutX="274.0" layoutY="361.0" mnemonicParsing="false" onAction="#get_R5" text="Valider" GridPane.rowIndex="2" />
+                <ListView fx:id="listView_five" layoutY="47.0" prefHeight="313.0" prefWidth="600.0" GridPane.rowIndex="1">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                        </FXCollections>
+                    </items>
+                </ListView>
+                <Text layoutX="183.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entreprises" textAlignment="CENTER" wrappingWidth="233.99998933076859" GridPane.rowIndex="0">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Text>
+            <columnConstraints>
+               <ColumnConstraints />
+            </columnConstraints>
+            </GridPane>
+            <GridPane GridPane.rowIndex="2">
+                <TableView fx:id="tableRequestFive" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn text="Entreprise">
+                            <cellValueFactory><PropertyValueFactory property="NomEntreprise" /></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Number Demandes">
+                            <cellValueFactory><PropertyValueFactory property="NumberDemandes" /></cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+            <columnConstraints>
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
+            </GridPane>
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
+        </GridPane>
+        <GridPane fx:id="MainRequestMenu" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Button mnemonicParsing="false" onAction="#handleButtonR1" prefHeight="26.0" prefWidth="200.0" text="Afficher demandes" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR2" prefHeight="26.0" prefWidth="252.0" text="Recherche par demande" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR3" prefHeight="26.0" prefWidth="252.0" text="Quantité de déchets" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR4" prefHeight="26.0" prefWidth="281.0" text="Tournée par employé" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR5" prefHeight="26.0" prefWidth="262.0" text="Demandes par entreprise" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR6" prefHeight="26.0" prefWidth="297.0" text="Demandes non inscrites" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#handleButtonR7" prefHeight="26.0" prefWidth="291.0" text="Quantité de déchet avancé" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            </children>
+        </GridPane>
     </children>
 </AnchorPane>
