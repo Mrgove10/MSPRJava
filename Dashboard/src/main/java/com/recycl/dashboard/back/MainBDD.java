@@ -161,7 +161,7 @@ public class MainBDD {
     }
 
     private void Request7() throws SQLException, NullPointerException {
-        // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)
+    /*    // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)
         System.out.println("-------------------- REQUEST 7 --------------------");
         System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau d'un site (numéro de site, nom du type de déchet, période doivent etre des arguments)");
         System.out.println("-- Paramètres : Type de déchet (string), période avant (String), période après (String), Site (string)");
@@ -189,12 +189,12 @@ public class MainBDD {
             if (dechet.getType().equals("Papier")){
                 System.out.println("Pour la période de \"2017-06-05\" à \"2019-06-03\", du site \"Paris\", il y a \"" + entry.getValue() + "\" déchet(s) de type \"Plastique\"");
             }
-        }
+        }*/
 
     }
 
     private void Request8() throws SQLException {
-        // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national
+    /*    // Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national
         System.out.println("-------------------- REQUEST 8 --------------------");
         System.out.println("// Retrouver et afficher la quantité totale collectée pour un type de déchet sur une période donnée au niveau national");
 
@@ -219,11 +219,11 @@ public class MainBDD {
             if (dechet.getType().equals("Papier")){
                 System.out.println("Pour la période de \"2017-06-05\" à \"2019-06-03\", il y a \"" + entry.getValue() + "\" déchet(s) de type \"Plastique\"");
             }
-        }
+        }*/
     }
 
     private void Request9() throws SQLException {
-        // Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée
+       /* // Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée
         System.out.println("-------------------- REQUEST 9 --------------------");
         System.out.println("// Parcours les demandes non inscrites dans une tournée pour chacun des sites et qui les inscrit dans une tournée");
         // -- Inscription dans une tournée déjà créée pour la date demandée (date du jour)
@@ -359,7 +359,7 @@ public class MainBDD {
                 demandeATraiterDAO.Delete(demande.getId());
             }
 
-        }
+        }*/
     }
 
     // Function to remove duplicates from an ArrayList
